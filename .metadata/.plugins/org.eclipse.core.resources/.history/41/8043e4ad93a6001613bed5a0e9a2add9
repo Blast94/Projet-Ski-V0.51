@@ -1,0 +1,86 @@
+package Be.Rochez.InterfaceGraphique;
+
+import java.awt.BorderLayout;
+import java.awt.EventQueue;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.border.EmptyBorder;
+import javax.swing.GroupLayout;
+import javax.swing.GroupLayout.Alignment;
+import javax.swing.JLabel;
+import java.awt.Color;
+import javax.swing.JButton;
+import javax.swing.LayoutStyle.ComponentPlacement;
+
+public class MenuClient extends JFrame implements ActionListener{
+
+	private JPanel contentPane;
+	private int monIdClient;
+	private JButton btnModifProfil;
+	private JButton btnDeconnexion;
+
+	/**
+	 * Create the frame.
+	 */
+	public MenuClient(int id) {
+		
+		monIdClient = id;
+		
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setBounds(100, 100, 600, 400);
+		contentPane = new JPanel();
+		contentPane.setBackground(Color.GRAY);
+		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+		setContentPane(contentPane);
+		
+		JLabel lblMenu = new JLabel("MENU");
+		
+		btnModifProfil = new JButton("Modifier Profil");
+		
+		btnDeconnexion = new JButton("Deconnexion");
+		GroupLayout gl_contentPane = new GroupLayout(contentPane);
+		gl_contentPane.setHorizontalGroup(
+			gl_contentPane.createParallelGroup(Alignment.LEADING)
+				.addGroup(Alignment.TRAILING, gl_contentPane.createSequentialGroup()
+					.addContainerGap(371, Short.MAX_VALUE)
+					.addComponent(btnModifProfil)
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addComponent(btnDeconnexion)
+					.addGap(11))
+				.addGroup(gl_contentPane.createSequentialGroup()
+					.addGap(247)
+					.addComponent(lblMenu)
+					.addContainerGap(305, Short.MAX_VALUE))
+		);
+		gl_contentPane.setVerticalGroup(
+			gl_contentPane.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_contentPane.createSequentialGroup()
+					.addContainerGap()
+					.addGroup(gl_contentPane.createParallelGroup(Alignment.BASELINE)
+						.addComponent(btnModifProfil)
+						.addComponent(btnDeconnexion))
+					.addGap(110)
+					.addComponent(lblMenu)
+					.addContainerGap(193, Short.MAX_VALUE))
+		);
+		contentPane.setLayout(gl_contentPane);
+		
+		btnDeconnexion.addActionListener(this);
+		this.setVisible(true);
+	}
+	public void actionPerformed(ActionEvent arg0) {
+		if(arg0.getSource() == btnDeconnexion)
+		{
+			this.dispose();
+			Accueil fen = new Accueil();
+		}
+		if(arg0.getSource() == btnModifProfil)
+		{
+			this.dispose();
+			ModifierProfil fen = new Modifier 
+		}
+	}
+}

@@ -1,0 +1,15 @@
+package Be.Rochez.Classes;
+
+import java.text.ParseException;
+
+public class Verification {
+	public static boolean IsNumeric(String Nombre) {
+        try {
+        	Integer.parseInt(Nombre);
+            return true;
+        }
+        catch(ParseException ex){
+            return false;
+        }
+    }
+}

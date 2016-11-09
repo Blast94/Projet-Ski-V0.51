@@ -1,0 +1,13 @@
+package Be.Rochez.Classes;
+
+public class Verification {
+	public static boolean IsNumeric(String Nombre) {
+        try {
+        	integer.ParseInt(Nombre);
+            return true;
+        }
+        catch {
+            return false;
+        }
+    }
+}

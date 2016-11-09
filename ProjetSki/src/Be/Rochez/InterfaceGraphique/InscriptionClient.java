@@ -6,6 +6,12 @@ import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+
+import Be.Rochez.Classes.Client;
+import Be.Rochez.Classes.Verification;
+import Be.Rochez.DAO.ClientDAO;
+import Be.Rochez.DAO.ConnexionDAO;
+
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
 import javax.swing.UIManager;
@@ -39,6 +45,10 @@ public class InscriptionClient extends JFrame implements ActionListener{
 	private JButton btnValider;
 	private JButton btnRetour;
 	private JPasswordField passwordField;
+	
+	
+	private Client monClient;
+	private ClientDAO c;
 
 	/**
 	 * Create the frame.
@@ -182,6 +192,7 @@ public class InscriptionClient extends JFrame implements ActionListener{
 		contentPane.setLayout(gl_contentPane);
 		
 		btnRetour.addActionListener(this);
+		btnValider.addActionListener(this);
 		this.setVisible(true);
 	}
 	public void actionPerformed(ActionEvent arg0) {
@@ -192,6 +203,21 @@ public class InscriptionClient extends JFrame implements ActionListener{
 		}
 		if(arg0.getSource() == btnValider)
 		{
+			if(!Verification.IsNumeric(txtCompteBancaire.getText()))
+			{
+				
+				System.out.println("le champs compte bancaire est mal saisi");
+				
+			}
+			else
+			{
+				c = new ClientDAO(ConnexionDAO.getInstance());
+				monClient = new Client(txtNom.getText().trim(), txtPrenom.getText().trim(), txtDateNaissance.getText(), txtPseudo.getText().trim(), passwordField.getText(), Integer.parseInt(txtCompteBancaire.getText().trim()));
+				c.create(monClient);
+				System.out.println("l'ajout s'est bien déroulé");
+				this.dispose();
+		        Accueil fen = new Accueil();
+			}
 			
 		}
 	} 

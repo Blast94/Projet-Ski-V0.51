@@ -96,6 +96,63 @@ public class ClientDAO extends DAO<Client>{
 			  e.printStackTrace();
 			  return false;
 		  } 
+	  }
+	  public int ConnexionClient(String login, String password)
+	  {
+		  int id;
+		  try {
+			  ResultSet result = this.connect.createStatement(
+					  ResultSet.TYPE_SCROLL_INSENSITIVE,
+					  ResultSet.CONCUR_READ_ONLY).executeQuery("SELECT * FROM Client Where Login = \"" + login + "\"");
+			  if(result.first())
+			  {
+				  
+				  if(result.getString("Password").equals(password))
+				  {
+					  id = result.getInt("ID");
+					  return id;
+				  }
+				  else
+				  {
+					  return -1;
+				  }
+					         
+			  }
+			  else
+			  {
+				  return -2;
+			  }
+			  
+		  } 
+		  catch (SQLException e) {
+			  e.printStackTrace();
+			  return -3;
+		  }
+	  }
+	  public Client TrouverClient(int id)
+	  {
+		  Client monClient = new Client();
+		  try {
+			  ResultSet result = this.connect.createStatement(
+					  ResultSet.TYPE_SCROLL_INSENSITIVE,
+					  ResultSet.CONCUR_READ_ONLY).executeQuery("SELECT * FROM Client C INNER JOIN Personne P ON C.PersonneID = P.ID Where ID = " + id );
+			  if(result.first())
+			  {
+				  monClient = new Client(
+						  result.getString("Nom"),
+						  result.getString("Prenom"),
+						  result.getString("DateNaissance"),
+						  result.getString("Login"),
+						  result.getString("Password"),
+						  result.getInt("CompteBancaire")
+						  );
+			  }
+		  }
+		  catch (SQLException e) {
+			  e.printStackTrace();
+		  }
+		  return monClient;
 	  }  
 }
+
 

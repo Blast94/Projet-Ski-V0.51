@@ -6,6 +6,10 @@ import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+
+import Be.Rochez.DAO.ClientDAO;
+import Be.Rochez.DAO.ConnexionDAO;
+
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
 import javax.swing.JTextField;
@@ -23,7 +27,9 @@ public class Accueil extends JFrame implements ActionListener {
 	private JTextField txtLogin;
 	private JPasswordField txtPassword;
 	private JButton btnConnexion;
-	JButton btnInscription;
+	private JButton btnInscription;
+	
+	private ClientDAO c;
 
 	/**
 	 * Create the frame.
@@ -68,19 +74,12 @@ public class Accueil extends JFrame implements ActionListener {
 		panel.add(txtPassword);
 		
 		btnConnexion = new JButton("Connexion");
-		btnConnexion.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-			}
-		});
+		
 		btnConnexion.setHorizontalAlignment(SwingConstants.TRAILING);
 		panel.add(btnConnexion);
 		
 		btnInscription = new JButton("Inscription");
-		btnInscription.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				
-			}
-		});
+		
 		panel.add(btnInscription);
 		
 		JLabel lblNewLabel = new JLabel("            Bienvenue au Domaine du Chalet 260m");
@@ -90,6 +89,7 @@ public class Accueil extends JFrame implements ActionListener {
 		this.contentPane.add(lblNewLabel, BorderLayout.CENTER);
 		
 		btnInscription.addActionListener(this);
+		btnConnexion.addActionListener(this);
 		this.setVisible(true);
 	}
 	public void actionPerformed(ActionEvent arg0) {
@@ -97,6 +97,29 @@ public class Accueil extends JFrame implements ActionListener {
 		{
 			this.dispose();
 	        InscriptionClient fen = new InscriptionClient();
+		}
+		if(arg0.getSource() == btnConnexion)
+		{
+			c = new ClientDAO(ConnexionDAO.getInstance());
+			int monIdClient = c.ConnexionClient(txtLogin.getText().trim(), txtPassword.getText()); 
+			if(monIdClient == -1)
+			{
+				System.out.println("Le mot de passe saisi est incorrect");
+			}
+			else if(monIdClient == -2)
+			{
+				System.out.println("Le login n'existe pas");
+			}
+			else if(monIdClient == -3)
+			{
+				System.out.println("Erreur lors de la connexion");
+			}
+			else
+			{
+				this.dispose();
+				MenuClient fen = new MenuClient(monIdClient);
+			}
+			
 		}
 	} 
 
