@@ -14,6 +14,11 @@ import javax.swing.JLabel;
 import java.awt.Color;
 import javax.swing.JButton;
 import javax.swing.LayoutStyle.ComponentPlacement;
+import java.awt.Font;
+import javax.swing.SwingConstants;
+import javax.swing.JTextField;
+import javax.swing.JPasswordField;
+import javax.swing.JRadioButton;
 
 public class MenuClient extends JFrame implements ActionListener{
 
@@ -36,40 +41,67 @@ public class MenuClient extends JFrame implements ActionListener{
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		
-		JLabel lblMenu = new JLabel("MENU");
+		JPanel panel = new JPanel();
+		panel.setBackground(Color.DARK_GRAY);
 		
-		btnModifProfil = new JButton("Modifier Profil");
+		JLabel label_2 = new JLabel("");
+		label_2.setHorizontalAlignment(SwingConstants.CENTER);
+		label_2.setForeground(Color.ORANGE);
+		label_2.setFont(new Font("Yu Gothic UI", Font.BOLD, 13));
 		
 		btnDeconnexion = new JButton("Deconnexion");
+		
+		btnDeconnexion.addActionListener(this);
+		
+		btnModifProfil = new JButton("Modifier Profil");
+		btnModifProfil.addActionListener(this);
+		
+		JLabel lblMenu = new JLabel("MENU");
+		lblMenu.setForeground(Color.WHITE);
+		lblMenu.setFont(new Font("Yu Gothic UI", Font.BOLD, 19));
+		GroupLayout gl_panel = new GroupLayout(panel);
+		gl_panel.setHorizontalGroup(
+			gl_panel.createParallelGroup(Alignment.TRAILING)
+				.addGroup(gl_panel.createSequentialGroup()
+					.addContainerGap()
+					.addComponent(lblMenu)
+					.addPreferredGap(ComponentPlacement.RELATED, 37, Short.MAX_VALUE)
+					.addGroup(gl_panel.createParallelGroup(Alignment.LEADING)
+						.addGroup(gl_panel.createSequentialGroup()
+							.addComponent(label_2, GroupLayout.PREFERRED_SIZE, 307, GroupLayout.PREFERRED_SIZE)
+							.addGap(192))
+						.addGroup(Alignment.TRAILING, gl_panel.createSequentialGroup()
+							.addComponent(btnModifProfil)
+							.addPreferredGap(ComponentPlacement.UNRELATED)
+							.addComponent(btnDeconnexion)
+							.addContainerGap())))
+		);
+		gl_panel.setVerticalGroup(
+			gl_panel.createParallelGroup(Alignment.LEADING)
+				.addGap(0, 61, Short.MAX_VALUE)
+				.addGroup(gl_panel.createSequentialGroup()
+					.addGap(14)
+					.addGroup(gl_panel.createParallelGroup(Alignment.TRAILING)
+						.addComponent(lblMenu)
+						.addGroup(gl_panel.createParallelGroup(Alignment.BASELINE)
+							.addComponent(btnDeconnexion)
+							.addComponent(btnModifProfil))
+						.addComponent(label_2))
+					.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+		);
+		panel.setLayout(gl_panel);
 		GroupLayout gl_contentPane = new GroupLayout(contentPane);
 		gl_contentPane.setHorizontalGroup(
-			gl_contentPane.createParallelGroup(Alignment.LEADING)
-				.addGroup(Alignment.TRAILING, gl_contentPane.createSequentialGroup()
-					.addContainerGap(371, Short.MAX_VALUE)
-					.addComponent(btnModifProfil)
-					.addPreferredGap(ComponentPlacement.RELATED)
-					.addComponent(btnDeconnexion)
-					.addGap(11))
-				.addGroup(gl_contentPane.createSequentialGroup()
-					.addGap(247)
-					.addComponent(lblMenu)
-					.addContainerGap(305, Short.MAX_VALUE))
+			gl_contentPane.createParallelGroup(Alignment.TRAILING)
+				.addComponent(panel, GroupLayout.DEFAULT_SIZE, 574, Short.MAX_VALUE)
 		);
 		gl_contentPane.setVerticalGroup(
 			gl_contentPane.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_contentPane.createSequentialGroup()
-					.addContainerGap()
-					.addGroup(gl_contentPane.createParallelGroup(Alignment.BASELINE)
-						.addComponent(btnModifProfil)
-						.addComponent(btnDeconnexion))
-					.addGap(110)
-					.addComponent(lblMenu)
-					.addContainerGap(193, Short.MAX_VALUE))
+					.addComponent(panel, GroupLayout.PREFERRED_SIZE, 61, GroupLayout.PREFERRED_SIZE)
+					.addContainerGap(290, Short.MAX_VALUE))
 		);
 		contentPane.setLayout(gl_contentPane);
-		
-		btnDeconnexion.addActionListener(this);
-		btnModifProfil.addActionListener(this);
 		this.setVisible(true);
 	}
 	public void actionPerformed(ActionEvent arg0) {

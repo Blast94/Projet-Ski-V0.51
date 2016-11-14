@@ -1,0 +1,13 @@
+package Be.Rochez.Classes;
+
+public class Cours {
+	int id;
+	String sport;
+	String categorieAge;
+	String Niveau;
+	int prix;
+	int eleveMinimum;
+	int eleveMaximum;
+	int typeCours;
+	int ageMinimum;
+}

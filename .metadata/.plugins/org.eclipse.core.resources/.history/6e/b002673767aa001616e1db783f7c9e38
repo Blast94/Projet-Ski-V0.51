@@ -1,0 +1,32 @@
+package Be.Rochez.Singleton;
+
+import java.util.ArrayList;
+
+import Be.Rochez.Classes.Cours;
+
+public class ListeCours {
+	private ArrayList<Cours> listeJoueur = new ArrayList<Cours>();
+	DAO<Cours> joueurDao = new JoueurDAO(ConnexionDAO.getInstance());
+    private static ListeJoueur _instance = null;
+    public ArrayList<Joueur> getListeJoueur() {
+		return listeJoueur;
+	}
+	public void setListeJoueur(ArrayList<Joueur> listeJoueur) {
+		this.listeJoueur = listeJoueur;
+	}
+    private ListeJoueur()
+    {	
+    	for(int id = 1 ; id < 257 ; id++)
+    	{
+        	listeJoueur.add(joueurDao.find(id));
+    	}	
+    }
+    public static ListeJoueur Instance()
+    {
+        if (_instance == null)
+        {
+            _instance = new ListeJoueur();
+        }
+        return _instance;
+    }
+}

@@ -2,6 +2,8 @@ package Be.Rochez.Classes;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.regex.Pattern;
+
 
 public class Verification {
 	public static boolean IsNumeric(String Nombre) {
@@ -13,7 +15,7 @@ public class Verification {
             return false;
         }
     }
-	public boolean validateDate(String date) {
+	public static boolean IsDate(String date) {
 	    SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
 	    try {
 	        sdf.parse(date);
@@ -22,5 +24,12 @@ public class Verification {
 	    catch(ParseException ex) {
 	        return false;
 	    }
+	}
+	public static boolean IsString(String mot)
+	{
+		if(Pattern.matches("[a-zA-Z]*", mot))
+			return true;
+		else
+			return false;
 	}
 }

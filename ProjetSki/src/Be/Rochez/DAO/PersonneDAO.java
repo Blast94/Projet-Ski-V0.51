@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
+import Be.Rochez.Classes.Client;
 import Be.Rochez.Classes.Personne;
 
 public class PersonneDAO extends DAO<Personne> {
@@ -29,4 +30,10 @@ public class PersonneDAO extends DAO<Personne> {
 	  public boolean update(Personne obj) {
 	    return false;
 	  }
+	  //// A régler :
+	  public Personne find(int id)
+	  {
+		  return null;
+	  }
+	  ////
 }

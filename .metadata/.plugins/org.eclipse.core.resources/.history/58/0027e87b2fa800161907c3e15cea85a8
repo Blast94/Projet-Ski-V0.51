@@ -1,0 +1,36 @@
+package Be.Rochez.Classes;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+
+import Be.Rochez.DAO.ClientDAO;
+import Be.Rochez.DAO.ConnexionDAO;
+
+public class Verification {
+	public static boolean IsNumeric(String Nombre) {
+        try {
+        	Integer.parseInt(Nombre);
+            return true;
+        }
+        catch(Exception ex){
+            return false;
+        }
+    }
+	public static boolean IsDate(String date) {
+	    SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+	    try {
+	        sdf.parse(date);
+	        return true;
+	    }
+	    catch(ParseException ex) {
+	        return false;
+	    }
+	}
+	public static boolean IsString(String mot)
+	{
+		try
+		{
+			Pattern.matches("[a-zA-Z]*", mot); // true
+		}
+	}
+}

@@ -1,0 +1,140 @@
+package Be.Rochez.InterfaceGraphique;
+
+import java.awt.BorderLayout;
+import java.awt.EventQueue;
+
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.border.EmptyBorder;
+
+import Be.Rochez.Singleton.ListeCours;
+
+import javax.swing.GroupLayout;
+import javax.swing.GroupLayout.Alignment;
+import java.awt.Color;
+import javax.swing.JLabel;
+import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+import javax.swing.JButton;
+import javax.swing.LayoutStyle.ComponentPlacement;
+import javax.swing.JComboBox;
+import javax.swing.JList;
+import javax.swing.JScrollBar;
+
+public class AccreditationMoniteur extends JFrame implements ActionListener{
+
+	private JPanel contentPane;
+	private JComboBox comboBox;
+	private int monIdMoniteur;
+	private JButton btnValider;
+	/**
+	 * Create the frame.
+	 */
+	public AccreditationMoniteur(int id) {
+		
+		monIdMoniteur = id;
+		
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setBounds(100, 100, 600, 400);
+		contentPane = new JPanel();
+		contentPane.setBackground(Color.GRAY);
+		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+		setContentPane(contentPane);
+		
+		JPanel panel = new JPanel();
+		panel.setBackground(Color.DARK_GRAY);
+		
+		JLabel lblAjoutDuneAccrditation = new JLabel("Ajout d'une accr\u00E9ditation");
+		lblAjoutDuneAccrditation.setForeground(Color.WHITE);
+		lblAjoutDuneAccrditation.setFont(new Font("Yu Gothic UI", Font.BOLD, 15));
+		
+		JButton button = new JButton("Retour");
+		GroupLayout gl_panel = new GroupLayout(panel);
+		gl_panel.setHorizontalGroup(
+			gl_panel.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_panel.createSequentialGroup()
+					.addContainerGap()
+					.addComponent(lblAjoutDuneAccrditation)
+					.addPreferredGap(ComponentPlacement.RELATED, 327, Short.MAX_VALUE)
+					.addComponent(button)
+					.addContainerGap())
+		);
+		gl_panel.setVerticalGroup(
+			gl_panel.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_panel.createSequentialGroup()
+					.addContainerGap()
+					.addGroup(gl_panel.createParallelGroup(Alignment.BASELINE)
+						.addComponent(lblAjoutDuneAccrditation)
+						.addComponent(button))
+					.addContainerGap(25, Short.MAX_VALUE))
+		);
+		panel.setLayout(gl_panel);
+		
+		comboBox = new JComboBox();
+		
+		btnValider = new JButton("Valider");
+		
+		JList list = new JList();
+		
+		JScrollBar scrollBar = new JScrollBar();
+		
+		JButton btnSupprimer = new JButton("Supprimer");
+		GroupLayout gl_contentPane = new GroupLayout(contentPane);
+		gl_contentPane.setHorizontalGroup(
+			gl_contentPane.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_contentPane.createSequentialGroup()
+					.addGroup(gl_contentPane.createParallelGroup(Alignment.TRAILING)
+						.addComponent(panel, Alignment.LEADING, GroupLayout.PREFERRED_SIZE, 575, GroupLayout.PREFERRED_SIZE)
+						.addGroup(gl_contentPane.createSequentialGroup()
+							.addComponent(comboBox, 0, 463, Short.MAX_VALUE)
+							.addPreferredGap(ComponentPlacement.RELATED)
+							.addComponent(btnValider, GroupLayout.PREFERRED_SIZE, 106, GroupLayout.PREFERRED_SIZE))
+						.addGroup(Alignment.LEADING, gl_contentPane.createSequentialGroup()
+							.addComponent(list, GroupLayout.PREFERRED_SIZE, 375, GroupLayout.PREFERRED_SIZE)
+							.addPreferredGap(ComponentPlacement.RELATED)
+							.addComponent(scrollBar, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+							.addGap(18)
+							.addComponent(btnSupprimer, GroupLayout.DEFAULT_SIZE, 106, Short.MAX_VALUE)))
+					.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+		);
+		gl_contentPane.setVerticalGroup(
+			gl_contentPane.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_contentPane.createSequentialGroup()
+					.addComponent(panel, GroupLayout.PREFERRED_SIZE, 61, GroupLayout.PREFERRED_SIZE)
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addGroup(gl_contentPane.createParallelGroup(Alignment.BASELINE)
+						.addComponent(comboBox, GroupLayout.PREFERRED_SIZE, 22, GroupLayout.PREFERRED_SIZE)
+						.addComponent(btnValider))
+					.addGap(18)
+					.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
+						.addGroup(gl_contentPane.createSequentialGroup()
+							.addComponent(btnSupprimer)
+							.addContainerGap())
+						.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
+							.addComponent(scrollBar, GroupLayout.DEFAULT_SIZE, 243, Short.MAX_VALUE)
+							.addComponent(list, GroupLayout.DEFAULT_SIZE, 243, Short.MAX_VALUE))))
+		);
+		ListeCours listeCours = ListeCours.Instance();
+		comboBox.addItem("");
+		for(int i = 0 ; i < listeCours.getListeCours().size(); i++)
+		{
+			comboBox.addItem(listeCours.getListeCours().get(i).toString());
+		}
+		btnValider.addActionListener(this);
+		contentPane.setLayout(gl_contentPane);
+		this.setVisible(true);
+	}
+	public void actionPerformed(ActionEvent arg0) {
+		if(arg0.getSource() == btnValider)
+		{
+			if(!comboBox.getSelectedItem().toString().equals(""))
+			{
+				System.out.println(comboBox.getSelectedIndex());
+				
+			}	
+		}
+		
+	}
+}

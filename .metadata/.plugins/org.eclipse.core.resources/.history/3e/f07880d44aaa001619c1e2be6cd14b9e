@@ -1,0 +1,78 @@
+package Be.Rochez.InterfaceGraphique;
+
+import java.awt.BorderLayout;
+import java.awt.EventQueue;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.border.EmptyBorder;
+import javax.swing.GroupLayout;
+import javax.swing.GroupLayout.Alignment;
+import java.awt.Color;
+import javax.swing.JButton;
+import javax.swing.LayoutStyle.ComponentPlacement;
+
+public class MenuMoniteur extends JFrame implements ActionListener{
+
+	private JPanel contentPane;
+	private int monIdMoniteur;
+	private JButton btnModifAccreditation;
+	private JButton btnModifProfil;
+	private JButton btnDeconnexion;
+
+	/**
+	 * Create the frame.
+	 */
+	public MenuMoniteur(int id) {
+		
+		monIdMoniteur = id;
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setBounds(100, 100, 600, 400);
+		contentPane = new JPanel();
+		contentPane.setBackground(Color.GRAY);
+		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+		setContentPane(contentPane);
+		
+		btnModifAccreditation = new JButton("Modifier mes accr\u00E9ditations");
+		
+		btnModifProfil = new JButton("Modifier mon Profil");
+		
+		btnDeconnexion = new JButton("D\u00E9connexion");
+		GroupLayout gl_contentPane = new GroupLayout(contentPane);
+		gl_contentPane.setHorizontalGroup(
+			gl_contentPane.createParallelGroup(Alignment.TRAILING)
+				.addGroup(gl_contentPane.createSequentialGroup()
+					.addComponent(btnModifAccreditation)
+					.addPreferredGap(ComponentPlacement.RELATED, 189, Short.MAX_VALUE)
+					.addComponent(btnModifProfil)
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addComponent(btnDeconnexion))
+		);
+		gl_contentPane.setVerticalGroup(
+			gl_contentPane.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_contentPane.createSequentialGroup()
+					.addGroup(gl_contentPane.createParallelGroup(Alignment.BASELINE)
+						.addComponent(btnModifAccreditation)
+						.addComponent(btnDeconnexion)
+						.addComponent(btnModifProfil))
+					.addContainerGap(302, Short.MAX_VALUE))
+		);
+		contentPane.setLayout(gl_contentPane);
+		
+		this.setVisible(true);
+	}
+	public void actionPerformed(ActionEvent arg0) {
+		if(arg0.getSource() == btnDeconnexion)
+		{
+			this.dispose();
+			Accueil fen = new Accueil();
+		}
+		if(arg0.getSource() == btnModifProfil)
+		{
+			this.dispose();
+			ModifProfil fen = new ModifProfil(monIdClient);
+		}
+	}
+}

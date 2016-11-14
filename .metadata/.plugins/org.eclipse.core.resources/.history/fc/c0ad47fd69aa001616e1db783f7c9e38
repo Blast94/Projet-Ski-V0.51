@@ -1,0 +1,75 @@
+package Be.Rochez.Classes;
+
+public class Cours {
+	int id;
+	String sport;
+	String categorieAge;
+	String niveau;
+	int prix;
+	int eleveMinimum;
+	int eleveMaximum;
+	int ageMinimum;
+	public Cours()
+	{
+		
+	}
+	public Cours(int id, String sport, String categorieAge, String niveau)
+	{
+		this.id = id;
+		this.sport = sport;
+		this.niveau = niveau;
+	}
+	public Cours(int id, String sport, String categorieAge, String niveau, int prix, int eleveMinimum, int eleveMaximum, int ageMinimum)
+	{
+		this.id = id;
+		this.sport = sport;
+		this.categorieAge = categorieAge;
+		this.niveau = niveau;
+		this.prix = prix;
+		this.eleveMinimum = eleveMinimum;
+		this.eleveMaximum = eleveMaximum;
+		this.ageMinimum = ageMinimum;
+	}
+	public String GetSport() {
+		return this.sport;
+	}
+	public void SetSport(String sport) {
+		this.sport = sport;
+	}
+	public String GetCategorieAge() {
+		return this.categorieAge;
+	}
+	public void SetCategorieAge(String categorieAge) {
+		this.categorieAge = categorieAge;
+	}
+	public String GetNiveau() {
+		return this.niveau;
+	}
+	public void SetNiveau(String niveau) {
+		this.niveau = niveau;
+	}
+	public int GetPrix() {
+		return this.prix;
+	}
+	public void SetPrix(int prix) {
+		this.prix = prix;
+	}
+	public int GetEleveMinimum() {
+		return thiseleveMinimum;
+	}
+	public void SetEleveMinimum(int eleveMinimum) {
+		this.eleveMinimum = eleveMinimum;
+	}
+	public int GetEleveMaximum() {
+		return eleveMaximum;
+	}
+	public void SetEleveMaximum(int eleveMaximum) {
+		this.eleveMaximum = eleveMaximum;
+	}
+	public int GetAgeMinimum() {
+		return ageMinimum;
+	}
+	public void SetAgeMinimum(int ageMinimum) {
+		this.ageMinimum = ageMinimum;
+	}
+}

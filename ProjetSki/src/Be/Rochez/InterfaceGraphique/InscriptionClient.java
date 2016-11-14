@@ -45,10 +45,11 @@ public class InscriptionClient extends JFrame implements ActionListener{
 	private JButton btnValider;
 	private JButton btnRetour;
 	private JPasswordField passwordField;
-	
+	private JLabel lblErreur;
 	
 	private Client monClient;
 	private ClientDAO c;
+	
 
 	/**
 	 * Create the frame.
@@ -116,42 +117,51 @@ public class InscriptionClient extends JFrame implements ActionListener{
 		lblNewLabel_1.setFont(new Font("Yu Gothic UI", Font.BOLD, 12));
 		
 		passwordField = new JPasswordField();
+		
+		lblErreur = new JLabel("");
+		lblErreur.setHorizontalAlignment(SwingConstants.CENTER);
+		lblErreur.setForeground(Color.ORANGE);
+		lblErreur.setFont(new Font("Yu Gothic UI", Font.BOLD, 13));
 		GroupLayout gl_contentPane = new GroupLayout(contentPane);
 		gl_contentPane.setHorizontalGroup(
-			gl_contentPane.createParallelGroup(Alignment.LEADING)
+			gl_contentPane.createParallelGroup(Alignment.TRAILING)
 				.addGroup(gl_contentPane.createSequentialGroup()
-					.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING, false)
+					.addGroup(gl_contentPane.createParallelGroup(Alignment.TRAILING, false)
 						.addGroup(gl_contentPane.createSequentialGroup()
-							.addGap(107)
-							.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
-								.addComponent(lblNom, GroupLayout.PREFERRED_SIZE, 186, GroupLayout.PREFERRED_SIZE)
-								.addGroup(gl_contentPane.createSequentialGroup()
-									.addComponent(lblDateNaissance, GroupLayout.PREFERRED_SIZE, 115, GroupLayout.PREFERRED_SIZE)
-									.addPreferredGap(ComponentPlacement.UNRELATED)
-									.addComponent(lblNewLabel_1))
-								.addComponent(lblPrenom)
-								.addComponent(lblPassword, GroupLayout.PREFERRED_SIZE, 68, GroupLayout.PREFERRED_SIZE)
-								.addComponent(lblPseudo, GroupLayout.PREFERRED_SIZE, 122, GroupLayout.PREFERRED_SIZE)
-								.addComponent(lblCompteBancaire, GroupLayout.PREFERRED_SIZE, 183, GroupLayout.PREFERRED_SIZE))
-							.addGap(6)
-							.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING, false)
-								.addComponent(txtCompteBancaire)
-								.addComponent(txtDateNaissance)
-								.addComponent(txtPrenom)
-								.addComponent(txtNom)
-								.addComponent(passwordField)
-								.addComponent(txtPseudo, GroupLayout.DEFAULT_SIZE, 206, Short.MAX_VALUE))
-							.addGap(64))
-						.addGroup(gl_contentPane.createSequentialGroup()
-							.addGap(252)
-							.addComponent(lblNewLabel))
-						.addGroup(Alignment.TRAILING, gl_contentPane.createSequentialGroup()
 							.addGap(64)
 							.addComponent(btnRetour)
 							.addPreferredGap(ComponentPlacement.RELATED, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
 							.addComponent(btnValider)
-							.addGap(73)))
-					.addContainerGap(64, Short.MAX_VALUE))
+							.addGap(73))
+						.addGroup(gl_contentPane.createSequentialGroup()
+							.addGap(107)
+							.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
+								.addComponent(lblErreur, GroupLayout.PREFERRED_SIZE, 419, GroupLayout.PREFERRED_SIZE)
+								.addGroup(gl_contentPane.createSequentialGroup()
+									.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
+										.addComponent(lblNom, GroupLayout.PREFERRED_SIZE, 186, GroupLayout.PREFERRED_SIZE)
+										.addGroup(gl_contentPane.createSequentialGroup()
+											.addComponent(lblDateNaissance, GroupLayout.PREFERRED_SIZE, 115, GroupLayout.PREFERRED_SIZE)
+											.addPreferredGap(ComponentPlacement.UNRELATED)
+											.addComponent(lblNewLabel_1))
+										.addComponent(lblPrenom)
+										.addComponent(lblPassword, GroupLayout.PREFERRED_SIZE, 68, GroupLayout.PREFERRED_SIZE)
+										.addComponent(lblPseudo, GroupLayout.PREFERRED_SIZE, 122, GroupLayout.PREFERRED_SIZE)
+										.addComponent(lblCompteBancaire, GroupLayout.PREFERRED_SIZE, 183, GroupLayout.PREFERRED_SIZE))
+									.addGap(6)
+									.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING, false)
+										.addComponent(txtCompteBancaire)
+										.addComponent(txtDateNaissance)
+										.addComponent(txtPrenom)
+										.addComponent(txtNom)
+										.addComponent(passwordField)
+										.addComponent(txtPseudo, GroupLayout.DEFAULT_SIZE, 206, Short.MAX_VALUE))))
+							.addGap(64)))
+					.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+				.addGroup(gl_contentPane.createSequentialGroup()
+					.addContainerGap(288, Short.MAX_VALUE)
+					.addComponent(lblNewLabel)
+					.addGap(230))
 		);
 		gl_contentPane.setVerticalGroup(
 			gl_contentPane.createParallelGroup(Alignment.LEADING)
@@ -183,7 +193,9 @@ public class InscriptionClient extends JFrame implements ActionListener{
 					.addGroup(gl_contentPane.createParallelGroup(Alignment.BASELINE)
 						.addComponent(txtCompteBancaire, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
 						.addComponent(lblCompteBancaire, GroupLayout.PREFERRED_SIZE, 19, GroupLayout.PREFERRED_SIZE))
-					.addGap(83)
+					.addGap(18)
+					.addComponent(lblErreur)
+					.addGap(51)
 					.addGroup(gl_contentPane.createParallelGroup(Alignment.BASELINE)
 						.addComponent(btnValider)
 						.addComponent(btnRetour))
@@ -203,22 +215,43 @@ public class InscriptionClient extends JFrame implements ActionListener{
 		}
 		if(arg0.getSource() == btnValider)
 		{
-			if(!Verification.IsNumeric(txtCompteBancaire.getText()))
+			c = new ClientDAO(ConnexionDAO.getInstance());
+			if(!txtNom.getText().equals("") && !txtPrenom.getText().equals("") && !txtDateNaissance.getText().equals("") && !txtPseudo.getText().equals("") && !passwordField.getText().equals("") && !txtCompteBancaire.getText().equals(""))
 			{
 				
-				System.out.println("le champs compte bancaire est mal saisi");
-				
+				if(c.TestPseudo(txtPseudo.getText().trim()))
+				{
+					lblErreur.setText("Ce login existe déja. Choissisez en un autre !");
+				}
+				else if(!Verification.IsString(txtNom.getText().trim()))
+				{
+					lblErreur.setText("Erreur dans la saisie du nom !");
+				}
+				else if(!Verification.IsString(txtPrenom.getText().trim()))
+				{
+					lblErreur.setText("Erreur dans la saisie du prenom !");
+				}
+				else if(!Verification.IsDate(txtDateNaissance.getText().trim()))
+				{
+					lblErreur.setText("Erreur dans la saisie de la date !");
+				}
+				else if(!Verification.IsNumeric(txtCompteBancaire.getText().trim()))
+				{
+					lblErreur.setText("Erreur dans la saisie du compte Bancaire !");
+				}
+				else
+				{
+					monClient = new Client(txtNom.getText().trim(), txtPrenom.getText().trim(), txtDateNaissance.getText(), txtPseudo.getText().trim(), passwordField.getText(), Integer.parseInt(txtCompteBancaire.getText().trim()));
+					c.create(monClient);
+					System.out.println("l'ajout s'est bien déroulé");
+					this.dispose();
+			        Accueil fen = new Accueil();
+				}
 			}
 			else
 			{
-				c = new ClientDAO(ConnexionDAO.getInstance());
-				monClient = new Client(txtNom.getText().trim(), txtPrenom.getText().trim(), txtDateNaissance.getText(), txtPseudo.getText().trim(), passwordField.getText(), Integer.parseInt(txtCompteBancaire.getText().trim()));
-				c.create(monClient);
-				System.out.println("l'ajout s'est bien déroulé");
-				this.dispose();
-		        Accueil fen = new Accueil();
+				lblErreur.setText("Un ou plusieurs champs est vide. Vérifiez vos saisies !");
 			}
-			
 		}
 	} 
 }

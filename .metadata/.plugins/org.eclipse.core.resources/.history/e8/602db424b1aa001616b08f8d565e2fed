@@ -1,0 +1,259 @@
+package Be.Rochez.DAO;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+
+import javax.swing.DefaultListModel;
+import javax.swing.JList;
+
+import Be.Rochez.Classes.Client;
+import Be.Rochez.Classes.Cours;
+import Be.Rochez.Classes.Moniteur;
+
+public class MoniteurDAO extends DAO<Moniteur>{
+	public MoniteurDAO(Connection conn) {
+	    super(conn);
+	  }
+	  public boolean create(Moniteur obj) {
+		try
+		{
+			if(!RechercheMoniteur(obj))
+			{
+				int id = -1;
+				if(!RecherchePersonne(obj))
+				{
+					//Ajout dans la table Personne
+					String query = "INSERT INTO Personne (Nom, Prenom, DateNaissance) VALUES (\"" + obj.GetNom() + "\", \"" + obj.GetPrenom() + "\", \"" + obj.GetDateNaissance() + "\")"; 
+					PreparedStatement s = this.connect.prepareStatement(query);
+					s.execute();
+				}
+				//Recherche de l'ID
+				ResultSet result = this.connect.createStatement(
+						  ResultSet.TYPE_SCROLL_INSENSITIVE,
+						  ResultSet.CONCUR_READ_ONLY).executeQuery("SELECT ID FROM Personne where nom = \"" + obj.GetNom() + "\" and prenom = \"" + obj.GetPrenom() + "\" and DateNaissance = \""+ obj.GetDateNaissance() + "\"");
+				if(result.first())
+				{
+					id = result.getInt("ID");	
+				}
+				if(id == -1)
+				{
+					System.out.println("Erreur lors de l'ajout du moniteur");
+					return false;
+				}
+				else
+				{
+					//Ajout dans la table Moniteur
+					String query2 = "INSERT INTO Moniteur (PersonneID, Login, Password, Salaire) VALUES (" + id + "," + obj.GetSalaire() + ")";
+					PreparedStatement s2 = this.connect.prepareStatement(query2);
+					s2.execute();
+					System.out.println("L'ajout s'est effectué correctement");
+					return true;
+				}	
+			}
+			else
+			{
+				System.out.println("Le moniteur que vous tentez d'ajouter existe déja");
+				return false;
+			}
+		}
+		catch(SQLException e)
+		{
+			System.out.println("Erreur d'ajout dans la base de données");
+			return false;
+		}  
+	  }
+	  public boolean delete(Moniteur obj) {
+	    return false;
+	  }
+	  //// A régler :
+	  public Moniteur find(int id)
+	  {
+		  return null;
+	  }
+	  ////
+	  public boolean update(Moniteur obj) {
+		  try
+		  {
+			  int idPersonne = -1;
+			  //Retrouver L'ID de la personne associée au client
+			  ResultSet result = this.connect.createStatement(
+					  ResultSet.TYPE_SCROLL_INSENSITIVE,
+					  ResultSet.CONCUR_READ_ONLY).executeQuery("Select PersonneID FROM Moniteur WHERE ID = " + obj.GetId());
+			if(result.first())
+			{
+				idPersonne = result.getInt("PersonneID");	
+			}
+			if(idPersonne != -1)
+			{
+				String query = "UPDATE Personne SET Nom = \"" +  obj.GetNom() + "\", Prenom = \"" + obj.GetPrenom() + " \", DateNaissance = \"" + obj.GetDateNaissance() + "\" WHERE ID = " + idPersonne;
+				PreparedStatement s = this.connect.prepareStatement(query);
+				s.execute();
+				query = "UPDATE Moniteur SET Login = \"" + obj.GetLogin() + "\", Password = \"" + obj.GetPassword() + "\" WHERE ID = " + obj.GetId();
+				s = this.connect.prepareStatement(query);
+				s.execute();
+			}
+			  
+		  }
+		  catch(SQLException e)
+		  {
+			  
+		  }
+	    return false;
+	  }
+	  public boolean RechercheMoniteur(Moniteur obj)
+	  {   
+		  try {
+			  ResultSet result = this.connect.createStatement(
+					  ResultSet.TYPE_SCROLL_INSENSITIVE,
+					  ResultSet.CONCUR_READ_ONLY).executeQuery("SELECT * FROM Moniteur M INNER JOIN Personne P ON M.PersonneID = P.ID WHERE Nom = \"" + obj.GetNom() + "\" and Prenom = \"" + obj.GetPrenom() + "\" and DateNaissance = \"" + obj.GetDateNaissance() + "\"");
+			  if(result.first())
+				 return true;
+			  else
+				  return false;
+		  } 
+		  catch (SQLException e) {
+			  e.printStackTrace();
+			  return false;
+		  } 
+	  }
+	  public boolean RecherchePersonne(Moniteur obj)
+	  {
+		  try {
+			  ResultSet result = this.connect.createStatement(
+					  ResultSet.TYPE_SCROLL_INSENSITIVE,
+					  ResultSet.CONCUR_READ_ONLY).executeQuery("SELECT * FROM Personne WHERE Nom = \"" + obj.GetNom() + "\" and Prenom = \"" + obj.GetPrenom() + "\" and DateNaissance = \"" + obj.GetDateNaissance() + "\"");
+			  if(result.first())
+				 return true;
+			  else
+				  return false;
+		  } 
+		  catch (SQLException e) {
+			  e.printStackTrace();
+			  return false;
+		  } 
+	  } 
+	  public int ConnexionMoniteur(String login, String password)
+	  {
+		  int id;
+		  try {
+			  ResultSet result = this.connect.createStatement(
+					  ResultSet.TYPE_SCROLL_INSENSITIVE,
+					  ResultSet.CONCUR_READ_ONLY).executeQuery("SELECT * FROM Moniteur Where Login = \"" + login + "\"");
+			  if(result.first())
+			  {
+				  if(result.getString("Password").equals(password))
+				  {
+					  id = result.getInt("ID");
+					  return id;
+				  }
+				  else
+				  {
+					  return -1;
+				  }	         
+			  }
+			  else
+			  {
+				  return -2;
+			  }
+		  } 
+		  catch (SQLException e) {
+			  e.printStackTrace();
+			  return -3;
+		  }
+	  }
+	  public Moniteur TrouverMoniteur(int id)
+	  {
+		  Moniteur monMoniteur = new Moniteur();
+		  try {
+			  ResultSet result = this.connect.createStatement(
+					  ResultSet.TYPE_SCROLL_INSENSITIVE,
+					  ResultSet.CONCUR_READ_ONLY).executeQuery("SELECT * FROM Moniteur M INNER JOIN Personne P ON M.PersonneID = P.ID Where ID = " + id );
+			  if(result.first())
+			  {
+				  monMoniteur = new Moniteur(
+						  result.getString("Nom"),
+						  result.getString("Prenom"),
+						  result.getString("DateNaissance"),
+						  result.getString("Login"),
+						  result.getString("Password"),
+						  result.getInt("Salaire")
+						  );
+			  }
+		  }
+		  catch (SQLException e) {
+			  e.printStackTrace();
+		  }
+		  return monMoniteur;
+	  }
+	  public boolean AjoutAccreditation(int idMoniteur, int idCours)
+	  {
+		  try
+		  {
+			//Ajout dans la table Moniteur
+				String query = "INSERT INTO Accreditation (MoniteurID, CoursID) VALUES (" + idMoniteur + "," + idCours + ")";
+				PreparedStatement s2 = this.connect.prepareStatement(query);
+				s2.execute();
+				System.out.println("L'ajout s'est effectué correctement");
+				return true;
+		  }
+		  catch(SQLException e)
+		  {
+			  return false;
+		  }  
+	  }
+	  public ArrayList<Cours> AccreditationProf(int idMoniteur)
+	  {
+		  System.out.println("lancement du chargement de la liste");
+		  ArrayList<Cours> mesAccreditations = new ArrayList<Cours>();
+		  Cours monCours = new Cours();
+		  try {
+			  ResultSet result = this.connect.createStatement(
+					  ResultSet.TYPE_SCROLL_INSENSITIVE,
+					  ResultSet.CONCUR_READ_ONLY).executeQuery("SELECT C.ID, Sport, CategorieAge,Niveau FROM Moniteur M INNER JOIN Accreditation A ON M.ID = A.MoniteurID INNER JOIN Cours C ON A.CoursID = C.ID Where ID = " + idMoniteur );
+			 if(result.first())
+			 {
+				 while(!result.isAfterLast())
+				 {
+					 monCours = new Cours(
+							 result.getInt("ID"),
+							 result.getString("Sport"),
+							 result.getString("CategorieAge"),
+							 result.getString("Niveau")
+							 );
+					 mesAccreditations.add(monCours);
+					 result.next(); 
+				 }
+			 }
+			 return mesAccreditations;
+		  }
+		  catch (SQLException e) {
+			  e.printStackTrace();
+			  return null;
+		  }
+	  }
+	  public boolean AccreditationExistante(int idMoniteur, int idCours)
+	  {
+		  try
+		  {
+			  ResultSet result = this.connect.createStatement(
+					  ResultSet.TYPE_SCROLL_INSENSITIVE,
+					  ResultSet.CONCUR_READ_ONLY).executeQuery("SELECT * FROM Accreditation WHERE MoniteurID = " + idMoniteur + " AND CoursID = " + idCours); 
+			  if(result.first())
+			  {
+				  return true;
+			  }
+			  else
+			  {
+				  return false;
+			  }
+ 
+		  }
+		  catch(SQLException e)
+		  {
+			  return false;
+		  }
+	  }
+}

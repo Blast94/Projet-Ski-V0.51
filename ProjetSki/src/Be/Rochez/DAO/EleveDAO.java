@@ -5,6 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import Be.Rochez.Classes.Client;
 import Be.Rochez.Classes.Eleve;
 
 public class EleveDAO extends DAO<Eleve> {
@@ -81,6 +82,12 @@ public class EleveDAO extends DAO<Eleve> {
 			  return false;
 		  } 
 	  }
+	  //// A régler :
+	  public Eleve find(int id)
+	  {
+		  return null;
+	  }
+	  ////
 	  public boolean RecherchePersonne(Eleve obj)
 	  {
 		  try {

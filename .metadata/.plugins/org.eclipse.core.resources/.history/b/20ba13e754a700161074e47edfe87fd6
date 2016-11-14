@@ -1,0 +1,27 @@
+package Be.Rochez.Classes;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+
+public class Verification {
+	ClientDAO c = new ClientDAO();
+	public static boolean IsNumeric(String Nombre) {
+        try {
+        	Integer.parseInt(Nombre);
+            return true;
+        }
+        catch(Exception ex){
+            return false;
+        }
+    }
+	public boolean validateDate(String date) {
+	    SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+	    try {
+	        sdf.parse(date);
+	        return true;
+	    }
+	    catch(ParseException ex) {
+	        return false;
+	    }
+	}
+}

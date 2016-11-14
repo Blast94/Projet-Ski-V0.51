@@ -63,8 +63,40 @@ public class ClientDAO extends DAO<Client>{
 	    return false;
 	  }
 	  public boolean update(Client obj) {
+		  try
+		  {
+			  int idPersonne = -1;
+			  //Retrouver L'ID de la personne associée au client
+			  ResultSet result = this.connect.createStatement(
+					  ResultSet.TYPE_SCROLL_INSENSITIVE,
+					  ResultSet.CONCUR_READ_ONLY).executeQuery("Select PersonneID FROM Client WHERE ID = " + obj.GetId());
+			if(result.first())
+			{
+				idPersonne = result.getInt("PersonneID");	
+			}
+			if(idPersonne != -1)
+			{
+				String query = "UPDATE Personne SET Nom = \"" +  obj.GetNom() + "\", Prenom = \"" + obj.GetPrenom() + " \", DateNaissance = \"" + obj.GetDateNaissance() + "\" WHERE ID = " + idPersonne;
+				PreparedStatement s = this.connect.prepareStatement(query);
+				s.execute();
+				query = "UPDATE Client SET Login = \"" + obj.GetLogin() + "\", Password = \"" + obj.GetPassword() + "\", CompteBancaire = " + obj.GetCompteBancaire() + " WHERE ID = " + obj.GetId();
+				s = this.connect.prepareStatement(query);
+				s.execute();
+			}
+			  
+		  }
+		  catch(SQLException e)
+		  {
+			  
+		  }
 	    return false;
 	  }
+	  //// A régler :
+	  public Client find(int id)
+	  {
+		  return null;
+	  }
+	  ////
 	  public boolean RechercheClient(Client obj)
 	  {   
 		  try {
@@ -129,6 +161,26 @@ public class ClientDAO extends DAO<Client>{
 			  return -3;
 		  }
 	  }
+	  public boolean TestPseudo(String pseudo)
+	  {
+		  try {
+			  ResultSet result = this.connect.createStatement(
+					  ResultSet.TYPE_SCROLL_INSENSITIVE,
+					  ResultSet.CONCUR_READ_ONLY).executeQuery("SELECT * FROM Client Where Login = \"" + pseudo + "\"");
+			  if(result.first())
+			  {
+				  return true;	         
+			  }
+			  else
+			  {
+				  return false;
+			  }
+		  } 
+		  catch (SQLException e) {
+			  e.printStackTrace();
+			  return false;
+		  }
+	  }
 	  public Client TrouverClient(int id)
 	  {
 		  Client monClient = new Client();
@@ -152,7 +204,7 @@ public class ClientDAO extends DAO<Client>{
 			  e.printStackTrace();
 		  }
 		  return monClient;
-	  }  
+	  }
 }
 
 

@@ -1,0 +1,48 @@
+package Be.Rochez.Classes;
+
+public class Moniteur extends Personne{
+	int id;
+	String login;
+	String password;
+	int salaire;
+	public Moniteur(){}
+	public Moniteur(String nom, String prenom, String dateNaissance, String login, String password, int salaire)
+	{
+		super(nom, prenom, dateNaissance);
+		this.login = login;
+		this.password = password;
+		this.salaire = salaire;
+	}
+	public Moniteur(int id, String nom, String prenom, String dateNaissance, String login, String password)
+	{
+		super(nom, prenom, dateNaissance);
+		this.id = id;
+		this.login = login;
+		this.password = password;
+	}
+	public String GetLogin()
+	{
+		return this.login;
+	}
+	public void SetLogin(String login)
+	{
+		this.login = login;
+	}
+	public String GetPassword()
+	{
+		return this.password;
+	}
+	public void SetPassword(String password)
+	{
+		this.password = password;
+	}
+	public int GetSalaire()
+	{
+		return this.salaire;
+	}
+	public void SetSalaire(int salaire)
+	{
+		this.salaire = salaire;
+	}
+	
+}

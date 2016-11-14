@@ -1,0 +1,34 @@
+package Be.Rochez.Classes;
+
+public class Cours {
+	int id;
+	String sport;
+	String categorieAge;
+	String niveau;
+	int prix;
+	int eleveMinimum;
+	int eleveMaximum;
+	int typeCours;
+	int ageMinimum;
+	public Cours()
+	{
+		
+	}
+	public Cours(int id, String sport, String categorieAge, String niveau)
+	{
+		this.id = id;
+		this.sport = sport;
+		this.niveau = niveau;
+	}
+	public Cours(int id, String sport, String categorieAge, String niveau, int prix, int eleveMinimum, int eleveMaximum, int ageMinimum)
+	{
+		this.id = id;
+		this.sport = sport;
+		this.categorieAge = categorieAge;
+		this.niveau = niveau;
+		this.prix = prix;
+		this.eleveMinimum = eleveMinimum;
+		this.eleveMaximum = eleveMaximum;
+		this.ageMinimum = ageMinimum;
+	}
+}

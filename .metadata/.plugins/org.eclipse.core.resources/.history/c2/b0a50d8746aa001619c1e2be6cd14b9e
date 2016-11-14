@@ -1,0 +1,52 @@
+package Be.Rochez.InterfaceGraphique;
+
+import java.awt.BorderLayout;
+import java.awt.EventQueue;
+import java.awt.event.ActionListener;
+
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JPasswordField;
+import javax.swing.JTextField;
+import javax.swing.border.EmptyBorder;
+
+import Be.Rochez.Classes.Client;
+import Be.Rochez.DAO.ClientDAO;
+
+public class ModifProfilMoniteur extends JFrame implements ActionListener{
+
+	private JPanel contentPane;
+	private JPanel contentPane;
+	private JTextField txtPseudo;
+	private JLabel lblPassword;
+	private JLabel lblNom;
+	private JLabel lblPrenom;
+	private JLabel lblDateNaissance;
+	private JLabel lblCompteBancaire;
+	private JTextField txtNom;
+	private JTextField txtPrenom;
+	private JTextField txtDateNaissance;
+	private JTextField txtCompteBancaire;
+	private JButton btnValider;
+	private JButton btnRetour;
+	private JPasswordField passwordField;
+	private JLabel lblErreur;
+	
+	private Client monClient;
+	private ClientDAO c;
+	private int monIdClient;
+	/**
+	 * Create the frame.
+	 */
+	public ModifProfilMoniteur() {
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setBounds(100, 100, 450, 300);
+		contentPane = new JPanel();
+		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+		contentPane.setLayout(new BorderLayout(0, 0));
+		setContentPane(contentPane);
+	}
+
+}
