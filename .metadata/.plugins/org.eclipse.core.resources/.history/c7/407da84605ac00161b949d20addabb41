@@ -1,0 +1,37 @@
+package Be.Rochez.DAO;
+
+import Be.Rochez.Classes.Semaine;
+
+public class SemaineDAO extends DAO<Semaine> {
+	public Semaine(Connection conn) {
+	    super(conn);
+	  }
+	  public boolean create(Semaine obj) {
+		return false;
+	  }
+	  public boolean delete(Semaine obj) {
+		  return false;
+	  }
+	  public boolean update(Semaine obj) {
+	    return false;
+	  }
+	  public TypeCours find(int id)
+	  {
+		  TypeCours typeCours = new TypeCours();      
+		  try {
+			  ResultSet result = this.connect.createStatement(
+					  ResultSet.TYPE_SCROLL_INSENSITIVE,
+					  ResultSet.CONCUR_READ_ONLY).executeQuery("SELECT * FROM TypeCours WHERE ID = " + id);
+			  if(result.first())
+				  typeCours = new TypeCours(
+						  result.getInt("ID"),
+						  result.getString("Denomination")
+						  );         
+		  } 
+		  catch (SQLException e) {
+			  e.printStackTrace();
+		  }
+		  return typeCours;
+	  }
+	  ////
+}

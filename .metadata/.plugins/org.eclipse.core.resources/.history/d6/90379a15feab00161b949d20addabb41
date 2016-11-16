@@ -1,0 +1,31 @@
+package Be.Rochez.Classes;
+
+public class TypeCours {
+	int id;
+	String denomination;
+	public TypeCours()
+	{
+		
+	}
+	public TypeCours(String denomination)
+	{
+		this.denomination = denomination;
+	}
+	public TypeCours(int id, String denomination)
+	{
+		this.id;
+		this.denomination = denomination;
+	}
+	public int Getid()
+	{
+		return this.id;
+	}
+	public String GetDenomination()
+	{
+		return this.denomination;
+	}
+	public void SetDenomination(String denomination)
+	{
+		this.denomination = denomination;
+	}
+}

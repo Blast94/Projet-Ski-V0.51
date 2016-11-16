@@ -1,0 +1,49 @@
+package Be.Rochez.DAO;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.util.Date;
+
+import Be.Rochez.Classes.Client;
+import Be.Rochez.Classes.Personne;
+
+public class PersonneDAO extends DAO<Personne> {
+	public PersonneDAO(Connection conn) {
+	    super(conn);
+	  }
+	  public boolean create(Personne obj) {
+		  
+			
+
+		try
+		{
+			String datee = "15/02/1994";
+			LocalDate dateee = LocalDate.parse(datee);
+			String query = "INSERT INTO PERSONNE (DateNaissance2) VALUES (" + dateee + ")"; 
+			PreparedStatement s = this.connect.prepareStatement(query);
+			s.execute();
+			return true;
+		}
+		catch(SQLException e)
+		{
+			System.out.println("Erreur insert");
+			return false;
+		}
+	  }
+	  public boolean delete(Personne obj) {
+		  return false;
+	  }
+	  public boolean update(Personne obj) {
+	    return false;
+	  }
+	  //// A régler :
+	  public Personne find(int id)
+	  {
+		  return null;
+	  }
+	  ////
+}

@@ -13,6 +13,12 @@ public class Cours {
 	{
 		
 	}
+	public Cours(String sport, String categorieAge, String niveau)
+	{
+		this.sport = sport;
+		this.categorieAge = categorieAge;
+		this.niveau = niveau;
+	}
 	public Cours(int id, String sport, String categorieAge, String niveau)
 	{
 		this.id = id;
@@ -79,7 +85,7 @@ public class Cours {
 	}
 	@Override
 	public String toString() {
-		return  id + ". " + sport + " " + categorieAge + " " + niveau;
+		return  sport + " " + categorieAge + " " + niveau;
 	}
 	
 }

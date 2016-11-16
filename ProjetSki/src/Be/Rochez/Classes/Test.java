@@ -1,7 +1,12 @@
 package Be.Rochez.Classes;
 
+import java.sql.Date;
+
 import Be.Rochez.DAO.ConnexionDAO;
+import Be.Rochez.DAO.HoraireDAO;
+import Be.Rochez.DAO.PersonneDAO;
 import Be.Rochez.InterfaceGraphique.Accueil;
+import Be.Rochez.Singleton.ListeHoraire;
 
 public class Test {
 
@@ -9,6 +14,10 @@ public class Test {
 		// TODO Auto-generated method stub
 		System.out.println(ConnexionDAO.getInstance());
 		Accueil page1 = new Accueil();
+		HoraireDAO d = new HoraireDAO(ConnexionDAO.getInstance());
+		Horaire h = d.find(3);
+		System.out.println(h.toString());
+		
 	}
 
 }

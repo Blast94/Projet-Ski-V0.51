@@ -1,0 +1,27 @@
+package Be.Rochez.DAO;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+
+import Be.Rochez.Classes.TypeCours;
+
+public class TypeCoursDAO extends DAO<TypeCours> {
+	public TypeCoursDAO(Connection conn) {
+	    super(conn);
+	  }
+	  public boolean create(TypeCours obj) {
+		return false;
+	  }
+	  public boolean delete(TypeCours obj) {
+		  return false;
+	  }
+	  public boolean update(TypeCours obj) {
+	    return false;
+	  }
+	  public TypeCours find(int id)
+	  {
+		  return null;
+	  }
+	  ////
+}

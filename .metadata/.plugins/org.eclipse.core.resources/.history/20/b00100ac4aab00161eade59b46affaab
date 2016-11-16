@@ -1,0 +1,43 @@
+package Be.Rochez.Classes;
+
+import java.util.Date;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+
+public class DateUtils{
+
+	public static Calendar resetCalendarTime(Calendar calendar){
+		calendar.set(Calendar.HOUR_OF_DAY, 0)
+		calendar.set(Calendar.MINUTE, 0)
+		calendar.set(Calendar.SECOND, 0)
+		calendar.set(Calendar.MILLISECOND, 0)
+		return calendar;
+	}
+
+	public static Date parseDate(String date, String format) {
+		Date result = null;
+		try {
+			SimpleDateFormat formatter = new SimpleDateFormat(format);
+			result = formatter.parse(date);
+			return result;
+		} catch (RuntimeException e) {
+			return null;
+		}
+		catch(ParseException e)
+		{
+			return null;
+		}
+	}
+
+	public static Calendar parseCalendar(String date, String format) {
+		Calendar calendar = Calendar.getInstance();
+		calendar = resetCalendarTime(calendar)
+		try {
+			calendar.setTime(parseDate(date, format));
+			return calendar;
+		} catch (RuntimeException e) {
+			return null;
+		}
+	}
+
+}

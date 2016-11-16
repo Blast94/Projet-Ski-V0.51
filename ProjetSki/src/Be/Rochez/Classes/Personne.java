@@ -46,5 +46,9 @@ public class Personne {
 	{
 		this.dateNaissance = dateNaissance;
 	}
+	@Override
+	public String toString() {
+		return nom + " " + prenom;
+	}
 
 }

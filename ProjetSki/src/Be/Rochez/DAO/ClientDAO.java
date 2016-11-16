@@ -20,7 +20,7 @@ public class ClientDAO extends DAO<Client>{
 				if(!RecherchePersonne(obj))
 				{
 					//Ajout dans la table Personne
-					String query = "INSERT INTO Personne (Nom, Prenom, DateNaissance) VALUES (\"" + obj.GetNom() + "\", \"" + obj.GetPrenom() + "\", \"" + obj.GetDateNaissance() + "\")"; 
+					String query = "INSERT INTO Personne (Nom, Prenom, DateNaissance) VALUES (\"" + obj.GetNom() + "\", \"" + obj.GetPrenom() + "\", TO_DATE(\"" + obj.GetDateNaissance() + "\", 'DD-MM-YYYY'))"; 
 					PreparedStatement s = this.connect.prepareStatement(query);
 					s.execute();
 				}

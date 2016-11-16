@@ -189,71 +189,32 @@ public class MoniteurDAO extends DAO<Moniteur>{
 		  }
 		  return monMoniteur;
 	  }
-	  public boolean AjoutAccreditation(int idMoniteur, int idCours)
+	  public ArrayList<Moniteur> MoniteurAccredite(int idCours)
 	  {
-		  try
-		  {
-			//Ajout dans la table Moniteur
-				String query = "INSERT INTO Accreditation (MoniteurID, CoursID) VALUES (" + idMoniteur + "," + idCours + ")";
-				PreparedStatement s2 = this.connect.prepareStatement(query);
-				s2.execute();
-				System.out.println("L'ajout s'est effectué correctement");
-				return true;
-		  }
-		  catch(SQLException e)
-		  {
-			  return false;
-		  }  
-	  }
-	  public ArrayList<Cours> AccreditationProf(int idMoniteur)
-	  {
-		  System.out.println("lancement du chargement de la liste");
-		  ArrayList<Cours> mesAccreditations = new ArrayList<Cours>();
-		  Cours monCours = new Cours();
+		  ArrayList<Moniteur> monTableauDeMoniteur = new ArrayList<Moniteur>();
+		  Moniteur monMoniteur = new Moniteur();
 		  try {
 			  ResultSet result = this.connect.createStatement(
 					  ResultSet.TYPE_SCROLL_INSENSITIVE,
-					  ResultSet.CONCUR_READ_ONLY).executeQuery("SELECT C.ID, Sport, CategorieAge,Niveau FROM Moniteur M INNER JOIN Accreditation A ON M.ID = A.MoniteurID INNER JOIN Cours C ON A.CoursID = C.ID Where ID = " + idMoniteur );
+					  ResultSet.CONCUR_READ_ONLY).executeQuery("SELECT M.ID, P.Nom, P.Prenom FROM Accreditation A INNER JOIN Moniteur M ON A.MoniteurID = M.ID INNER JOIN Personne P ON M.PersonneID = P.ID WHERE A.CoursID = " + idCours);
 			 if(result.first())
 			 {
 				 while(!result.isAfterLast())
 				 {
-					 monCours = new Cours(
+					 monMoniteur = new Moniteur(
 							 result.getInt("ID"),
-							 result.getString("Sport"),
-							 result.getString("CategorieAge"),
-							 result.getString("Niveau")
+							 result.getString("Nom"),
+							 result.getString("Prenom")
 							 );
-					 mesAccreditations.add(monCours);
+					 monTableauDeMoniteur.add(monMoniteur);
 					 result.next(); 
 				 }
 			 }
-			 return mesAccreditations;
+			 return monTableauDeMoniteur;
 		  }
 		  catch (SQLException e) {
 			  e.printStackTrace();
 			  return null;
-		  }
-	  }
-	  public boolean AccreditationExistante(int idMoniteur, int idCours)
-	  {
-		  try
-		  {
-			  ResultSet result = this.connect.createStatement(
-					  ResultSet.TYPE_SCROLL_INSENSITIVE,
-					  ResultSet.CONCUR_READ_ONLY).executeQuery("SELECT * FROM Accreditation WHERE MoniteurID = " + idMoniteur + " AND CoursID = " + idCours); 
-			  if(result.first())
-			  {
-				  return true;
-			  }
-			  else
-			  {
-				  return false;
-			  }
-		  }
-		  catch(SQLException e)
-		  {
-			  return false;
 		  }
 	  }
 }

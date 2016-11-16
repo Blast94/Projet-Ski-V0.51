@@ -1,5 +1,0 @@
-package Be.Rochez.DAO;
-
-public class DAO<T> {
-
-}

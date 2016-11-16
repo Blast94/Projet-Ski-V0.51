@@ -6,6 +6,12 @@ public class Moniteur extends Personne{
 	String password;
 	int salaire;
 	public Moniteur(){}
+	public Moniteur(int id, String nom, String prenom)
+	{
+		this.id = id;
+		this.nom = nom;
+		this.prenom = prenom;
+	}
 	public Moniteur(String nom, String prenom, String dateNaissance, String login, String password, int salaire)
 	{
 		super(nom, prenom, dateNaissance);
@@ -48,5 +54,10 @@ public class Moniteur extends Personne{
 	{
 		this.salaire = salaire;
 	}
+	@Override
+	public String toString() {
+		return id + super.toString();
+	}
+	
 	
 }

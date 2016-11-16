@@ -192,7 +192,7 @@ public class ModifProfilMoniteur extends JFrame implements ActionListener{
 		{
 			txtNom.setText(monMoniteur.GetNom());
 			txtPrenom.setText(monMoniteur.GetPrenom());
-			txtDateNaissance.setText(monMoniteur.GetDateNaissance());
+			//txtDateNaissance.setText(monMoniteur.GetDateNaissance());
 			txtPseudo.setText(monMoniteur.GetLogin());
 		}
 		catch(Exception e)

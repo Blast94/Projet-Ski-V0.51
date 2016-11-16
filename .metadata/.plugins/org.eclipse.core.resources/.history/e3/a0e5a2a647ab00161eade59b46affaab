@@ -1,0 +1,35 @@
+package Be.Rochez.Classes;
+
+import java.util.Date;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+
+import Be.Rochez.DAO.ConnexionDAO;
+import Be.Rochez.DAO.PersonneDAO;
+import Be.Rochez.InterfaceGraphique.Accueil;
+
+public class Test {
+
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+		System.out.println(ConnexionDAO.getInstance());
+		Accueil page1 = new Accueil();
+		PersonneDAO pa = new PersonneDAO(ConnexionDAO.getInstance());
+		Personne p = new Personne();
+		pa.create(p)
+		SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+        String dateInString = "07/06/2013";
+
+        try {
+        	
+            Date date = formatter.parse(dateInString);
+            System.out.println(date);
+            System.out.println(formatter.format(date));
+
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+	}
+
+}

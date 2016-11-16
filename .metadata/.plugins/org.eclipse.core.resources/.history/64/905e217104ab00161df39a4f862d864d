@@ -1,0 +1,6 @@
+package Be.Rochez.Classes;
+
+public class Accreditation {
+	int idMoniteur;
+	int idCours;
+}

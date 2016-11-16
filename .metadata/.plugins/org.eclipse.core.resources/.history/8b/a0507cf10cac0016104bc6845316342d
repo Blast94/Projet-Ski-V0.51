@@ -1,0 +1,34 @@
+package Be.Rochez.Singleton;
+
+import java.util.ArrayList;
+
+import Be.Rochez.Classes.Horaire;
+import Be.Rochez.DAO.DAO;
+import Be.Rochez.DAO.HoraireDAO;
+
+public class ListeHoraire {
+	private ArrayList<Horaire> listeSemaine = new ArrayList<Horaire>();
+	DAO<Horaire> horaireDAO = new HoraireDAO(ConnexionDAO.getInstance());
+    private static ListeSemaine _instance = null;
+    public ArrayList<Semaine> getListeSemaine() {
+		return listeSemaine;
+	}
+	public void setListeSemaine(ArrayList<Semaine> listeSemaine) {
+		this.listeSemaine = listeSemaine;
+	}
+    private ListeSemaine()
+    {	
+    	for(int id = 1 ; id < 23 ; id++)
+    	{
+        	listeSemaine.add(semaineDAO.find(id));
+    	}	
+    }
+    public static ListeSemaine Instance()
+    {
+        if (_instance == null)
+        {
+            _instance = new ListeSemaine();
+        }
+        return _instance;
+    }
+}

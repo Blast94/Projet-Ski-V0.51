@@ -1,0 +1,18 @@
+package Be.Rochez.Classes;
+
+import Be.Rochez.DAO.ConnexionDAO;
+import Be.Rochez.DAO.PersonneDAO;
+import Be.Rochez.InterfaceGraphique.Accueil;
+
+public class Test {
+
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+		System.out.println(ConnexionDAO.getInstance());
+		Accueil page1 = new Accueil();
+		Personne p = new Personne("Nom", "Prenom" , "15/02/1994");
+		PersonneDAO c = new PersonneDAO(ConnexionDAO.getInstance());
+		c.create(p);
+	}
+
+}

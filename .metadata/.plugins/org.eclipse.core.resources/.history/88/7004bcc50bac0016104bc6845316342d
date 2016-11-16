@@ -1,0 +1,20 @@
+package Be.Rochez.Classes;
+
+public class Horaire {
+	int id;
+	String heureDebut;
+	String heureFin;
+	int prixParticulier;
+	TypeCours typeCours;
+	public Horaire()
+	{
+		
+	}
+	public Horaire(int id, String heureDebut, String heureFin , TypeCours typeCours)
+	{
+		this.id = id;
+		this.heureDebut = heureDebut;
+		this.heureFin = heureFin;
+		this.typeCours = typeCours;
+	}
+}

@@ -1,0 +1,6 @@
+package Be.Rochez.Classes;
+
+public class Semaine {
+	String heureDebut;
+	String heureFin;
+}

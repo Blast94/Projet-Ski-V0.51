@@ -46,6 +46,23 @@ public class CoursDAO extends DAO<Cours> {
 		  }
 		  return cours;
 	  }
+	  public int RechercheIDCours(Cours obj)
+	  {
+		  int id = -1;
+		  try {
+			  ResultSet result = this.connect.createStatement(
+					  ResultSet.TYPE_SCROLL_INSENSITIVE,
+					  ResultSet.CONCUR_READ_ONLY).executeQuery("SELECT * FROM Cours WHERE Sport = \"" + obj.GetSport() + "\" AND CategorieAge = \"" + obj.GetCategorieAge() + "\" AND Niveau = \"" + obj.GetNiveau() + "\"");
+			  if(result.first())
+			  {
+				  id = result.getInt("ID");        
+			  }
+		  } 
+		  catch (SQLException e) {
+			  e.printStackTrace();
+		  }
+		  return  id;
+	  }
 	 
 }
 

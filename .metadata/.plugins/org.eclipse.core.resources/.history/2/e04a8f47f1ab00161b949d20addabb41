@@ -1,0 +1,13 @@
+package Be.Rochez.Classes;
+
+public class Semaine {
+	String dateDebut;
+	String dateFin;
+	String descriptif;
+	int congeScolaire;
+	public Semaine()
+	{
+		
+	}
+	public Semaine 
+}
