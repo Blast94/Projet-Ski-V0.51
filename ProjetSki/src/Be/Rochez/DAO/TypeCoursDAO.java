@@ -37,5 +37,22 @@ public class TypeCoursDAO extends DAO<TypeCours> {
 		  }
 		  return typeCours;
 	  }
-	  ////
+	  public TypeCours find(String denomination)
+	  {
+		  TypeCours typeCours = new TypeCours();      
+		  try {
+			  ResultSet result = this.connect.createStatement(
+					  ResultSet.TYPE_SCROLL_INSENSITIVE,
+					  ResultSet.CONCUR_READ_ONLY).executeQuery("SELECT * FROM TypeCours WHERE Denomination = \"" + denomination + "\"");
+			  if(result.first())
+				  typeCours = new TypeCours(
+						  result.getInt("ID"),
+						  result.getString("Denomination")
+						  );         
+		  } 
+		  catch (SQLException e) {
+			  e.printStackTrace();
+		  }
+		  return typeCours;
+	  }
 }

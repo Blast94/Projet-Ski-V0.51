@@ -1,0 +1,27 @@
+package Be.Rochez.Classes;
+
+public class AccreditationC {
+	Moniteur moniteur;
+	Cours cours;
+	public AccreditationC()
+	{
+		
+	}
+	public AccreditationC(Moniteur moniteur, Cours cours)
+	{
+		this.moniteur = moniteur;
+		this.cours = cours;
+	}
+	public Moniteur GetMoniteur()
+	{
+		return this.moniteur;
+	}
+	public void SetMoniteur(Moniteur moniteur)
+	{
+		this.moniteur = moniteur;
+	}
+	public int GetCours()
+	{
+		return this.Cours;
+	}
+}

@@ -2,20 +2,20 @@
 <section name="Workbench">
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog">
 		<item value="false" key="isRegEx"/>
-		<item value="comboBoxMoniteur" key="selection"/>
+		<item value="assurance" key="selection"/>
 		<item value="false" key="casesensitive"/>
 		<item value="false" key="incremental"/>
 		<item value="true" key="wrap"/>
 		<item value="false" key="wholeword"/>
 		<list key="findhistory">
-			<item value="comboboxMoniteur"/>
-			<item value="combobox"/>
-			<item value="addliste"/>
-			<item value="add"/>
-			<item value="Jlist"/>
+			<item value="Assurance"/>
+			<item value="this.setVisible"/>
+			<item value="Valider1"/>
+			<item value="mescours"/>
+			<item value="prix"/>
+			<item value="prixParticulier"/>
+			<item value="salaire"/>
 			<item value="lblErreur"/>
-			<item value="list"/>
-			<item value="scroll"/>
 		</list>
 		<list key="replacehistory">
 		</list>

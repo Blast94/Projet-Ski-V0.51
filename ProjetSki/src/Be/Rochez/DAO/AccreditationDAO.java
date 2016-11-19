@@ -16,7 +16,6 @@ public class AccreditationDAO extends DAO<AccreditationC> {
 	  public boolean create(AccreditationC obj) {
 		  try
 		  {
-			//Ajout dans la table Moniteur
 				String query = "INSERT INTO Accreditation (MoniteurID, CoursID) VALUES (" + obj.GetIdMoniteur() + "," + obj.GetIdCours() + ")";
 				PreparedStatement s2 = this.connect.prepareStatement(query);
 				s2.execute();

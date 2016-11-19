@@ -1,0 +1,73 @@
+package Be.Rochez.Classes;
+
+import java.time.LocalDate;
+import java.util.Date;
+
+public class Semaine {
+	int id;
+	Date dateDebut;
+	Date dateFin;
+	String descriptif;
+	int congeScolaire;
+	public Semaine()
+	{
+		
+	}
+	public Semaine(Date dateDebut, Date dateFin, String descriptif, int congeScolaire)
+	{
+		this.dateDebut = dateDebut;
+		this.dateFin = dateFin;
+		this.descriptif = descriptif;
+		this.congeScolaire = congeScolaire;
+	}
+	public Semaine(int id,Date dateDebut, Date dateFin, String descriptif, int congeScolaire)
+	{
+		this.id = id;
+		this.dateDebut = dateDebut;
+		this.dateFin = dateFin;
+		this.descriptif = descriptif;
+		this.congeScolaire = congeScolaire;
+	}
+	public int GetId()
+	{
+		return this.id;
+	}
+	public Date GetDateDebut() {
+		return this.dateDebut;
+	}
+	public void SetDateDebut(Date dateDebut) {
+		this.dateDebut = dateDebut;
+	}
+	public Date GetDateFin() {
+		return this.dateFin;
+	}
+	public void SetDateFin(Date dateFin) {
+		this.dateFin = dateFin;
+	}
+	public String GetDescriptif() {
+		return this.descriptif;
+	}
+	public void SetDescriptif(String descriptif) {
+		this.descriptif = descriptif;
+	}
+	public int GetCongeScolaire() {
+		return congeScolaire;
+	}
+	public void SetCongeScolaire(int congeScolaire) {
+		this.congeScolaire = congeScolaire;
+	}
+	@Override
+	public String toString() {
+		if(!this.descriptif.equals(""))
+		{
+			return "Du " + dateDebut.getDayOfMonth()+ "/" + dateDebut.getMonthValue() + "/" + dateDebut.getYear() + " au " + dateFin.getDayOfMonth()+ "/" + dateFin.getMonthValue() + "/" + dateFin.getYear() + " (" + descriptif + ")";
+		}
+		else
+		{
+			return "Du " + dateDebut.getDayOfMonth()+ "/" + dateDebut.getMonthValue() + "/" + dateDebut.getYear() + " au " + dateFin.getDayOfMonth()+ "/" + dateFin.getMonthValue() + "/" + dateFin.getYear();
+		}
+		
+	}
+	
+	
+}

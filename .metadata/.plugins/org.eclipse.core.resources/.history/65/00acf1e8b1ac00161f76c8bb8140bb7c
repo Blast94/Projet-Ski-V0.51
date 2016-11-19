@@ -1,0 +1,9 @@
+package Be.Rochez.Classes;
+
+public class Reservation {
+	Client client;
+	Moniteur moniteur;
+	Horaire horaire;
+	Semaine semaine;
+	Cours cours;
+}

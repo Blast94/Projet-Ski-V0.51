@@ -1,23 +1,25 @@
 package Be.Rochez.Classes;
 
+import java.time.LocalDate;
+
 public class Semaine {
-	int id;
-	String dateDebut;
-	String dateFin;
-	String descriptif;
-	int congeScolaire;
+	private int id;
+	private LocalDate dateDebut;
+	private LocalDate dateFin;
+	private String descriptif;
+	private int congeScolaire;
 	public Semaine()
 	{
 		
 	}
-	public Semaine(String dateDebut, String dateFin, String descriptif, int congeScolaire)
+	public Semaine(LocalDate dateDebut, LocalDate dateFin, String descriptif, int congeScolaire)
 	{
 		this.dateDebut = dateDebut;
 		this.dateFin = dateFin;
 		this.descriptif = descriptif;
 		this.congeScolaire = congeScolaire;
 	}
-	public Semaine(int id,String dateDebut, String dateFin, String descriptif, int congeScolaire)
+	public Semaine(int id,LocalDate dateDebut, LocalDate dateFin, String descriptif, int congeScolaire)
 	{
 		this.id = id;
 		this.dateDebut = dateDebut;
@@ -29,16 +31,16 @@ public class Semaine {
 	{
 		return this.id;
 	}
-	public String GetDateDebut() {
+	public LocalDate GetDateDebut() {
 		return this.dateDebut;
 	}
-	public void SetDateDebut(String dateDebut) {
+	public void SetDateDebut(LocalDate dateDebut) {
 		this.dateDebut = dateDebut;
 	}
-	public String GetDateFin() {
+	public LocalDate GetDateFin() {
 		return this.dateFin;
 	}
-	public void SetDateFin(String dateFin) {
+	public void SetDateFin(LocalDate dateFin) {
 		this.dateFin = dateFin;
 	}
 	public String GetDescriptif() {
@@ -57,11 +59,11 @@ public class Semaine {
 	public String toString() {
 		if(!this.descriptif.equals(""))
 		{
-			return "Du " + dateDebut + " au " + dateFin + " (" + descriptif + ")";
+			return "Du " + dateDebut.getDayOfMonth()+ "/" + dateDebut.getMonthValue() + "/" + dateDebut.getYear() + " au " + dateFin.getDayOfMonth()+ "/" + dateFin.getMonthValue() + "/" + dateFin.getYear() + " (" + descriptif + ")";
 		}
 		else
 		{
-			return "Du " + dateDebut + " au " + dateFin;
+			return "Du " + dateDebut.getDayOfMonth()+ "/" + dateDebut.getMonthValue() + "/" + dateDebut.getYear() + " au " + dateFin.getDayOfMonth()+ "/" + dateFin.getMonthValue() + "/" + dateFin.getYear();
 		}
 		
 	}

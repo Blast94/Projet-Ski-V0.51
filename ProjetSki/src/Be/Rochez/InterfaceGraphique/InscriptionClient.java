@@ -42,13 +42,15 @@ public class InscriptionClient extends JFrame implements ActionListener{
 	private JTextField txtPrenom;
 	private JTextField txtDateNaissance;
 	private JTextField txtCompteBancaire;
-	private JButton btnValider;
-	private JButton btnRetour;
 	private JPasswordField passwordField;
 	private JLabel lblErreur;
 	
 	private Client monClient;
-	private ClientDAO c;
+	private ClientDAO clientDAO;
+	private JPanel panel;
+	private JLabel label;
+	private JButton btnRetour;
+	private JButton btnValider;
 	
 
 	/**
@@ -81,7 +83,7 @@ public class InscriptionClient extends JFrame implements ActionListener{
 		lblNom.setFont(new Font("Yu Gothic UI", Font.BOLD, 13));
 		
 		lblPrenom = new JLabel("Prenom");
-		lblPrenom.setFont(new Font("Yu Gothic UI", Font.BOLD, 12));
+		lblPrenom.setFont(new Font("Yu Gothic UI", Font.BOLD, 13));
 		lblPrenom.setForeground(Color.WHITE);
 		
 		lblDateNaissance = new JLabel("Date de naissance");
@@ -104,14 +106,6 @@ public class InscriptionClient extends JFrame implements ActionListener{
 		txtCompteBancaire = new JTextField();
 		txtCompteBancaire.setColumns(10);
 		
-		btnValider = new JButton("Valider");
-		
-		btnRetour = new JButton("Retour");
-		
-		JLabel lblNewLabel = new JLabel("Inscription");
-		lblNewLabel.setForeground(Color.WHITE);
-		lblNewLabel.setFont(new Font("Yu Gothic UI", Font.BOLD, 15));
-		
 		JLabel lblNewLabel_1 = new JLabel("(JJ/MM/AAAA)");
 		lblNewLabel_1.setForeground(Color.WHITE);
 		lblNewLabel_1.setFont(new Font("Yu Gothic UI", Font.BOLD, 12));
@@ -122,84 +116,107 @@ public class InscriptionClient extends JFrame implements ActionListener{
 		lblErreur.setHorizontalAlignment(SwingConstants.CENTER);
 		lblErreur.setForeground(Color.ORANGE);
 		lblErreur.setFont(new Font("Yu Gothic UI", Font.BOLD, 13));
+		
+		panel = new JPanel();
+		panel.setBackground(Color.DARK_GRAY);
+		
+		label = new JLabel("Modification du Profil");
+		label.setForeground(Color.WHITE);
+		label.setFont(new Font("Yu Gothic UI", Font.BOLD, 15));
+		
+		btnRetour = new JButton("Retour");
+		
+		btnValider = new JButton("Valider");
+		GroupLayout gl_panel = new GroupLayout(panel);
+		gl_panel.setHorizontalGroup(
+			gl_panel.createParallelGroup(Alignment.LEADING)
+				.addGap(0, 585, Short.MAX_VALUE)
+				.addGroup(gl_panel.createSequentialGroup()
+					.addContainerGap()
+					.addComponent(label)
+					.addPreferredGap(ComponentPlacement.RELATED, 279, Short.MAX_VALUE)
+					.addComponent(btnRetour)
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addComponent(btnValider)
+					.addContainerGap())
+		);
+		gl_panel.setVerticalGroup(
+			gl_panel.createParallelGroup(Alignment.LEADING)
+				.addGap(0, 61, Short.MAX_VALUE)
+				.addGroup(gl_panel.createSequentialGroup()
+					.addContainerGap()
+					.addGroup(gl_panel.createParallelGroup(Alignment.BASELINE)
+						.addComponent(label)
+						.addComponent(btnValider)
+						.addComponent(btnRetour))
+					.addContainerGap(25, Short.MAX_VALUE))
+		);
+		panel.setLayout(gl_panel);
 		GroupLayout gl_contentPane = new GroupLayout(contentPane);
 		gl_contentPane.setHorizontalGroup(
-			gl_contentPane.createParallelGroup(Alignment.TRAILING)
+			gl_contentPane.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_contentPane.createSequentialGroup()
-					.addGroup(gl_contentPane.createParallelGroup(Alignment.TRAILING, false)
+					.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
+						.addComponent(panel, GroupLayout.PREFERRED_SIZE, 585, GroupLayout.PREFERRED_SIZE)
 						.addGroup(gl_contentPane.createSequentialGroup()
-							.addGap(64)
-							.addComponent(btnRetour)
-							.addPreferredGap(ComponentPlacement.RELATED, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-							.addComponent(btnValider)
-							.addGap(73))
+							.addContainerGap()
+							.addComponent(lblPassword, GroupLayout.PREFERRED_SIZE, 68, GroupLayout.PREFERRED_SIZE))
 						.addGroup(gl_contentPane.createSequentialGroup()
-							.addGap(107)
+							.addContainerGap()
 							.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
-								.addComponent(lblErreur, GroupLayout.PREFERRED_SIZE, 419, GroupLayout.PREFERRED_SIZE)
+								.addComponent(lblNom, GroupLayout.PREFERRED_SIZE, 186, GroupLayout.PREFERRED_SIZE)
+								.addComponent(lblPrenom)
+								.addComponent(lblPseudo, GroupLayout.PREFERRED_SIZE, 122, GroupLayout.PREFERRED_SIZE)
 								.addGroup(gl_contentPane.createSequentialGroup()
-									.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
-										.addComponent(lblNom, GroupLayout.PREFERRED_SIZE, 186, GroupLayout.PREFERRED_SIZE)
-										.addGroup(gl_contentPane.createSequentialGroup()
-											.addComponent(lblDateNaissance, GroupLayout.PREFERRED_SIZE, 115, GroupLayout.PREFERRED_SIZE)
-											.addPreferredGap(ComponentPlacement.UNRELATED)
-											.addComponent(lblNewLabel_1))
-										.addComponent(lblPrenom)
-										.addComponent(lblPassword, GroupLayout.PREFERRED_SIZE, 68, GroupLayout.PREFERRED_SIZE)
-										.addComponent(lblPseudo, GroupLayout.PREFERRED_SIZE, 122, GroupLayout.PREFERRED_SIZE)
-										.addComponent(lblCompteBancaire, GroupLayout.PREFERRED_SIZE, 183, GroupLayout.PREFERRED_SIZE))
-									.addGap(6)
-									.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING, false)
-										.addComponent(txtCompteBancaire)
-										.addComponent(txtDateNaissance)
-										.addComponent(txtPrenom)
-										.addComponent(txtNom)
-										.addComponent(passwordField)
-										.addComponent(txtPseudo, GroupLayout.DEFAULT_SIZE, 206, Short.MAX_VALUE))))
-							.addGap(64)))
-					.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-				.addGroup(gl_contentPane.createSequentialGroup()
-					.addContainerGap(288, Short.MAX_VALUE)
-					.addComponent(lblNewLabel)
-					.addGap(230))
+									.addComponent(lblDateNaissance, GroupLayout.PREFERRED_SIZE, 115, GroupLayout.PREFERRED_SIZE)
+									.addPreferredGap(ComponentPlacement.RELATED)
+									.addComponent(lblNewLabel_1))
+								.addComponent(lblCompteBancaire, GroupLayout.PREFERRED_SIZE, 183, GroupLayout.PREFERRED_SIZE))
+							.addGap(21)
+							.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING, false)
+								.addComponent(txtCompteBancaire)
+								.addComponent(txtDateNaissance)
+								.addComponent(txtPrenom, Alignment.TRAILING)
+								.addComponent(txtNom)
+								.addComponent(passwordField)
+								.addComponent(txtPseudo, GroupLayout.DEFAULT_SIZE, 245, Short.MAX_VALUE)))
+						.addGroup(gl_contentPane.createSequentialGroup()
+							.addGap(73)
+							.addComponent(lblErreur, GroupLayout.PREFERRED_SIZE, 419, GroupLayout.PREFERRED_SIZE)))
+					.addContainerGap(352, Short.MAX_VALUE))
 		);
 		gl_contentPane.setVerticalGroup(
 			gl_contentPane.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_contentPane.createSequentialGroup()
-					.addGap(5)
-					.addComponent(lblNewLabel)
-					.addPreferredGap(ComponentPlacement.UNRELATED)
+					.addComponent(panel, GroupLayout.PREFERRED_SIZE, 61, GroupLayout.PREFERRED_SIZE)
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addComponent(lblErreur)
+					.addGap(21)
 					.addGroup(gl_contentPane.createParallelGroup(Alignment.BASELINE)
-						.addComponent(txtPseudo, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-						.addComponent(lblPseudo, GroupLayout.PREFERRED_SIZE, 19, GroupLayout.PREFERRED_SIZE))
+						.addComponent(lblPseudo, GroupLayout.PREFERRED_SIZE, 19, GroupLayout.PREFERRED_SIZE)
+						.addComponent(txtPseudo, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
 					.addPreferredGap(ComponentPlacement.RELATED)
 					.addGroup(gl_contentPane.createParallelGroup(Alignment.BASELINE)
 						.addComponent(lblPassword, GroupLayout.PREFERRED_SIZE, 19, GroupLayout.PREFERRED_SIZE)
 						.addComponent(passwordField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
 					.addPreferredGap(ComponentPlacement.RELATED)
 					.addGroup(gl_contentPane.createParallelGroup(Alignment.BASELINE)
-						.addComponent(txtNom, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-						.addComponent(lblNom, GroupLayout.PREFERRED_SIZE, 19, GroupLayout.PREFERRED_SIZE))
+						.addComponent(lblNom, GroupLayout.PREFERRED_SIZE, 19, GroupLayout.PREFERRED_SIZE)
+						.addComponent(txtNom, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
 					.addPreferredGap(ComponentPlacement.RELATED)
 					.addGroup(gl_contentPane.createParallelGroup(Alignment.BASELINE)
-						.addComponent(txtPrenom, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-						.addComponent(lblPrenom, GroupLayout.PREFERRED_SIZE, 19, GroupLayout.PREFERRED_SIZE))
-					.addPreferredGap(ComponentPlacement.RELATED)
+						.addComponent(lblPrenom, GroupLayout.PREFERRED_SIZE, 19, GroupLayout.PREFERRED_SIZE)
+						.addComponent(txtPrenom, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+					.addGap(3)
 					.addGroup(gl_contentPane.createParallelGroup(Alignment.BASELINE)
-						.addComponent(txtDateNaissance, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
 						.addComponent(lblDateNaissance, GroupLayout.PREFERRED_SIZE, 19, GroupLayout.PREFERRED_SIZE)
-						.addComponent(lblNewLabel_1, GroupLayout.PREFERRED_SIZE, 20, GroupLayout.PREFERRED_SIZE))
+						.addComponent(lblNewLabel_1, GroupLayout.PREFERRED_SIZE, 20, GroupLayout.PREFERRED_SIZE)
+						.addComponent(txtDateNaissance, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
 					.addPreferredGap(ComponentPlacement.RELATED)
-					.addGroup(gl_contentPane.createParallelGroup(Alignment.BASELINE)
-						.addComponent(txtCompteBancaire, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-						.addComponent(lblCompteBancaire, GroupLayout.PREFERRED_SIZE, 19, GroupLayout.PREFERRED_SIZE))
-					.addGap(18)
-					.addComponent(lblErreur)
-					.addGap(51)
-					.addGroup(gl_contentPane.createParallelGroup(Alignment.BASELINE)
-						.addComponent(btnValider)
-						.addComponent(btnRetour))
-					.addGap(47))
+					.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
+						.addComponent(lblCompteBancaire, GroupLayout.PREFERRED_SIZE, 19, GroupLayout.PREFERRED_SIZE)
+						.addComponent(txtCompteBancaire, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+					.addGap(158))
 		);
 		contentPane.setLayout(gl_contentPane);
 		
@@ -215,11 +232,11 @@ public class InscriptionClient extends JFrame implements ActionListener{
 		}
 		if(arg0.getSource() == btnValider)
 		{
-			c = new ClientDAO(ConnexionDAO.getInstance());
+			clientDAO = new ClientDAO(ConnexionDAO.getInstance());
 			if(!txtNom.getText().equals("") && !txtPrenom.getText().equals("") && !txtDateNaissance.getText().equals("") && !txtPseudo.getText().equals("") && !passwordField.getText().equals("") && !txtCompteBancaire.getText().equals(""))
 			{
 				
-				if(c.TestPseudo(txtPseudo.getText().trim()))
+				if(clientDAO.TestPseudo(txtPseudo.getText().trim()))
 				{
 					lblErreur.setText("Ce login existe déja. Choissisez en un autre !");
 				}
@@ -242,7 +259,7 @@ public class InscriptionClient extends JFrame implements ActionListener{
 				else
 				{
 					monClient = new Client(txtNom.getText().trim(), txtPrenom.getText().trim(), txtDateNaissance.getText(), txtPseudo.getText().trim(), passwordField.getText(), Integer.parseInt(txtCompteBancaire.getText().trim()));
-					c.create(monClient);
+					clientDAO.create(monClient);
 					System.out.println("l'ajout s'est bien déroulé");
 					this.dispose();
 			        Accueil fen = new Accueil();

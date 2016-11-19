@@ -17,7 +17,7 @@ public class EleveDAO extends DAO<Eleve> {
 			{
 				if(!RechercheEleve(obj))
 				{
-					int id = -1;
+					int idPersonne = -1;
 					if(!RecherchePersonne(obj))
 					{
 						//Ajout dans la table Personne
@@ -31,17 +31,16 @@ public class EleveDAO extends DAO<Eleve> {
 							  ResultSet.CONCUR_READ_ONLY).executeQuery("SELECT ID FROM Personne where Nom = \"" + obj.GetNom() + "\" and Prenom = \"" + obj.GetPrenom() + "\" and DateNaissance = \""+ obj.GetDateNaissance() + "\"");
 					if(result.first())
 					{
-						id = result.getInt("ID");	
+						idPersonne = result.getInt("ID");	
 					}
-					if(id == -1)
+					if(idPersonne == -1)
 					{
 						System.out.println("Erreur lors de l'ajout du moniteur");
 						return false;
 					}
 					else
 					{
-						//Ajout dans la table Moniteur
-						String query2 = "INSERT INTO Eleve (PersonneID, Assurance) VALUES (" + id + "," + obj.GetAssurance() + ")";
+						String query2 = "INSERT INTO Eleve (PersonneID, Assurance) VALUES (" + idPersonne + "," + obj.GetAssurance() + ")";
 						PreparedStatement s2 = this.connect.prepareStatement(query2);
 						s2.execute();
 						System.out.println("L'ajout de l'élève s'est effectué correctement");
@@ -64,7 +63,34 @@ public class EleveDAO extends DAO<Eleve> {
 	    return false;
 	  }
 	  public boolean update(Eleve obj) {
-	    return false;
+		  try
+		  {
+			  System.out.println(obj.GetAssurance() + " " + obj.GetId());
+			  String query = "UPDATE Eleve SET Assurance = " + obj.GetAssurance() + " WHERE ID = " + obj.GetId();
+				PreparedStatement s = this.connect.prepareStatement(query);
+				s.execute();
+				return true;
+		  }
+		  catch(SQLException e)
+		  {
+			  return false;
+		  }
+			
+	  }
+	  public int RechercheEleveID(Eleve obj)
+	  {
+		  int id = -1;
+		  try {
+			  ResultSet result = this.connect.createStatement(
+					  ResultSet.TYPE_SCROLL_INSENSITIVE,
+					  ResultSet.CONCUR_READ_ONLY).executeQuery("SELECT E.ID FROM Eleve E INNER JOIN Personne P ON E.PersonneID = P.ID WHERE Nom = \"" + obj.GetNom() + "\" and Prenom = \"" + obj.GetPrenom() + "\" and DateNaissance = \"" + obj.GetDateNaissance() + "\"");
+			  if(result.first())
+				 id = result.getInt("ID");
+		  } 
+		  catch (SQLException e) {
+			  e.printStackTrace();
+		  } 
+		  return id;
 	  }
 	  public boolean RechercheEleve(Eleve obj)
 	  {   
@@ -82,12 +108,27 @@ public class EleveDAO extends DAO<Eleve> {
 			  return false;
 		  } 
 	  }
-	  //// A régler :
 	  public Eleve find(int id)
 	  {
-		  return null;
+		  Eleve monEleve = new Eleve();      
+		  try {
+			  ResultSet result = this.connect.createStatement(
+					  ResultSet.TYPE_SCROLL_INSENSITIVE,
+					  ResultSet.CONCUR_READ_ONLY).executeQuery("SELECT E.ID, Nom, Prenom, DateNaissance, Assurance FROM Eleve E INNER JOIN Personne P ON E.PersonneID = P.ID WHERE E.ID = " + id);
+			  if(result.first())
+				  monEleve = new Eleve(
+						  result.getInt("ID"),
+						  result.getString("Nom"),
+						  result.getString("Prenom"),
+						  result.getString("DateNaissance"),
+						  result.getInt("Assurance")
+						  );         
+		  } 
+		  catch (SQLException e) {
+			  e.printStackTrace();
+		  }
+		  return monEleve;
 	  }
-	  ////
 	  public boolean RecherchePersonne(Eleve obj)
 	  {
 		  try {
@@ -104,8 +145,4 @@ public class EleveDAO extends DAO<Eleve> {
 			  return false;
 		  } 
 	  }  
-	  public int CompteurElementTable()
-	  {
-		  return 1;
-	  }
 }

@@ -6,12 +6,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-import javax.swing.DefaultListModel;
-import javax.swing.JList;
-import javax.swing.JOptionPane;
-
 import Be.Rochez.Classes.Client;
-import Be.Rochez.Classes.Cours;
+import Be.Rochez.Classes.Eleve;
 import Be.Rochez.Classes.Moniteur;
 
 public class MoniteurDAO extends DAO<Moniteur>{
@@ -69,10 +65,26 @@ public class MoniteurDAO extends DAO<Moniteur>{
 	  public boolean delete(Moniteur obj) {
 	    return false;
 	  }
-	  //// A régler :
 	  public Moniteur find(int id)
 	  {
-		  return null;
+		  Moniteur monMoniteur = new Moniteur();      
+		  try {
+			  ResultSet result = this.connect.createStatement(
+					  ResultSet.TYPE_SCROLL_INSENSITIVE,
+					  ResultSet.CONCUR_READ_ONLY).executeQuery("SELECT M.ID, Nom, Prenom, DateNaissance, Salaire FROM Moniteur M INNER JOIN Personne P ON M.PersonneID = P.ID WHERE M.ID = " + id);
+			  if(result.first())
+				  monMoniteur = new Moniteur(
+						  result.getInt("ID"),
+						  result.getString("Nom"),
+						  result.getString("Prenom"),
+						  result.getString("DateNaissance"),
+						  result.getInt("Salaire")
+						  );    
+		  } 
+		  catch (SQLException e) {
+			  e.printStackTrace();
+		  }
+		  return monMoniteur;
 	  }
 	  ////
 	  public boolean update(Moniteur obj) {
@@ -119,6 +131,28 @@ public class MoniteurDAO extends DAO<Moniteur>{
 			  e.printStackTrace();
 			  return false;
 		  } 
+	  }
+	  public Moniteur RechercheMoniteurSansDate(String nom, String prenom)
+	  {   
+		  Moniteur monMoniteur = new Moniteur();
+		  try {
+			  ResultSet result = this.connect.createStatement(
+					  ResultSet.TYPE_SCROLL_INSENSITIVE,
+					  ResultSet.CONCUR_READ_ONLY).executeQuery("SELECT M.ID, P.Nom, P.Prenom, P.DateNaissance, M.Salaire FROM Moniteur M INNER JOIN Personne P ON M.PersonneID = P.ID WHERE Nom = \"" + nom + "\" and Prenom = \"" + prenom + "\"");
+			  if(result.first())
+				  monMoniteur = new Moniteur(
+						  result.getInt("ID"),
+						  result.getString("Nom"),
+						  result.getString("Prenom"),
+						  result.getString("DateNaissance"),
+						  result.getInt("Salaire")
+						  );         
+		  } 
+		  catch (SQLException e) {
+			  e.printStackTrace();
+			  return null;
+		  } 
+		  return monMoniteur;
 	  }
 	  public boolean RecherchePersonne(Moniteur obj)
 	  {

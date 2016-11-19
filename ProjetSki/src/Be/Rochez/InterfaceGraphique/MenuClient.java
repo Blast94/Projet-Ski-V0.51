@@ -27,6 +27,7 @@ public class MenuClient extends JFrame implements ActionListener{
 	private JButton btnModifProfil;
 	private JButton btnDeconnexion;
 	private JButton btnReservation;
+	private JButton btnPanier;
 
 	/**
 	 * Create the frame.
@@ -66,20 +67,19 @@ public class MenuClient extends JFrame implements ActionListener{
 				.addGroup(gl_panel.createSequentialGroup()
 					.addContainerGap()
 					.addComponent(lblMenu)
-					.addPreferredGap(ComponentPlacement.RELATED, 37, Short.MAX_VALUE)
-					.addGroup(gl_panel.createParallelGroup(Alignment.LEADING)
+					.addPreferredGap(ComponentPlacement.RELATED, 9, Short.MAX_VALUE)
+					.addGroup(gl_panel.createParallelGroup(Alignment.TRAILING)
 						.addGroup(gl_panel.createSequentialGroup()
 							.addComponent(label_2, GroupLayout.PREFERRED_SIZE, 307, GroupLayout.PREFERRED_SIZE)
 							.addGap(192))
-						.addGroup(Alignment.TRAILING, gl_panel.createSequentialGroup()
+						.addGroup(gl_panel.createSequentialGroup()
 							.addComponent(btnModifProfil)
-							.addPreferredGap(ComponentPlacement.UNRELATED)
+							.addPreferredGap(ComponentPlacement.RELATED)
 							.addComponent(btnDeconnexion)
 							.addContainerGap())))
 		);
 		gl_panel.setVerticalGroup(
 			gl_panel.createParallelGroup(Alignment.LEADING)
-				.addGap(0, 61, Short.MAX_VALUE)
 				.addGroup(gl_panel.createSequentialGroup()
 					.addGap(14)
 					.addGroup(gl_panel.createParallelGroup(Alignment.TRAILING)
@@ -88,26 +88,33 @@ public class MenuClient extends JFrame implements ActionListener{
 							.addComponent(btnDeconnexion)
 							.addComponent(btnModifProfil))
 						.addComponent(label_2))
-					.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+					.addContainerGap(21, Short.MAX_VALUE))
 		);
 		panel.setLayout(gl_panel);
 		
 		btnReservation = new JButton("R\u00E9server !");
 		btnReservation.addActionListener(this);
+		
+		btnPanier = new JButton("Mon Panier");
+		btnPanier.addActionListener(this);
 		GroupLayout gl_contentPane = new GroupLayout(contentPane);
 		gl_contentPane.setHorizontalGroup(
-			gl_contentPane.createParallelGroup(Alignment.TRAILING)
-				.addComponent(panel, GroupLayout.DEFAULT_SIZE, 574, Short.MAX_VALUE)
-				.addGroup(Alignment.LEADING, gl_contentPane.createSequentialGroup()
+			gl_contentPane.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_contentPane.createSequentialGroup()
 					.addComponent(btnReservation)
-					.addContainerGap())
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addComponent(btnPanier)
+					.addGap(396))
+				.addComponent(panel, GroupLayout.PREFERRED_SIZE, 574, GroupLayout.PREFERRED_SIZE)
 		);
 		gl_contentPane.setVerticalGroup(
 			gl_contentPane.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_contentPane.createSequentialGroup()
 					.addComponent(panel, GroupLayout.PREFERRED_SIZE, 61, GroupLayout.PREFERRED_SIZE)
 					.addPreferredGap(ComponentPlacement.RELATED)
-					.addComponent(btnReservation)
+					.addGroup(gl_contentPane.createParallelGroup(Alignment.BASELINE)
+						.addComponent(btnReservation)
+						.addComponent(btnPanier))
 					.addContainerGap(261, Short.MAX_VALUE))
 		);
 		contentPane.setLayout(gl_contentPane);
@@ -128,6 +135,11 @@ public class MenuClient extends JFrame implements ActionListener{
 		{
 			this.dispose();
 			Reservation fen = new Reservation(monIdClient);
+		}
+		if(arg0.getSource() == btnPanier)
+		{
+			this.dispose();
+			Panier fen = new Panier(monIdClient);
 		}
 	}
 }

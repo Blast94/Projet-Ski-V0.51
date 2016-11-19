@@ -1,0 +1,37 @@
+package Be.Rochez.Classes;
+
+public class Reservation {
+	int id;
+	Client client;
+	Eleve eleve;
+	Moniteur moniteur;
+	Horaire horaire;
+	Semaine semaine;
+	Cours cours;
+	int statutClient;
+	public Reservation()
+	{
+		
+	}
+	public Reservation(Client client, Eleve eleve, Moniteur moniteur, Horaire horaire, Semaine semaine, Cours cours, int statutClient)
+	{
+		this.client = client;
+		this.eleve = eleve;
+		this.moniteur = moniteur;
+		this.horaire = horaire;
+		this.semaine = semaine;
+		this.cours = cours;
+		this.statutClient = statutClient;
+	}
+	public Reservation(int id, Client client, Eleve eleve, Moniteur moniteur, Horaire horaire, Semaine semaine, Cours cours, int statutClient)
+	{
+		this.id = id;
+		this.client = client;
+		this.eleve = eleve;
+		this.moniteur = moniteur;
+		this.horaire = horaire;
+		this.semaine = semaine;
+		this.cours = cours;
+		this.statutClient = statutClient;
+	}
+}

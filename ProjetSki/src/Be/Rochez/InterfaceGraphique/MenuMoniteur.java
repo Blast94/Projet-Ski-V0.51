@@ -32,6 +32,7 @@ public class MenuMoniteur extends JFrame implements ActionListener{
 	private JButton btnDeconnexion;
 	private JPanel panel;
 	private JLabel label_2;
+	private JButton btnMesCours;
 
 	/**
 	 * Create the frame.
@@ -70,47 +71,52 @@ public class MenuMoniteur extends JFrame implements ActionListener{
 					.addContainerGap(13, Short.MAX_VALUE)
 					.addComponent(label, GroupLayout.PREFERRED_SIZE, 56, GroupLayout.PREFERRED_SIZE)
 					.addPreferredGap(ComponentPlacement.RELATED)
-					.addGroup(gl_panel.createParallelGroup(Alignment.LEADING)
+					.addGroup(gl_panel.createParallelGroup(Alignment.TRAILING)
 						.addGroup(gl_panel.createSequentialGroup()
 							.addComponent(label_2, GroupLayout.PREFERRED_SIZE, 307, GroupLayout.PREFERRED_SIZE)
 							.addGap(192))
-						.addGroup(Alignment.TRAILING, gl_panel.createSequentialGroup()
+						.addGroup(gl_panel.createSequentialGroup()
 							.addComponent(btnModifProfil)
-							.addPreferredGap(ComponentPlacement.RELATED)
+							.addPreferredGap(ComponentPlacement.UNRELATED)
 							.addComponent(btnDeconnexion)
 							.addContainerGap())))
 		);
 		gl_panel.setVerticalGroup(
 			gl_panel.createParallelGroup(Alignment.LEADING)
-				.addGap(0, 61, Short.MAX_VALUE)
 				.addGroup(gl_panel.createSequentialGroup()
 					.addGap(14)
 					.addGroup(gl_panel.createParallelGroup(Alignment.TRAILING)
 						.addGroup(gl_panel.createParallelGroup(Alignment.BASELINE)
+							.addComponent(label, GroupLayout.PREFERRED_SIZE, 26, GroupLayout.PREFERRED_SIZE)
 							.addComponent(btnDeconnexion)
-							.addComponent(btnModifProfil)
-							.addComponent(label, GroupLayout.PREFERRED_SIZE, 26, GroupLayout.PREFERRED_SIZE))
+							.addComponent(btnModifProfil))
 						.addComponent(label_2))
-					.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+					.addContainerGap(18, Short.MAX_VALUE))
 		);
 		panel.setLayout(gl_panel);
 		
 		btnModifAccreditation = new JButton("Modifier mes accr\u00E9ditations");
 		btnModifAccreditation.addActionListener(this);
+		
+		btnMesCours = new JButton("Mes Cours");
 		GroupLayout gl_contentPane = new GroupLayout(contentPane);
 		gl_contentPane.setHorizontalGroup(
 			gl_contentPane.createParallelGroup(Alignment.LEADING)
-				.addComponent(panel, GroupLayout.DEFAULT_SIZE, 574, Short.MAX_VALUE)
 				.addGroup(gl_contentPane.createSequentialGroup()
 					.addComponent(btnModifAccreditation)
-					.addContainerGap())
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addComponent(btnMesCours)
+					.addContainerGap(322, Short.MAX_VALUE))
+				.addComponent(panel, GroupLayout.DEFAULT_SIZE, 574, Short.MAX_VALUE)
 		);
 		gl_contentPane.setVerticalGroup(
 			gl_contentPane.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_contentPane.createSequentialGroup()
 					.addComponent(panel, GroupLayout.PREFERRED_SIZE, 61, GroupLayout.PREFERRED_SIZE)
 					.addPreferredGap(ComponentPlacement.RELATED)
-					.addComponent(btnModifAccreditation)
+					.addGroup(gl_contentPane.createParallelGroup(Alignment.BASELINE)
+						.addComponent(btnModifAccreditation)
+						.addComponent(btnMesCours))
 					.addContainerGap(261, Short.MAX_VALUE))
 		);
 		contentPane.setLayout(gl_contentPane);
@@ -131,6 +137,11 @@ public class MenuMoniteur extends JFrame implements ActionListener{
 		{
 			this.dispose();
 			Accreditation fen = new Accreditation(monIdMoniteur);
+		}
+		if(arg0.getSource() == btnMesCours)
+		{
+			this.dispose();
+			CoursMoniteur fen = new CoursMoniteur(monIdMoniteur);
 		}
 	}
 }

@@ -1,0 +1,17 @@
+package Be.Rochez.Classes;
+
+import java.util.ArrayList;
+
+public class Panier {
+	ArrayList<ReservationC> monPanier;
+	public Panier()
+	{
+		this.monPanier = new ArrayList<ReservationC>();
+	}
+	public ArrayList<ReservationC> GetMonPanier() {
+		return this.monPanier;
+	}
+	public void SetMonPanier(ArrayList<ReservationC> monPanier) {
+		this.monPanier = monPanier;
+	}
+}

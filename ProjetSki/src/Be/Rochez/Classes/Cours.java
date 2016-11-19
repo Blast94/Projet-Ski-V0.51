@@ -1,14 +1,15 @@
 package Be.Rochez.Classes;
 
 public class Cours {
-	int id;
-	String sport;
-	String categorieAge;
-	String niveau;
-	int prix;
-	int eleveMinimum;
-	int eleveMaximum;
-	int ageMinimum;
+	private int id;
+	private String sport;
+	private String categorieAge;
+	private String niveau;
+	private float prix;
+	private int eleveMinimum;
+	private int eleveMaximum;
+	private int ageMinimum;
+	private TypeCours typeCours;
 	public Cours()
 	{
 		
@@ -26,7 +27,7 @@ public class Cours {
 		this.categorieAge = categorieAge;
 		this.niveau = niveau;
 	}
-	public Cours(int id, String sport, String categorieAge, String niveau, int prix, int eleveMinimum, int eleveMaximum, int ageMinimum)
+	public Cours(int id, String sport, String categorieAge, String niveau, float prix, int eleveMinimum, int eleveMaximum, int ageMinimum)
 	{
 		this.id = id;
 		this.sport = sport;
@@ -37,6 +38,19 @@ public class Cours {
 		this.eleveMaximum = eleveMaximum;
 		this.ageMinimum = ageMinimum;
 	}
+	public Cours(int id, String sport, String categorieAge, String niveau, float prix, int eleveMinimum, int eleveMaximum, int ageMinimum, TypeCours typeCours)
+	{
+		this.id = id;
+		this.sport = sport;
+		this.categorieAge = categorieAge;
+		this.niveau = niveau;
+		this.prix = prix;
+		this.eleveMinimum = eleveMinimum;
+		this.eleveMaximum = eleveMaximum;
+		this.ageMinimum = ageMinimum;
+		this.typeCours = typeCours;
+	}
+	
 	public int GetId()
 	{
 		return this.id;
@@ -59,10 +73,10 @@ public class Cours {
 	public void SetNiveau(String niveau) {
 		this.niveau = niveau;
 	}
-	public int GetPrix() {
+	public float GetPrix() {
 		return this.prix;
 	}
-	public void SetPrix(int prix) {
+	public void SetPrix(float prix) {
 		this.prix = prix;
 	}
 	public int GetEleveMinimum() {
@@ -82,6 +96,14 @@ public class Cours {
 	}
 	public void SetAgeMinimum(int ageMinimum) {
 		this.ageMinimum = ageMinimum;
+	}
+	public TypeCours GetTypeCours()
+	{
+		return this.typeCours;
+	}
+	public void SetTypeCours(TypeCours typeCours)
+	{
+		this.typeCours = typeCours;
 	}
 	@Override
 	public String toString() {

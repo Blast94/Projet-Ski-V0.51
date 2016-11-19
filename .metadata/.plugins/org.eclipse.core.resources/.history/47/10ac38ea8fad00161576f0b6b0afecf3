@@ -1,0 +1,32 @@
+package Be.Rochez.Classes;
+
+
+import java.time.LocalDate;
+import java.util.Date;
+
+import org.apache.commons.lang.time.DateUtils;
+
+import Be.Rochez.DAO.ConnexionDAO;
+import Be.Rochez.DAO.HoraireDAO;
+import Be.Rochez.InterfaceGraphique.Accueil;
+
+public class Test {
+
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+		System.out.println(ConnexionDAO.getInstance());
+		Accueil page1 = new Accueil();
+		Date date = new Date();
+		
+		Date date2 = new Date();
+		Date date3 = new Date();
+		
+		date.setMonth(date.getMonth()+ 1);
+		date2.setMonth(date.getMonth()+ 2);
+		date3.setMonth(date.getMonth()-1);
+		if()
+		System.out.println(date);
+		
+	}
+
+}

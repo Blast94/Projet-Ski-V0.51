@@ -2,6 +2,9 @@ package Be.Rochez.Classes;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.util.Date;
 import java.util.regex.Pattern;
 
 
@@ -16,7 +19,7 @@ public class Verification {
         }
     }
 	public static boolean IsDate(String date) {
-	    SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+	    SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 	    try {
 	        sdf.parse(date);
 	        return true;
@@ -31,5 +34,14 @@ public class Verification {
 			return true;
 		else
 			return false;
+	}
+	public static LocalDate ConvertirStringDate(String s)
+	{
+		Date maDate = new Date();
+		String[] monTabDate = s.split("/");
+		maDate.setDate(Integer.parseInt(monTabDate[0]));
+		maDate.setMonth(Integer.parseInt(monTabDate[1]));
+		maDate.setYear(Integer.parseInt(monTabDate[2]));
+		return maDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
 	}
 }

@@ -1,41 +1,36 @@
 package Be.Rochez.Classes;
 
 public class Eleve extends Personne {
-	int id;
-	int assurance;
+	private int id;
+	private int assurance;
 	public Eleve(){
 		
 	}
-	public Eleve(String nom, String prenom, String dateNaissance, String assurance)
+	public Eleve(String nom, String prenom, String dateNaissance, int assurance)
 	{
 		super(nom, prenom, dateNaissance);
-		if(assurance == "O" || assurance == "o")
-			this.assurance = -1;
-		else
-			this.assurance = 0;
+		this.assurance = assurance;
 	}
-	public Eleve(int id, String nom, String prenom, String dateNaissance, String assurance) {
+	public Eleve(int id, String nom, String prenom, String dateNaissance, int assurance) {
 		super(nom, prenom, dateNaissance);
 		this.id = id;
-		if(assurance == "O" || assurance == "o")
-			this.assurance = -1;
-		else
-			this.assurance = 0;
+		this.assurance = assurance;
 		
 	}
 	public int GetId()
 	{
 		return this.id;
 	}
+	public void SetId(int id)
+	{
+		this.id = id;
+	}
 	public int GetAssurance()
 	{
 		return this.assurance;
 	}
-	public void SetAssurance(boolean assurance)
+	public void SetAssurance(int assurance)
 	{
-		if(assurance)
-			this.assurance = -1;
-		else
-			this.assurance = 0;
+		this.assurance = assurance;
 	}
 }

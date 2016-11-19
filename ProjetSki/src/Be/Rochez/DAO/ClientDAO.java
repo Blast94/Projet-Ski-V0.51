@@ -20,7 +20,7 @@ public class ClientDAO extends DAO<Client>{
 				if(!RecherchePersonne(obj))
 				{
 					//Ajout dans la table Personne
-					String query = "INSERT INTO Personne (Nom, Prenom, DateNaissance) VALUES (\"" + obj.GetNom() + "\", \"" + obj.GetPrenom() + "\", TO_DATE(\"" + obj.GetDateNaissance() + "\", 'DD-MM-YYYY'))"; 
+					String query = "INSERT INTO Personne (Nom, Prenom, DateNaissance) VALUES (\"" + obj.GetNom() + "\", \"" + obj.GetPrenom() + "\", \"" + obj.GetDateNaissance() + "\")"; 
 					PreparedStatement s = this.connect.prepareStatement(query);
 					s.execute();
 				}
@@ -82,8 +82,7 @@ public class ClientDAO extends DAO<Client>{
 				query = "UPDATE Client SET Login = \"" + obj.GetLogin() + "\", Password = \"" + obj.GetPassword() + "\", CompteBancaire = " + obj.GetCompteBancaire() + " WHERE ID = " + obj.GetId();
 				s = this.connect.prepareStatement(query);
 				s.execute();
-			}
-			  
+			}  
 		  }
 		  catch(SQLException e)
 		  {
@@ -94,7 +93,26 @@ public class ClientDAO extends DAO<Client>{
 	  //// A régler :
 	  public Client find(int id)
 	  {
-		  return null;
+		  Client monClient = new Client();      
+		  try {
+			  ResultSet result = this.connect.createStatement(
+					  ResultSet.TYPE_SCROLL_INSENSITIVE,
+					  ResultSet.CONCUR_READ_ONLY).executeQuery("SELECT C.ID, Nom, Prenom, DateNaissance, Login, Password, CompteBancaire FROM Client C INNER JOIN Personne P ON C.PersonneID = P.ID WHERE C.ID = " + id);
+			  if(result.first())
+				  monClient = new Client(
+						  result.getInt("ID"),
+						  result.getString("Nom"),
+						  result.getString("Prenom"),
+						  result.getString("DateNaissance"),
+						  result.getString("Login"),
+						  result.getString("Password"),
+						  result.getInt("CompteBancaire")
+						  );         
+		  } 
+		  catch (SQLException e) {
+			  e.printStackTrace();
+		  }
+		  return monClient;
 	  }
 	  ////
 	  public boolean RechercheClient(Client obj)
@@ -206,5 +224,3 @@ public class ClientDAO extends DAO<Client>{
 		  return monClient;
 	  }
 }
-
-

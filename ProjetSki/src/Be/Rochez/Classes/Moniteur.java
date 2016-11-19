@@ -1,18 +1,23 @@
 package Be.Rochez.Classes;
 
 public class Moniteur extends Personne{
-	int id;
-	String login;
-	String password;
-	int salaire;
+	private int id;
+	private String login;
+	private String password;
+	private float salaire;
 	public Moniteur(){}
 	public Moniteur(int id, String nom, String prenom)
 	{
+		super(nom, prenom);
 		this.id = id;
-		this.nom = nom;
-		this.prenom = prenom;
 	}
-	public Moniteur(String nom, String prenom, String dateNaissance, String login, String password, int salaire)
+	public Moniteur(int id, String nom, String prenom, String dateNaissance, float salaire)
+	{
+		super(nom, prenom, dateNaissance);
+		this.id = id;
+		this.salaire = salaire;
+	}
+	public Moniteur(String nom, String prenom, String dateNaissance, String login, String password, float salaire)
 	{
 		super(nom, prenom, dateNaissance);
 		this.login = login;
@@ -46,18 +51,16 @@ public class Moniteur extends Personne{
 	{
 		this.password = password;
 	}
-	public int GetSalaire()
+	public float GetSalaire()
 	{
 		return this.salaire;
 	}
-	public void SetSalaire(int salaire)
+	public void SetSalaire(float salaire)
 	{
 		this.salaire = salaire;
 	}
 	@Override
 	public String toString() {
-		return id + super.toString();
+		return super.toString();
 	}
-	
-	
 }

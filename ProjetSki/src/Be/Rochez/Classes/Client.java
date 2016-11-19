@@ -1,10 +1,10 @@
 package Be.Rochez.Classes;
 
 public class Client extends Personne{
-	int id;
-	String login;
-	String password;
-	int compteBancaire;
+	private int id;
+	private String login;
+	private String password;
+	private int compteBancaire;
 	public Client(){
 		
 	}

@@ -7,14 +7,25 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
+import Be.Rochez.Classes.Client;
+import Be.Rochez.Classes.Cours;
+import Be.Rochez.Classes.Eleve;
+import Be.Rochez.Classes.Horaire;
 import Be.Rochez.Classes.Moniteur;
-import Be.Rochez.DAO.AccreditationDAO;
+import Be.Rochez.Classes.ReservationC;
+import Be.Rochez.Classes.Semaine;
+import Be.Rochez.Classes.Verification;
+import Be.Rochez.DAO.ClientDAO;
 import Be.Rochez.DAO.ConnexionDAO;
+import Be.Rochez.DAO.CoursDAO;
+import Be.Rochez.DAO.EleveDAO;
+import Be.Rochez.DAO.HoraireDAO;
 import Be.Rochez.DAO.MoniteurDAO;
+import Be.Rochez.DAO.ReservationDAO;
+import Be.Rochez.DAO.SemaineDAO;
 import Be.Rochez.Singleton.ListeCours;
 import Be.Rochez.Singleton.ListeHoraire;
 import Be.Rochez.Singleton.ListeSemaine;
-import Be.Rochez.Singleton.ListeTypeCours;
 
 import java.awt.Color;
 
@@ -25,13 +36,17 @@ import javax.swing.JLabel;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.ArrayList;
+import java.util.Date;
 
 import javax.swing.JButton;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.JTextField;
 import javax.swing.JRadioButton;
 import javax.swing.JComboBox;
+import javax.swing.SwingConstants;
 
 public class Reservation extends JFrame implements ActionListener{
 
@@ -39,14 +54,26 @@ public class Reservation extends JFrame implements ActionListener{
 	private JTextField txtNom;
 	private JTextField txtPrenom;
 	private ButtonGroup bg;
-	private JButton button;
+	private JButton btnRetour;
 	private JRadioButton rbOui;
 	private JRadioButton rbNon;
 	private int monIdClient;
 	private JTextField txtDateNaissance;
 	private JComboBox comboBoxCours;
 	private JComboBox comboBoxMoniteur;
+	private JButton btnSuivant;
+	private JComboBox comboBoxHoraire;
+	private JComboBox comboBoxSemaine;
+	private JLabel lblErreurEleve;
+	private JLabel lblErreurInformation;
 	private MoniteurDAO m;
+	private Client monClient ;
+	private Moniteur monMoniteur;
+	private Eleve monEleve;
+	private Cours monCours;
+	private Semaine maSemaine;
+	private Horaire monHoraire;
+	
 	
 	public Reservation(int id) {
 		monIdClient = id;
@@ -65,9 +92,10 @@ public class Reservation extends JFrame implements ActionListener{
 		lblRservation.setForeground(Color.WHITE);
 		lblRservation.setFont(new Font("Yu Gothic UI", Font.BOLD, 19));
 		
-		button = new JButton("Retour");
-		
-		JButton btnSuivant = new JButton("Suivant");
+		btnRetour = new JButton("Retour");
+		btnRetour.addActionListener(this);
+		btnSuivant = new JButton("Suivant");
+		btnSuivant.addActionListener(this);
 		GroupLayout gl_panel = new GroupLayout(panel);
 		gl_panel.setHorizontalGroup(
 			gl_panel.createParallelGroup(Alignment.LEADING)
@@ -75,7 +103,7 @@ public class Reservation extends JFrame implements ActionListener{
 					.addContainerGap()
 					.addComponent(lblRservation)
 					.addPreferredGap(ComponentPlacement.RELATED, 304, Short.MAX_VALUE)
-					.addComponent(button)
+					.addComponent(btnRetour)
 					.addPreferredGap(ComponentPlacement.RELATED)
 					.addComponent(btnSuivant)
 					.addContainerGap())
@@ -87,7 +115,7 @@ public class Reservation extends JFrame implements ActionListener{
 					.addGap(14)
 					.addGroup(gl_panel.createParallelGroup(Alignment.BASELINE)
 						.addComponent(lblRservation)
-						.addComponent(button)
+						.addComponent(btnRetour)
 						.addComponent(btnSuivant))
 					.addContainerGap(21, Short.MAX_VALUE))
 		);
@@ -135,7 +163,7 @@ public class Reservation extends JFrame implements ActionListener{
 		lblHoraire.setForeground(Color.WHITE);
 		lblHoraire.setFont(new Font("Yu Gothic UI", Font.BOLD, 11));
 		
-		JComboBox comboBoxHoraire = new JComboBox();
+		comboBoxHoraire = new JComboBox();
 		comboBoxHoraire.setFont(new Font("Yu Gothic UI", Font.BOLD, 10));
 		
 		JLabel lblSemaine = new JLabel("Semaine :");
@@ -143,7 +171,7 @@ public class Reservation extends JFrame implements ActionListener{
 		lblSemaine.setForeground(Color.WHITE);
 		lblSemaine.setFont(new Font("Yu Gothic UI", Font.BOLD, 11));
 		
-		JComboBox comboBoxSemaine = new JComboBox();
+		comboBoxSemaine = new JComboBox();
 		comboBoxSemaine.setFont(new Font("Yu Gothic UI", Font.BOLD, 10));
 		
 		JLabel lblMoniteur = new JLabel("Moniteur :");
@@ -153,46 +181,40 @@ public class Reservation extends JFrame implements ActionListener{
 		comboBoxMoniteur = new JComboBox();
 		comboBoxMoniteur.setEnabled(false);
 		comboBoxMoniteur.setFont(new Font("Yu Gothic UI", Font.BOLD, 10));
+		
+		lblErreurInformation = new JLabel("");
+		lblErreurInformation.setHorizontalAlignment(SwingConstants.CENTER);
+		lblErreurInformation.setForeground(Color.ORANGE);
+		lblErreurInformation.setFont(new Font("Yu Gothic UI", Font.BOLD, 11));
 		GroupLayout gl_panel_2 = new GroupLayout(panel_2);
 		gl_panel_2.setHorizontalGroup(
 			gl_panel_2.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_panel_2.createSequentialGroup()
+					.addContainerGap()
 					.addGroup(gl_panel_2.createParallelGroup(Alignment.LEADING)
-						.addGroup(gl_panel_2.createSequentialGroup()
-							.addGap(105)
-							.addComponent(lblInformationCours))
-						.addGroup(gl_panel_2.createSequentialGroup()
-							.addContainerGap()
-							.addComponent(comboBoxHoraire, 0, 301, Short.MAX_VALUE))
-						.addGroup(gl_panel_2.createSequentialGroup()
-							.addContainerGap()
-							.addComponent(lblHoraire))
-						.addGroup(Alignment.TRAILING, gl_panel_2.createSequentialGroup()
-							.addContainerGap()
-							.addComponent(comboBoxMoniteur, 0, 301, Short.MAX_VALUE))
-						.addGroup(gl_panel_2.createSequentialGroup()
-							.addContainerGap()
-							.addComponent(lblMoniteur))
-						.addGroup(gl_panel_2.createSequentialGroup()
-							.addContainerGap()
-							.addComponent(comboBoxCours, 0, 301, Short.MAX_VALUE))
-						.addGroup(gl_panel_2.createSequentialGroup()
-							.addContainerGap()
-							.addComponent(lblCours))
-						.addGroup(gl_panel_2.createSequentialGroup()
-							.addContainerGap()
-							.addComponent(lblSemaine))
-						.addGroup(gl_panel_2.createSequentialGroup()
-							.addContainerGap()
-							.addComponent(comboBoxSemaine, 0, 301, Short.MAX_VALUE)))
+						.addComponent(comboBoxHoraire, Alignment.TRAILING, 0, 301, Short.MAX_VALUE)
+						.addComponent(comboBoxMoniteur, Alignment.TRAILING, 0, 301, Short.MAX_VALUE)
+						.addComponent(comboBoxCours, Alignment.TRAILING, 0, 301, Short.MAX_VALUE)
+						.addComponent(comboBoxSemaine, Alignment.TRAILING, 0, 301, Short.MAX_VALUE)
+						.addComponent(lblCours)
+						.addComponent(lblMoniteur)
+						.addComponent(lblHoraire)
+						.addComponent(lblSemaine)
+						.addComponent(lblErreurInformation, GroupLayout.DEFAULT_SIZE, 301, Short.MAX_VALUE))
 					.addContainerGap())
+				.addGroup(Alignment.TRAILING, gl_panel_2.createSequentialGroup()
+					.addContainerGap(112, Short.MAX_VALUE)
+					.addComponent(lblInformationCours)
+					.addGap(92))
 		);
 		gl_panel_2.setVerticalGroup(
 			gl_panel_2.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_panel_2.createSequentialGroup()
-					.addGap(5)
+					.addGap(7)
 					.addComponent(lblInformationCours)
-					.addGap(33)
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addComponent(lblErreurInformation)
+					.addPreferredGap(ComponentPlacement.UNRELATED)
 					.addComponent(lblCours)
 					.addPreferredGap(ComponentPlacement.RELATED)
 					.addComponent(comboBoxCours, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
@@ -251,6 +273,11 @@ public class Reservation extends JFrame implements ActionListener{
 		
 		txtDateNaissance = new JTextField();
 		txtDateNaissance.setColumns(10);
+		
+		lblErreurEleve = new JLabel("");
+		lblErreurEleve.setHorizontalAlignment(SwingConstants.CENTER);
+		lblErreurEleve.setForeground(Color.ORANGE);
+		lblErreurEleve.setFont(new Font("Yu Gothic UI", Font.BOLD, 11));
 		GroupLayout gl_panel_1 = new GroupLayout(panel_1);
 		gl_panel_1.setHorizontalGroup(
 			gl_panel_1.createParallelGroup(Alignment.LEADING)
@@ -276,6 +303,9 @@ public class Reservation extends JFrame implements ActionListener{
 							.addComponent(lblDateNaissance))
 						.addGroup(gl_panel_1.createSequentialGroup()
 							.addContainerGap()
+							.addComponent(lblErreurEleve, GroupLayout.DEFAULT_SIZE, 226, Short.MAX_VALUE))
+						.addGroup(gl_panel_1.createSequentialGroup()
+							.addContainerGap()
 							.addComponent(txtDateNaissance, GroupLayout.DEFAULT_SIZE, 226, Short.MAX_VALUE))
 						.addGroup(gl_panel_1.createSequentialGroup()
 							.addContainerGap()
@@ -293,7 +323,9 @@ public class Reservation extends JFrame implements ActionListener{
 				.addGroup(gl_panel_1.createSequentialGroup()
 					.addGap(5)
 					.addComponent(lblInformationElve)
-					.addGap(39)
+					.addGap(7)
+					.addComponent(lblErreurEleve)
+					.addGap(18)
 					.addComponent(lblNom)
 					.addPreferredGap(ComponentPlacement.RELATED)
 					.addComponent(txtNom, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
@@ -303,7 +335,7 @@ public class Reservation extends JFrame implements ActionListener{
 					.addComponent(txtPrenom, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
 					.addPreferredGap(ComponentPlacement.RELATED)
 					.addComponent(lblDateNaissance)
-					.addPreferredGap(ComponentPlacement.RELATED, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+					.addPreferredGap(ComponentPlacement.RELATED)
 					.addComponent(txtDateNaissance, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
 					.addPreferredGap(ComponentPlacement.RELATED)
 					.addComponent(lblAssurance)
@@ -311,7 +343,7 @@ public class Reservation extends JFrame implements ActionListener{
 					.addComponent(rbOui)
 					.addPreferredGap(ComponentPlacement.RELATED)
 					.addComponent(rbNon)
-					.addGap(26))
+					.addContainerGap(34, Short.MAX_VALUE))
 		);
 		
 		bg = new ButtonGroup();
@@ -376,6 +408,152 @@ public class Reservation extends JFrame implements ActionListener{
 				comboBoxMoniteur.setSelectedIndex(0);
 				comboBoxMoniteur.setEnabled(false);
 			}
+		}
+		if(arg0.getSource() == btnSuivant)
+		{
+			lblErreurEleve.setText("");
+			lblErreurInformation.setText("");
+			//Coté Eleve
+			if(!txtNom.getText().equals("") && !txtPrenom.getText().equals("") && !txtDateNaissance.getText().equals(""))
+			{
+				if(!Verification.IsString(txtNom.getText().trim()))
+				{
+					lblErreurEleve.setText("Erreur dans la saisie du nom !");
+				}
+				else if(!Verification.IsString(txtPrenom.getText().trim()))
+				{
+					lblErreurEleve.setText("Erreur dans la saisie du prénom !");
+				}
+				else if(!Verification.IsDate(txtDateNaissance.getText().trim()))
+				{
+					lblErreurEleve.setText("Erreur dans la saisie de la date !");
+				}
+				else
+				{
+					//Création de mon objet Eleve avec les informations saisies
+					int rbSelect = -1;
+					if(rbNon.isSelected())
+						rbSelect = 0;
+					monEleve = new Eleve(txtNom.getText().trim(), txtPrenom.getText().trim(), txtDateNaissance.getText().trim(), rbSelect);
+					System.out.println(monEleve.GetId() + " " + monEleve.GetNom() + " " + monEleve.GetPrenom() + " " + monEleve.GetDateNaissance() + " " + monEleve.GetAssurance());
+					// Création de mon objet Client grace à l'ID Courante 
+					ClientDAO clientDAO = new ClientDAO(ConnexionDAO.getInstance());
+					monClient = clientDAO.find(monIdClient);
+					System.out.println(monClient.GetId() + " " + monClient.GetNom() + " " + monClient.GetPrenom() + " " + monClient.GetDateNaissance() + " " + monClient.GetCompteBancaire());
+				}
+			}
+			else
+			{
+				lblErreurEleve.setText("Un ou plusieurs champs est vide !");
+			}
+			//Coté Cours
+			if(comboBoxCours.getSelectedIndex() > 0 && comboBoxHoraire.getSelectedIndex() > 0 && comboBoxSemaine.getSelectedIndex() > 0 && comboBoxMoniteur.getSelectedIndex() > 0)
+			{
+				//Récupération du choix de cours + du type de cours 
+				CoursDAO coursDAO = new CoursDAO(ConnexionDAO.getInstance());
+				String [] tab = (comboBoxHoraire.getSelectedItem().toString()).split(" - ");
+				tab = tab[1].toString().split(" ");
+				String monTypeDeCoursSelection = tab[1].toString();
+				monCours = coursDAO.find(comboBoxCours.getSelectedIndex(), monTypeDeCoursSelection);
+				System.out.println(monCours.GetId() + " " + monCours.toString() + " " + monCours.GetTypeCours().GetDenomination());	
+				
+				//Récupération de l'objet Horaire
+				HoraireDAO horaireDAO = new HoraireDAO(ConnexionDAO.getInstance());
+				tab = (comboBoxHoraire.getSelectedItem().toString()).split(" ");
+				monHoraire = horaireDAO.find(tab[1].toString(), tab[3].toString());
+				System.out.println(monHoraire.GetId() + " " + monHoraire.toString());
+				
+				//Récupération de la semaine
+				SemaineDAO semaineDAO = new SemaineDAO(ConnexionDAO.getInstance());
+				maSemaine = semaineDAO.find(comboBoxSemaine.getSelectedIndex());
+				System.out.println(maSemaine.GetId() + " " + maSemaine.toString() + " " + maSemaine.GetCongeScolaire());
+				
+				//Récupération de mon Moniteur
+				MoniteurDAO moniteurDAO = new MoniteurDAO(ConnexionDAO.getInstance());
+				tab = (comboBoxMoniteur.getSelectedItem().toString()).split(" ");
+				monMoniteur = moniteurDAO.RechercheMoniteurSansDate(tab[0], tab[1]);
+				System.out.println(monMoniteur.GetId() + " " + monMoniteur.GetNom() + " " + monMoniteur.GetPrenom() + " " + monMoniteur.GetDateNaissance() + " " + monMoniteur.GetSalaire());
+				
+				//Debut de la réservation
+				ReservationC maReservation = new ReservationC(monClient, monEleve, monMoniteur, monHoraire, maSemaine, monCours);
+				ReservationDAO reservationDAO = new ReservationDAO(ConnexionDAO.getInstance());
+				EleveDAO eleveDAO = new EleveDAO(ConnexionDAO.getInstance());
+				
+				//Test si l'eleve existe déja ou si il faut entrer les info dans la db
+				//Cas ou il n'existe pas
+				int verifIdEleve = eleveDAO.RechercheEleveID(monEleve);
+				if(verifIdEleve == -1)
+				{
+					eleveDAO.create(monEleve);
+					verifIdEleve = eleveDAO.RechercheEleveID(monEleve);
+					monEleve.SetId(verifIdEleve);
+				}
+				else
+				{
+					monEleve.SetId(verifIdEleve);
+					eleveDAO.update(monEleve);
+				}
+				//Verification si la réservation Existe déja pour cette personne avec toutes les informations choisies
+				//Cas ou la réservation existe déja
+				int reservationTrouvee = reservationDAO.RechercheReservationExistante(maReservation);
+				if(reservationTrouvee == 1)
+				{
+					lblErreurInformation.setText("La réservation éxiste déja !");
+				}
+				//Cas ou la réservation n'existe pas
+				else if(reservationTrouvee == 2)
+				{
+					LocalDate dateDebutReservation;
+					Date dateDuJour = new Date();
+					LocalDate localDateDuJour = dateDuJour.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+					if(maSemaine.GetCongeScolaire() == 0)
+						dateDebutReservation = maSemaine.GetDateDebut().minusDays(15);
+					else
+						dateDebutReservation = maSemaine.GetDateDebut().minusMonths(1);
+					if(localDateDuJour.isBefore(dateDebutReservation))
+					{
+						//Modification des condition du cours si c'est un cours particulier qui est sélectionné
+						if(monCours.GetTypeCours().GetDenomination().equals("Particulier"))
+						{
+							monCours.SetEleveMinimum(monHoraire.GetEleveMinParticulier());
+							monCours.SetEleveMaximum(monHoraire.GetEleveMaxParticulier());
+						} 
+						//Test si il reste de la place dans le cours choisi
+						//Cas ou il y a encore de la place
+						if(reservationDAO.CountReservation(maReservation) < maReservation.GetCours().GetEleveMaximum())
+						{
+							reservationDAO.create(maReservation);
+							this.dispose();
+							Panier fen = new Panier(monIdClient);
+						}
+						//Cas ou il n'y a plus de place
+						else
+						{
+							lblErreurInformation.setText("<html>Il n'y a plus de place pour ce cours avec ce moniteur <br>pour cette période à cet horaire !</html>");
+						}
+					}
+					else
+					{
+						lblErreurInformation.setText("<html>Il fallait réserver 1 mois à l'avance en période scolaire <br>et 15 jours à l'avance en période non scolaire !</html>");
+					}
+					
+				}
+				//Erreur dans la db
+				else
+				{
+					lblErreurInformation.setText("Erreur de vérification de la réservation !");
+				}
+			}
+			else
+			{
+				lblErreurInformation.setText("Il manque une ou plusieurs informations !");
+			}
+				
+		}
+		if(arg0.getSource() == btnRetour)
+		{
+			this.dispose();
+			MenuClient fen = new MenuClient(monIdClient);
 		}
 	}
 }
