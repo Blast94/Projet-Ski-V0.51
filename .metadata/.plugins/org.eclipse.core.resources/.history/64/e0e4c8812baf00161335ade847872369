@@ -1,0 +1,96 @@
+package Be.Rochez.InterfaceGraphique;
+
+import java.awt.BorderLayout;
+import java.awt.EventQueue;
+
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.border.EmptyBorder;
+import javax.swing.GroupLayout;
+import javax.swing.GroupLayout.Alignment;
+import java.awt.Color;
+import javax.swing.JLabel;
+import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+import javax.swing.JButton;
+import javax.swing.LayoutStyle.ComponentPlacement;
+import javax.swing.JList;
+
+public class CoursClient extends JFrame implements ActionListener{
+
+	private JPanel contentPane;
+	private JButton btnRetour;
+	private int monIdClient;
+	private ReservationDAO reservationDAO;
+
+	/**
+	 * Create the frame.
+	 */
+	public CoursClient(int id) {
+		
+		monIdClient = id;
+		
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setBounds(100, 100, 600, 400);
+		contentPane = new JPanel();
+		contentPane.setBackground(Color.GRAY);
+		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+		setContentPane(contentPane);
+		
+		JPanel panel = new JPanel();
+		panel.setBackground(Color.DARK_GRAY);
+		
+		JLabel label = new JLabel("Mes cours");
+		label.setForeground(Color.WHITE);
+		label.setFont(new Font("Yu Gothic UI", Font.BOLD, 19));
+		
+		btnRetour = new JButton("Retour");
+		GroupLayout gl_panel = new GroupLayout(panel);
+		gl_panel.setHorizontalGroup(
+			gl_panel.createParallelGroup(Alignment.LEADING)
+				.addGap(0, 573, Short.MAX_VALUE)
+				.addGroup(gl_panel.createSequentialGroup()
+					.addContainerGap()
+					.addComponent(label)
+					.addPreferredGap(ComponentPlacement.RELATED, 401, Short.MAX_VALUE)
+					.addComponent(btnRetour)
+					.addContainerGap())
+		);
+		gl_panel.setVerticalGroup(
+			gl_panel.createParallelGroup(Alignment.LEADING)
+				.addGap(0, 64, Short.MAX_VALUE)
+				.addGroup(gl_panel.createSequentialGroup()
+					.addGap(14)
+					.addGroup(gl_panel.createParallelGroup(Alignment.BASELINE)
+						.addComponent(label)
+						.addComponent(btnRetour))
+					.addContainerGap(21, Short.MAX_VALUE))
+		);
+		panel.setLayout(gl_panel);
+		
+		JList list = new JList();
+		GroupLayout gl_contentPane = new GroupLayout(contentPane);
+		gl_contentPane.setHorizontalGroup(
+			gl_contentPane.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_contentPane.createSequentialGroup()
+					.addComponent(panel, GroupLayout.PREFERRED_SIZE, 573, GroupLayout.PREFERRED_SIZE)
+					.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+				.addGroup(Alignment.TRAILING, gl_contentPane.createSequentialGroup()
+					.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+					.addComponent(list, GroupLayout.PREFERRED_SIZE, 561, GroupLayout.PREFERRED_SIZE)
+					.addContainerGap())
+		);
+		gl_contentPane.setVerticalGroup(
+			gl_contentPane.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_contentPane.createSequentialGroup()
+					.addComponent(panel, GroupLayout.PREFERRED_SIZE, 64, GroupLayout.PREFERRED_SIZE)
+					.addGap(18)
+					.addComponent(list, GroupLayout.PREFERRED_SIZE, 263, GroupLayout.PREFERRED_SIZE)
+					.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+		);
+		contentPane.setLayout(gl_contentPane);
+	}
+	public void actionPerformed(ActionEvent arg0) {
+}

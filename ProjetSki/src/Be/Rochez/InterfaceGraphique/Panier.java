@@ -57,6 +57,8 @@ public class Panier extends JFrame implements ActionListener {
 		contentPane.setBackground(Color.GRAY);
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
+		this.setLocationRelativeTo(null);
+		this.setResizable(false);
 		
 		JPanel panel = new JPanel();
 		panel.setBackground(Color.DARK_GRAY);
@@ -161,6 +163,20 @@ public class Panier extends JFrame implements ActionListener {
 			{
 				monPanierReservation.GetMonPanier().get(i).GetCours().SetPrix((monPanierReservation.GetMonPanier().get(i).GetCours().GetPrix()) + 15);
 			}
+			//On regarde si c'est un cours au matin qui a été sélectionné 
+			if( monPanierReservation.GetMonPanier().get(i).GetHoraire().GetId() == 1)
+			{
+				//Si oui on fait une recherche pour voir si il existe un cours après midi pour le même élève
+				if(reservationDAO.CountReduction(monPanierReservation.GetMonPanier().get(i), 2) == 1)
+					monPanierReservation.GetMonPanier().get(i).GetCours().SetPrix(monPanierReservation.GetMonPanier().get(i).GetCours().GetPrix()*85/100);
+			}
+			//On regarde si c'est un cours après midi qui a été sélectionné 
+			else if(monPanierReservation.GetMonPanier().get(i).GetHoraire().GetId() == 2)
+			{
+				//Si oui on fait une recherche pour voir si il exite un cours au matin pour le même élève
+				if(reservationDAO.CountReduction(monPanierReservation.GetMonPanier().get(i), 1) == 1)
+					monPanierReservation.GetMonPanier().get(i).GetCours().SetPrix(monPanierReservation.GetMonPanier().get(i).GetCours().GetPrix()*85/100);
+			}
 			prixTotal += monPanierReservation.GetMonPanier().get(i).GetCours().GetPrix();
 			dlm.addElement(monPanierReservation.GetMonPanier().get(i).toString());
 		}
@@ -187,6 +203,7 @@ public class Panier extends JFrame implements ActionListener {
 		}
 		if(arg0.getSource() == btnSupprimer)
 		{
+			//Si on sélectionne bien quelque chose dans la liste
 			if(list.getSelectedIndex() != -1)
 			{
 				reservationDAO = new ReservationDAO(ConnexionDAO.getInstance());

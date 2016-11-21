@@ -27,6 +27,7 @@ import Be.Rochez.Classes.Verification;
 import Be.Rochez.DAO.ClientDAO;
 import Be.Rochez.DAO.ConnexionDAO;
 import Be.Rochez.DAO.MoniteurDAO;
+import Be.Rochez.DAO.PersonneDAO;
 
 public class ModifProfilMoniteur extends JFrame implements ActionListener{
 
@@ -62,6 +63,8 @@ public class ModifProfilMoniteur extends JFrame implements ActionListener{
 		contentPane.setBounds(new Rectangle(50, 50, 600, 400));
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
+		this.setLocationRelativeTo(null);
+		this.setResizable(false);
 		
 		JLabel lblPseudo = new JLabel("Pseudo");
 		lblPseudo.setForeground(Color.WHITE);
@@ -207,6 +210,7 @@ public class ModifProfilMoniteur extends JFrame implements ActionListener{
 		);
 		contentPane.setLayout(gl_contentPane);
 		
+		//remplissage avec les informations connues du moniteur
 		moniteurDAO = new MoniteurDAO(ConnexionDAO.getInstance());
 		monMoniteur = moniteurDAO.TrouverMoniteur(monIdMoniteur);
 		try
@@ -218,7 +222,6 @@ public class ModifProfilMoniteur extends JFrame implements ActionListener{
 		}
 		catch(Exception e)
 		{
-			System.out.println("Données inaccessibles");
 		}
 		btnRetour.addActionListener(this);
 		btnValider.addActionListener(this);
@@ -233,16 +236,20 @@ public class ModifProfilMoniteur extends JFrame implements ActionListener{
 		if(arg0.getSource() == btnValider)
 		{
 			moniteurDAO = new MoniteurDAO(ConnexionDAO.getInstance());
+			//test champs vide
 			if(!txtNom.getText().equals("") && !txtPrenom.getText().equals("") && !txtDateNaissance.getText().equals("") && !txtPseudo.getText().equals("") && !passwordField.getText().equals(""))
 			{
+				//test nom correct
 				if(!Verification.IsString(txtNom.getText().trim()))
 				{
 					lblErreur.setText("Erreur dans la saisie du nom !");
 				}
+				//test prenom correct
 				else if(!Verification.IsString(txtPrenom.getText().trim()))
 				{
 					lblErreur.setText("Erreur dans la saisie du prenom !");
 				}
+				//test date de naissance correct
 				else if(!Verification.IsDate(txtDateNaissance.getText().trim()))
 				{
 					lblErreur.setText("Erreur dans la saisie de la date !");
@@ -252,7 +259,9 @@ public class ModifProfilMoniteur extends JFrame implements ActionListener{
 					moniteurDAO = new MoniteurDAO(ConnexionDAO.getInstance());
 					monMoniteur = new Moniteur(monIdMoniteur, txtNom.getText().trim(), txtPrenom.getText().trim(), txtDateNaissance.getText(), txtPseudo.getText().trim(), passwordField.getText());
 					moniteurDAO.update(monMoniteur);
-					System.out.println("la modification s'est bien déroulée");
+					PersonneDAO personneDAO = new PersonneDAO(ConnexionDAO.getInstance());
+					personneDAO.MAJDateNaissance();
+					personneDAO.MAJCalculAge();
 					this.dispose();
 			        MenuMoniteur fen = new MenuMoniteur(monIdMoniteur);
 				}

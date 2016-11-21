@@ -14,8 +14,12 @@ public class Eleve extends Personne {
 	public Eleve(int id, String nom, String prenom, String dateNaissance, int assurance) {
 		super(nom, prenom, dateNaissance);
 		this.id = id;
-		this.assurance = assurance;
-		
+		this.assurance = assurance;	
+	}
+	public Eleve(int id, String nom, String prenom, String dateNaissance, int age, int assurance) {
+		super(nom, prenom, dateNaissance, age);
+		this.id = id;
+		this.assurance = assurance;	
 	}
 	public int GetId()
 	{

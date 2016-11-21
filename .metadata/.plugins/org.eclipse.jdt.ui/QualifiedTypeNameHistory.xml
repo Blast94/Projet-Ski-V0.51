@@ -35,7 +35,6 @@
 <fullyQualifiedTypeName name="Be.Rochez.Classes.Client"/>
 <fullyQualifiedTypeName name="Be.Rochez.Classes.Eleve"/>
 <fullyQualifiedTypeName name="Be.Rochez.DAO.TypeCoursDAO"/>
-<fullyQualifiedTypeName name="Be.Rochez.DAO.CoursDAO"/>
 <fullyQualifiedTypeName name="Be.Rochez.Classes.Cours"/>
 <fullyQualifiedTypeName name="Be.Rochez.Classes.TypeCours"/>
 <fullyQualifiedTypeName name="Be.Rochez.DAO.HoraireDAO"/>
@@ -50,12 +49,13 @@
 <fullyQualifiedTypeName name="org.apache.commons.lang.time.DateUtils"/>
 <fullyQualifiedTypeName name="java.util.Date"/>
 <fullyQualifiedTypeName name="java.time.LocalDate"/>
-<fullyQualifiedTypeName name="java.util.ArrayList"/>
 <fullyQualifiedTypeName name="Be.Rochez.DAO.PersonneDAO"/>
-<fullyQualifiedTypeName name="Be.Rochez.DAO.ReservationDAO"/>
-<fullyQualifiedTypeName name="Be.Rochez.Classes.ReservationC"/>
 <fullyQualifiedTypeName name="Be.Rochez.InterfaceGraphique.MenuClient"/>
 <fullyQualifiedTypeName name="Be.Rochez.Classes.PanierC"/>
 <fullyQualifiedTypeName name="java.awt.Menu"/>
+<fullyQualifiedTypeName name="Be.Rochez.DAO.CoursDAO"/>
+<fullyQualifiedTypeName name="java.util.ArrayList"/>
+<fullyQualifiedTypeName name="Be.Rochez.Classes.ReservationC"/>
 <fullyQualifiedTypeName name="java.lang.System"/>
+<fullyQualifiedTypeName name="Be.Rochez.DAO.ReservationDAO"/>
 </qualifiedTypeNameHistroy>

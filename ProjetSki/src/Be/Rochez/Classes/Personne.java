@@ -5,6 +5,7 @@ public class Personne {
 	String nom;
 	String prenom;
 	String dateNaissance; 
+	int age;
 	public Personne() {	}
 	public Personne(String nom, String prenom)
 	{
@@ -22,6 +23,12 @@ public class Personne {
 		this.id = id;
 		this.nom = nom;
 		this.prenom = prenom;
+	}
+	public Personne(String nom, String prenom, String dateNaissance, int age)
+	{
+		this.nom = nom;
+		this.prenom = prenom;
+		this.age = age;
 	}
 	public int GetId()
 	{
@@ -50,6 +57,14 @@ public class Personne {
 	public void SetDateNaissance(String dateNaissance)
 	{
 		this.dateNaissance = dateNaissance;
+	}
+	public int GetAge()
+	{
+		return this.age;
+	}
+	public void SetAge(int age)
+	{
+		this.age = age;
 	}
 	@Override
 	public String toString() {

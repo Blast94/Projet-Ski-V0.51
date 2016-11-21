@@ -11,6 +11,7 @@ import Be.Rochez.Classes.Client;
 import Be.Rochez.Classes.Verification;
 import Be.Rochez.DAO.ClientDAO;
 import Be.Rochez.DAO.ConnexionDAO;
+import Be.Rochez.DAO.PersonneDAO;
 
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
@@ -66,6 +67,8 @@ public class InscriptionClient extends JFrame implements ActionListener{
 		contentPane.setBounds(new Rectangle(50, 50, 600, 400));
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
+		this.setLocationRelativeTo(null);
+		this.setResizable(false);
 		
 		JLabel lblPseudo = new JLabel("Pseudo");
 		lblPseudo.setForeground(Color.WHITE);
@@ -125,8 +128,10 @@ public class InscriptionClient extends JFrame implements ActionListener{
 		label.setFont(new Font("Yu Gothic UI", Font.BOLD, 15));
 		
 		btnRetour = new JButton("Retour");
-		
+		btnRetour.addActionListener(this);
+
 		btnValider = new JButton("Valider");
+		btnValider.addActionListener(this);
 		GroupLayout gl_panel = new GroupLayout(panel);
 		gl_panel.setHorizontalGroup(
 			gl_panel.createParallelGroup(Alignment.LEADING)
@@ -219,9 +224,6 @@ public class InscriptionClient extends JFrame implements ActionListener{
 					.addGap(158))
 		);
 		contentPane.setLayout(gl_contentPane);
-		
-		btnRetour.addActionListener(this);
-		btnValider.addActionListener(this);
 		this.setVisible(true);
 	}
 	public void actionPerformed(ActionEvent arg0) {
@@ -233,34 +235,43 @@ public class InscriptionClient extends JFrame implements ActionListener{
 		if(arg0.getSource() == btnValider)
 		{
 			clientDAO = new ClientDAO(ConnexionDAO.getInstance());
+			//Test si les champs sont vides
 			if(!txtNom.getText().equals("") && !txtPrenom.getText().equals("") && !txtDateNaissance.getText().equals("") && !txtPseudo.getText().equals("") && !passwordField.getText().equals("") && !txtCompteBancaire.getText().equals(""))
 			{
-				
+				//test si le pseudo existe déja
 				if(clientDAO.TestPseudo(txtPseudo.getText().trim()))
 				{
 					lblErreur.setText("Ce login existe déja. Choissisez en un autre !");
 				}
+				//test si le nom est bien composé de lettre
 				else if(!Verification.IsString(txtNom.getText().trim()))
 				{
 					lblErreur.setText("Erreur dans la saisie du nom !");
 				}
+				//test si le prenom est bien composé de lettre
 				else if(!Verification.IsString(txtPrenom.getText().trim()))
 				{
 					lblErreur.setText("Erreur dans la saisie du prenom !");
 				}
+				//test si la date de naissance a le bon format
 				else if(!Verification.IsDate(txtDateNaissance.getText().trim()))
 				{
 					lblErreur.setText("Erreur dans la saisie de la date !");
 				}
+				//test si le compte bancaire est bien composé de chiffre
 				else if(!Verification.IsNumeric(txtCompteBancaire.getText().trim()))
 				{
 					lblErreur.setText("Erreur dans la saisie du compte Bancaire !");
 				}
+				//si tout est correct
 				else
 				{
 					monClient = new Client(txtNom.getText().trim(), txtPrenom.getText().trim(), txtDateNaissance.getText(), txtPseudo.getText().trim(), passwordField.getText(), Integer.parseInt(txtCompteBancaire.getText().trim()));
 					clientDAO.create(monClient);
-					System.out.println("l'ajout s'est bien déroulé");
+					PersonneDAO personneDAO = new PersonneDAO(ConnexionDAO.getInstance());
+					personneDAO.MAJDateNaissance();
+					personneDAO.MAJCalculAge();
+					//Passage à l'acceuil
 					this.dispose();
 			        Accueil fen = new Accueil();
 				}

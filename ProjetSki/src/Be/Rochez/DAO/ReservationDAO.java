@@ -13,21 +13,21 @@ public class ReservationDAO extends DAO<ReservationC> {
 	public ReservationDAO(Connection conn) {
 	    super(conn);
 	  }
+	  //Méthode de création de réservation dans la base de données
 	  public boolean create(ReservationC obj) {
 		  try
 		  {
 				String query = "INSERT INTO Reservation (SemaineID, Cours_TypeCoursID, MoniteurID, EleveID, ClientID, HoraireID, StatutClient) VALUES (" + obj.GetSemaine().GetId() + ","  + obj.GetCours().GetId() + "," + obj.GetMoniteur().GetId() + "," + obj.GetEleve().GetId() + "," + obj.GetClient().GetId() + "," + obj.GetHoraire().GetId() + "," + obj.GetStatutClient() + ")";
 				PreparedStatement s2 = this.connect.prepareStatement(query);
 				s2.execute();
-				System.out.println("L'ajout s'est effectué correctement");
 				return true;
 		  }
 		  catch(SQLException e)
 		  {
-			  System.out.println("Erreur lors de la reservation" + e.getMessage());
 			  return false;
 		  }  
 	  }
+	  //Méthode permettant de supprimer une réservation dans la base de données tant qu'elle est dans le panier
 	  public boolean delete(int numReservation) {
 		  try
 		  {
@@ -44,6 +44,7 @@ public class ReservationDAO extends DAO<ReservationC> {
 	  public boolean delete(ReservationC obj) {
 		  return false;
 	  }
+	  //Méthode mettant à jour le champs payé dans la base de données
 	  public boolean update(ReservationC obj) {
 		int valeurStatutClient = -1;
 	    try
@@ -55,7 +56,6 @@ public class ReservationDAO extends DAO<ReservationC> {
 	    }
 	    catch(SQLException e)
 	    {
-	    	System.out.println("Erreur" + e.getMessage());
 	    	return false;
 	    }
 	  }
@@ -63,6 +63,8 @@ public class ReservationDAO extends DAO<ReservationC> {
 		  
 		  return null;
 	  }
+	  //Méthode vérifiant que aucune autre réservation n'a été faites avec des informations identiques
+	  //Permet d'éviter au client de payer deux fois pour la même réservation
 	  public int RechercheReservationExistante(ReservationC obj)
 	  {
 		  try {
@@ -83,6 +85,7 @@ public class ReservationDAO extends DAO<ReservationC> {
 			  return 3;
 		  }
 	  }
+	  //Méthode comptant le nombre de réservation pour un cours pour voir si on atteint ou non le nombres d'élève maximum
 	  public int CountReservation(ReservationC obj)
 	  { 
 		  try
@@ -100,9 +103,9 @@ public class ReservationDAO extends DAO<ReservationC> {
 			  return -2;
 		  } 
 	  }
+	  //Méthode récupérant un liste de réservation d'un client pour remplir la liste panier
 	  public ArrayList<ReservationC> RecuperationReservationPanier(int idClient)
 	  {
-		  int statutClient = 0;
 		  ReservationC maReservation = new ReservationC();
 		  ArrayList<ReservationC> maListeReservation = new ArrayList<ReservationC>();
 		  
@@ -115,7 +118,7 @@ public class ReservationDAO extends DAO<ReservationC> {
 		  try {
 			  ResultSet result = this.connect.createStatement(
 					  ResultSet.TYPE_SCROLL_INSENSITIVE,
-					  ResultSet.CONCUR_READ_ONLY).executeQuery("SELECT * FROM Reservation WHERE ClientID = " + idClient + " AND StatutClient = " + statutClient);
+					  ResultSet.CONCUR_READ_ONLY).executeQuery("SELECT * FROM Reservation WHERE ClientID = " + idClient + " AND StatutClient = 0");
 			 if(result.first())
 			 {
 				 while(!result.isAfterLast())
@@ -138,8 +141,184 @@ public class ReservationDAO extends DAO<ReservationC> {
 		  }
 		  catch (SQLException e) {
 			  e.printStackTrace();
-			  System.out.println("Erreur de requete " + e.getMessage());
 			  return null;
 		  }
 	  }
+	  //Méthode vérifiant si le Client peut bénéficier d'une réduction
+	  public int CountReduction(ReservationC obj, int tmpHoraireId)
+	  {
+		  try
+		  {
+			  ResultSet result = this.connect.createStatement(
+					  ResultSet.TYPE_SCROLL_INSENSITIVE,
+					  ResultSet.CONCUR_READ_ONLY).executeQuery("SELECT count(*) FROM Reservation WHERE SemaineID = " + obj.GetSemaine().GetId() +  " AND HoraireID = " + tmpHoraireId + " AND EleveID = " + obj.GetEleve().GetId() + " AND ClientID = " + obj.GetClient().GetId() + " AND StatutClient = 0");
+			 if(result.first())
+				 return result.getInt(1);
+			 else
+				 return -1;
+		  }
+		  catch(SQLException e)
+		  {
+			  return -2;
+		  } 
+	  }
+	  //Méthode vérifiant si le moniteur est déja occupé pour un autre cours à une date et un horaire donné
+	  public boolean MoniteurOccupe(ReservationC obj)
+	  {
+		  try
+		  {
+			  ResultSet result = this.connect.createStatement(
+					  ResultSet.TYPE_SCROLL_INSENSITIVE,
+					  ResultSet.CONCUR_READ_ONLY).executeQuery("SELECT * FROM Reservation WHERE SemaineID = " + obj.GetSemaine().GetId() +  " AND HoraireID = " + obj.GetHoraire().GetId() + " AND MoniteurID = " + obj.GetMoniteur().GetId() + " AND Cours_TypeCoursID != " + obj.GetCours().GetId());
+			 if(result.first())
+				 return true; 
+			 else
+				 return false;
+		  }
+		  catch(SQLException e)
+		  {
+			  return false;
+		  }
+	  }
+	  //Methode verifiant si l'eleve est déja en cours 
+	  public boolean DejaCours(ReservationC obj)
+	  {
+		  try
+		  {
+			  ResultSet result = this.connect.createStatement(
+					  ResultSet.TYPE_SCROLL_INSENSITIVE,
+					  ResultSet.CONCUR_READ_ONLY).executeQuery("SELECT * FROM Reservation WHERE SemaineID = " + obj.GetSemaine().GetId() +  " AND HoraireID = " + obj.GetHoraire().GetId() + " AND EleveID = " + obj.GetEleve().GetId());
+			 if(result.first())
+				 return true; 
+			 else
+				 return false;
+		  }
+		  catch(SQLException e)
+		  {
+			  return false;
+		  }
+	  }
+	  //Méthode retournant une liste de reservation (de cours) que le moniteur devra donner
+	  public ArrayList<ReservationC> CoursValidesMoniteur(int idMoniteur)
+	  {
+		  ArrayList<ReservationC> mesCoursValide = new ArrayList<ReservationC>();
+		  SemaineDAO semaineDAO = new SemaineDAO(ConnexionDAO.getInstance());
+		  HoraireDAO horaireDAO = new HoraireDAO(ConnexionDAO.getInstance());
+		  CoursDAO coursDAO = new CoursDAO(ConnexionDAO.getInstance());
+		  ReservationC maReservation = new ReservationC();
+		  try {
+			  //Requete comptant le nombre de reservation pour un horaire, une semaine et un cours donné
+			  ResultSet result = this.connect.createStatement(
+					  ResultSet.TYPE_SCROLL_INSENSITIVE,
+					  ResultSet.CONCUR_READ_ONLY).executeQuery("SELECT R.HoraireID, R.SemaineID, CT.CoursID, Count(ID) AS CompteReservation FROM Reservation R INNER JOIN Cours_TypeCours CT ON R.Cours_TypeCoursID = CT.ID WHERE MoniteurID = " + idMoniteur + " AND StatutClient = -1 GROUP BY R.HoraireID, R.SemaineID, CT.CoursID");
+			 if(result.first())
+			 {
+				 while(!result.isAfterLast())
+				 {
+					 maReservation = new ReservationC(
+							 horaireDAO.find(result.getInt("HoraireID")),
+							 semaineDAO.find(result.getInt("SemaineID")),
+							 coursDAO.find(result.getInt("CoursID"))
+							 );
+					 //Si cours particulier 
+					 if(maReservation.GetHoraire().GetTypeCours().GetDenomination().equals("Particulier"))
+					 {
+						 //Si supérieur au nbr eleve minimum
+						 if(result.getInt("CompteReservation") >= maReservation.GetHoraire().GetEleveMinParticulier())
+						 {
+							 mesCoursValide.add(maReservation);
+						 }
+					 }
+					 //Si cours collectif
+					 else
+					 {
+						 //Si supérieur au nbr eleve minimum
+						 if(result.getInt("CompteReservation") >= maReservation.GetCours().GetEleveMinimum())
+						 {
+							 mesCoursValide.add(maReservation);
+						 }
+					 }
+					 result.next(); 
+				 }
+			 }
+		  }
+		  catch(SQLException e)
+		  {
+		  }
+		  return mesCoursValide;
+	  }
+	  //Méthode retournant une liste d'eleve inscrit à une cours valide
+	 public ArrayList<ReservationC> CoursValidesClient(int idClient)
+	 {
+		 ArrayList<ReservationC> mesCoursValidesTMP = new ArrayList<ReservationC>();
+		 ArrayList<ReservationC> mesCoursValide = new ArrayList<ReservationC>();
+		  SemaineDAO semaineDAO = new SemaineDAO(ConnexionDAO.getInstance());
+		  HoraireDAO horaireDAO = new HoraireDAO(ConnexionDAO.getInstance());
+		  CoursDAO coursDAO = new CoursDAO(ConnexionDAO.getInstance());
+		  EleveDAO eleveDAO = new EleveDAO(ConnexionDAO.getInstance());
+		  ReservationC maReservation = new ReservationC();
+		  try {
+			  //Compte le nombre d'eleve 
+			  ResultSet result = this.connect.createStatement(
+					  ResultSet.TYPE_SCROLL_INSENSITIVE,
+					  ResultSet.CONCUR_READ_ONLY).executeQuery("SELECT R.HoraireID, R.SemaineID, CT.CoursID, Count(ID) AS CompteReservation FROM Reservation R INNER JOIN Cours_TypeCours CT ON R.Cours_TypeCoursID = CT.ID WHERE StatutClient = -1 GROUP BY R.HoraireID, R.SemaineID, CT.CoursID");
+			 if(result.first())
+			 {
+				 while(!result.isAfterLast())
+				 {
+					 maReservation = new ReservationC(
+							 horaireDAO.find(result.getInt("HoraireID")),
+							 semaineDAO.find(result.getInt("SemaineID")),
+							 coursDAO.find(result.getInt("CoursID"))
+							 );
+					 //Si cours particulier 
+					 if(maReservation.GetHoraire().GetTypeCours().GetDenomination().equals("Particulier"))
+					 {
+						 //si supérieur au nbr eleve minimum
+						 if(result.getInt("CompteReservation") >= maReservation.GetHoraire().GetEleveMinParticulier())
+						 {
+							 //ajout à une liste temporaire
+							 mesCoursValidesTMP.add(maReservation);
+						 }
+					 }
+					 //Si cours collectif
+					 else
+					 {
+						 //Si supérieur au nbr eleve minimum
+						 if(result.getInt("CompteReservation") >= maReservation.GetCours().GetEleveMinimum())
+						 {
+							 //ajout à une liste temporaire
+							 mesCoursValidesTMP.add(maReservation);
+						 }
+					 }
+					 result.next(); 
+				 }
+			 }
+			 for(int i = 0; i < mesCoursValidesTMP.size(); i++)
+			 {
+				 //Parcours de la liste temporaire pour retrouver les élève correspondant au client associés au cours
+				 result = this.connect.createStatement(
+						  ResultSet.TYPE_SCROLL_INSENSITIVE,
+						  ResultSet.CONCUR_READ_ONLY).executeQuery("SELECT * FROM Reservation R INNER JOIN Cours_TypeCours CT ON R.Cours_TypeCoursID = CT.ID WHERE R.ClientID = " + idClient + " AND R.HoraireID = " + mesCoursValidesTMP.get(i).GetHoraire().GetId() + " AND R.SemaineID = " + mesCoursValidesTMP.get(i).GetSemaine().GetId() + " AND CT.CoursID = " + mesCoursValidesTMP.get(i).GetCours().GetId());
+				 if(result.first())
+				 {
+					 while(!result.isAfterLast())
+					 {
+						 maReservation = new ReservationC(
+								 eleveDAO.find(result.getInt("EleveID")),
+								 mesCoursValidesTMP.get(i).GetHoraire(),
+								 mesCoursValidesTMP.get(i).GetSemaine(),
+								 mesCoursValidesTMP.get(i).GetCours()
+								 );
+						 mesCoursValide.add(maReservation);
+						 result.next(); 
+					 }
+				 }
+			 }
+		  }
+		  catch(SQLException e)
+		  {
+		  }
+		  return mesCoursValide;
+	 }
 }

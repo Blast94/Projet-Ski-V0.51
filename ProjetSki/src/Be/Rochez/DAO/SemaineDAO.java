@@ -20,6 +20,7 @@ public class SemaineDAO extends DAO<Semaine> {
 	  public boolean update(Semaine obj) {
 	    return false;
 	  }
+	  //méthode retournant une semaine en fonction de l'ID passée en paramètre
 	  public Semaine find(int id)
 	  {
 		  Semaine semaine = new Semaine();      

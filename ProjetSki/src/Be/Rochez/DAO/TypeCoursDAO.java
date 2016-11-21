@@ -19,6 +19,7 @@ public class TypeCoursDAO extends DAO<TypeCours> {
 	  public boolean update(TypeCours obj) {
 	    return false;
 	  }
+	  //méthode retournant un cours en fonction de l'ID
 	  public TypeCours find(int id)
 	  {
 		  TypeCours typeCours = new TypeCours();      
@@ -37,6 +38,7 @@ public class TypeCoursDAO extends DAO<TypeCours> {
 		  }
 		  return typeCours;
 	  }
+	  //méthode retournant un type de cours en fonction de la dénomination
 	  public TypeCours find(String denomination)
 	  {
 		  TypeCours typeCours = new TypeCours();      

@@ -1,0 +1,108 @@
+package Be.Rochez.Classes;
+
+public class ReservationC {
+	private int id;
+	private Client client;
+	private Eleve eleve;
+	private Moniteur moniteur;
+	private Horaire horaire;
+	private Semaine semaine;
+	private Cours cours;
+	private int statutClient;
+	public ReservationC()
+	{
+		
+	}
+	public ReservationC(Moniteur moniteur, Horaire horaire, Semaine semaine, Cours cours)
+	{
+		this.moniteur = moniteur;
+		this.horaire = horaire;
+		this.semaine = semaine;
+		this.cours = cours;
+	}
+	public ReservationC(Client client, Eleve eleve, Moniteur moniteur, Horaire horaire, Semaine semaine, Cours cours)
+	{
+		this.client = client;
+		this.eleve = eleve;
+		this.moniteur = moniteur;
+		this.horaire = horaire;
+		this.semaine = semaine;
+		this.cours = cours;
+		this.statutClient = 0;
+	}
+	public ReservationC(int id, Client client, Eleve eleve, Moniteur moniteur, Horaire horaire, Semaine semaine, Cours cours, int statutClient)
+	{
+		this.id = id;
+		this.client = client;
+		this.eleve = eleve;
+		this.moniteur = moniteur;
+		this.horaire = horaire;
+		this.semaine = semaine;
+		this.cours = cours;
+		this.statutClient = statutClient;
+	}
+	public int GetId()
+	{
+		return this.id;
+	}
+	public Client GetClient()
+	{
+		return this.client;
+	}
+	public void SetClient(Client client)
+	{
+		this.client = client;
+	}
+	public Eleve GetEleve()
+	{
+		return this.eleve;
+	}
+	public void SetEleve(Eleve eleve)
+	{
+		this.eleve = eleve;
+	}
+	public Moniteur GetMoniteur()
+	{
+		return this.moniteur;
+	}
+	public void SetMoniteur(Moniteur moniteur)
+	{
+		this.moniteur = moniteur;
+	}
+	public Horaire GetHoraire()
+	{
+		return this.horaire;
+	}
+	public void SetHoraire(Horaire horaire)
+	{
+		this.horaire = horaire;
+	}
+	public Semaine GetSemaine()
+	{
+		return this.semaine;
+	}
+	public void SetSemaine(Semaine semaine)
+	{
+		this.semaine = semaine;
+	}
+	public Cours GetCours()
+	{
+		return this.cours;
+	}
+	public void SetCours(Cours cours)
+	{
+		this.cours = cours;
+	}
+	public int GetStatutClient()
+	{
+		return this.statutClient;
+	}
+	public void SetStatutClient(int statutClient)
+	{
+		this.statutClient = statutClient;
+	}
+	@Override
+	public String toString() {
+		return this.GetId() + " - " + this.GetSemaine().GetDateDebut().getDayOfMonth() + "/" + this.GetSemaine().GetDateDebut().getMonthValue() + "/" + this.GetSemaine().GetDateDebut().getYear() + " au " + this.GetSemaine().GetDateFin().getDayOfMonth() + "/" + this.GetSemaine().GetDateFin().getMonthValue() + "/" + this.GetSemaine().GetDateFin().getYear() + " - " + this.GetEleve().GetNom() + " " + this.GetEleve().GetPrenom() + " - " + this.GetCours().GetSport() + " " + this.GetCours().GetCategorieAge() + " " + this.GetCours().GetNiveau() + "(" + this.GetCours().GetTypeCours().GetDenomination() + ") - " + this.GetHoraire().GetHeureDebut() + " à " + this.GetHoraire().GetHeureFin() + " - " + this.GetMoniteur().GetNom() + " - " + this.GetCours().GetPrix()+ "€";
+	}
+}

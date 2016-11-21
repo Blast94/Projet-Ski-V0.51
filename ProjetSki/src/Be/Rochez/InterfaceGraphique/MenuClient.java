@@ -28,6 +28,7 @@ public class MenuClient extends JFrame implements ActionListener{
 	private JButton btnDeconnexion;
 	private JButton btnReservation;
 	private JButton btnPanier;
+	private JButton btnMesCours;
 
 	/**
 	 * Create the frame.
@@ -42,6 +43,8 @@ public class MenuClient extends JFrame implements ActionListener{
 		contentPane.setBackground(Color.GRAY);
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
+		this.setLocationRelativeTo(null);
+		this.setResizable(false);
 		
 		JPanel panel = new JPanel();
 		panel.setBackground(Color.DARK_GRAY);
@@ -97,6 +100,9 @@ public class MenuClient extends JFrame implements ActionListener{
 		
 		btnPanier = new JButton("Mon Panier");
 		btnPanier.addActionListener(this);
+		
+		btnMesCours = new JButton("Mes Cours");
+		btnMesCours.addActionListener(this);
 		GroupLayout gl_contentPane = new GroupLayout(contentPane);
 		gl_contentPane.setHorizontalGroup(
 			gl_contentPane.createParallelGroup(Alignment.LEADING)
@@ -104,7 +110,8 @@ public class MenuClient extends JFrame implements ActionListener{
 					.addComponent(btnReservation)
 					.addPreferredGap(ComponentPlacement.RELATED)
 					.addComponent(btnPanier)
-					.addGap(396))
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addComponent(btnMesCours))
 				.addComponent(panel, GroupLayout.PREFERRED_SIZE, 574, GroupLayout.PREFERRED_SIZE)
 		);
 		gl_contentPane.setVerticalGroup(
@@ -114,7 +121,8 @@ public class MenuClient extends JFrame implements ActionListener{
 					.addPreferredGap(ComponentPlacement.RELATED)
 					.addGroup(gl_contentPane.createParallelGroup(Alignment.BASELINE)
 						.addComponent(btnReservation)
-						.addComponent(btnPanier))
+						.addComponent(btnPanier)
+						.addComponent(btnMesCours))
 					.addContainerGap(261, Short.MAX_VALUE))
 		);
 		contentPane.setLayout(gl_contentPane);
@@ -140,6 +148,11 @@ public class MenuClient extends JFrame implements ActionListener{
 		{
 			this.dispose();
 			Panier fen = new Panier(monIdClient);
+		}
+		if(arg0.getSource() == btnMesCours)
+		{
+			this.dispose();
+			CoursClient fen = new CoursClient(monIdClient);
 		}
 	}
 }

@@ -15,9 +15,11 @@ public class EleveDAO extends DAO<Eleve> {
 	  public boolean create(Eleve obj) {
 		  try
 			{
+			  //test si l'eleve existe deja
 				if(!RechercheEleve(obj))
 				{
 					int idPersonne = -1;
+					//test si la personne existe deja
 					if(!RecherchePersonne(obj))
 					{
 						//Ajout dans la table Personne
@@ -35,7 +37,6 @@ public class EleveDAO extends DAO<Eleve> {
 					}
 					if(idPersonne == -1)
 					{
-						System.out.println("Erreur lors de l'ajout du moniteur");
 						return false;
 					}
 					else
@@ -43,29 +44,26 @@ public class EleveDAO extends DAO<Eleve> {
 						String query2 = "INSERT INTO Eleve (PersonneID, Assurance) VALUES (" + idPersonne + "," + obj.GetAssurance() + ")";
 						PreparedStatement s2 = this.connect.prepareStatement(query2);
 						s2.execute();
-						System.out.println("L'ajout de l'élève s'est effectué correctement");
 						return true;
 					}	
 				}
 				else
 				{
-					System.out.println("L'élève que vous tentez d'ajouter existe déja");
 					return false;
 				}
 			}
 			catch(SQLException e)
 			{
-				System.out.println("Erreur d'ajout dans la base de données");
 				return false;
 			}  
 	  }
 	  public boolean delete(Eleve obj) {
 	    return false;
 	  }
+	  //Permet de mettre à jour l'assurance de l'eleve
 	  public boolean update(Eleve obj) {
 		  try
 		  {
-			  System.out.println(obj.GetAssurance() + " " + obj.GetId());
 			  String query = "UPDATE Eleve SET Assurance = " + obj.GetAssurance() + " WHERE ID = " + obj.GetId();
 				PreparedStatement s = this.connect.prepareStatement(query);
 				s.execute();
@@ -74,9 +72,9 @@ public class EleveDAO extends DAO<Eleve> {
 		  catch(SQLException e)
 		  {
 			  return false;
-		  }
-			
+		  }	
 	  }
+	  //Méthode de rechercher l'ID d'un élève via ces informations
 	  public int RechercheEleveID(Eleve obj)
 	  {
 		  int id = -1;
@@ -92,6 +90,7 @@ public class EleveDAO extends DAO<Eleve> {
 		  } 
 		  return id;
 	  }
+	  //Méthode testant si un eleve existe ou non
 	  public boolean RechercheEleve(Eleve obj)
 	  {   
 		  try {
@@ -108,19 +107,21 @@ public class EleveDAO extends DAO<Eleve> {
 			  return false;
 		  } 
 	  }
+	  //Méthode retournant un élève en fonction de son ID
 	  public Eleve find(int id)
 	  {
 		  Eleve monEleve = new Eleve();      
 		  try {
 			  ResultSet result = this.connect.createStatement(
 					  ResultSet.TYPE_SCROLL_INSENSITIVE,
-					  ResultSet.CONCUR_READ_ONLY).executeQuery("SELECT E.ID, Nom, Prenom, DateNaissance, Assurance FROM Eleve E INNER JOIN Personne P ON E.PersonneID = P.ID WHERE E.ID = " + id);
+					  ResultSet.CONCUR_READ_ONLY).executeQuery("SELECT E.ID, Nom, Prenom, DateNaissance, Age, Assurance FROM Eleve E INNER JOIN Personne P ON E.PersonneID = P.ID WHERE E.ID = " + id);
 			  if(result.first())
 				  monEleve = new Eleve(
 						  result.getInt("ID"),
 						  result.getString("Nom"),
 						  result.getString("Prenom"),
 						  result.getString("DateNaissance"),
+						  result.getInt("Age"),
 						  result.getInt("Assurance")
 						  );         
 		  } 
@@ -129,6 +130,7 @@ public class EleveDAO extends DAO<Eleve> {
 		  }
 		  return monEleve;
 	  }
+	  //Méthode testant si un personne existe ou non
 	  public boolean RecherchePersonne(Eleve obj)
 	  {
 		  try {

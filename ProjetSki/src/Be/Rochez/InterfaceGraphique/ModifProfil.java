@@ -71,6 +71,8 @@ public class ModifProfil extends JFrame implements ActionListener{
 		contentPane.setBounds(new Rectangle(50, 50, 600, 400));
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
+		this.setLocationRelativeTo(null);
+		this.setResizable(false);
 		
 		JLabel lblPseudo = new JLabel("Pseudo");
 		lblPseudo.setForeground(Color.WHITE);
@@ -233,6 +235,7 @@ public class ModifProfil extends JFrame implements ActionListener{
 		);
 		contentPane.setLayout(gl_contentPane);
 		
+		//Remplissage des champs avec les informations connues du client
 		c = new ClientDAO(ConnexionDAO.getInstance());
 		monClient = c.TrouverClient(monIdClient);
 		try
@@ -245,7 +248,6 @@ public class ModifProfil extends JFrame implements ActionListener{
 		}
 		catch(Exception e)
 		{
-			System.out.println("Données inaccessibles");
 		}
 		this.setVisible(true);
 	}
@@ -258,20 +260,25 @@ public class ModifProfil extends JFrame implements ActionListener{
 		if(arg0.getSource() == btnValider)
 		{
 			c = new ClientDAO(ConnexionDAO.getInstance());
+			//test si champs vide 
 			if(!txtNom.getText().equals("") && !txtPrenom.getText().equals("") && !txtDateNaissance.getText().equals("") && !txtPseudo.getText().equals("") && !passwordField.getText().equals("") && !txtCompteBancaire.getText().equals(""))
 			{
+				//test si nom correct
 				if(!Verification.IsString(txtNom.getText().trim()))
 				{
 					lblErreur.setText("Erreur dans la saisie du nom !");
 				}
+				//test si prenom correct
 				else if(!Verification.IsString(txtPrenom.getText().trim()))
 				{
 					lblErreur.setText("Erreur dans la saisie du prenom !");
 				}
+				//test si date correct
 				else if(!Verification.IsDate(txtDateNaissance.getText().trim()))
 				{
 					lblErreur.setText("Erreur dans la saisie de la date !");
 				}
+				//test si compte bancaire correct
 				else if(!Verification.IsNumeric(txtCompteBancaire.getText().trim()))
 				{
 					lblErreur.setText("Erreur dans la saisie du compte Bancaire !");
@@ -281,7 +288,6 @@ public class ModifProfil extends JFrame implements ActionListener{
 					c = new ClientDAO(ConnexionDAO.getInstance());
 					monClient = new Client(monIdClient, txtNom.getText().trim(), txtPrenom.getText().trim(), txtDateNaissance.getText(), txtPseudo.getText().trim(), passwordField.getText(), Integer.parseInt(txtCompteBancaire.getText().trim()));
 					c.update(monClient);
-					System.out.println("la modification s'est bien déroulée");
 					PersonneDAO personneDAO = new PersonneDAO(ConnexionDAO.getInstance());
 					personneDAO.MAJDateNaissance();
 					personneDAO.MAJCalculAge();

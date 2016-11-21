@@ -46,6 +46,8 @@ public class MenuMoniteur extends JFrame implements ActionListener{
 		contentPane.setBackground(Color.GRAY);
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
+		this.setLocationRelativeTo(null);
+		this.setResizable(false);
 		
 		panel = new JPanel();
 		panel.setBackground(Color.DARK_GRAY);
@@ -99,6 +101,7 @@ public class MenuMoniteur extends JFrame implements ActionListener{
 		btnModifAccreditation.addActionListener(this);
 		
 		btnMesCours = new JButton("Mes Cours");
+		btnMesCours.addActionListener(this);
 		GroupLayout gl_contentPane = new GroupLayout(contentPane);
 		gl_contentPane.setHorizontalGroup(
 			gl_contentPane.createParallelGroup(Alignment.LEADING)

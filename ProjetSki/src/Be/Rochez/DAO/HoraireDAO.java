@@ -19,6 +19,7 @@ public class HoraireDAO extends DAO<Horaire> {
 	  public boolean update(Horaire obj) {
 	    return false;
 	  }
+	  //Méthode permettant de retourner un horaire en fonction de son ID
 	  public Horaire find(int id)
 	  {
 		  TypeCoursDAO t = new TypeCoursDAO(ConnexionDAO.getInstance());
@@ -43,6 +44,7 @@ public class HoraireDAO extends DAO<Horaire> {
 		  }
 		  return horaire;
 	  }
+	  //Méthode permettant de retourner un horaire en fonction de son heure de début et de son heure de fin
 	  public Horaire find(String heureDebut, String heureFin)
 	  {
 		  TypeCoursDAO t = new TypeCoursDAO(ConnexionDAO.getInstance());

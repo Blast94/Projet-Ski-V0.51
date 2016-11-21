@@ -53,6 +53,8 @@ public class Accueil extends JFrame implements ActionListener {
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setBounds(100, 100, 800, 600);
 		this.getContentPane().setLayout(null);
+		this.setLocationRelativeTo(null);
+		this.setResizable(false);
 		
 		this.contentPane = new JPanel();
 		this.contentPane.setBackground(Color.GRAY);
@@ -90,6 +92,7 @@ public class Accueil extends JFrame implements ActionListener {
 		lblNewLabel.setFont(new Font("Yu Gothic UI", Font.BOLD | Font.ITALIC, 20));
 		
 		btnQuitter = new JButton("Quitter");
+		btnQuitter.addActionListener(this);
 		GroupLayout gl_contentPane = new GroupLayout(contentPane);
 		gl_contentPane.setHorizontalGroup(
 			gl_contentPane.createParallelGroup(Alignment.TRAILING)
@@ -200,6 +203,7 @@ public class Accueil extends JFrame implements ActionListener {
 		}
 		if(arg0.getSource() == btnConnexion)
 		{
+			//Si on veut se connecter en tant que client
 			if(rbClient.isSelected())
 			{
 				c = new ClientDAO(ConnexionDAO.getInstance());
@@ -222,6 +226,7 @@ public class Accueil extends JFrame implements ActionListener {
 					MenuClient fen = new MenuClient(monIdClient);
 				}
 			}
+			//Si on veut se connecter en tant que moniteur
 			else if(rbMoniteur.isSelected())
 			{
 				m = new MoniteurDAO(ConnexionDAO.getInstance());

@@ -21,6 +21,7 @@ import Be.Rochez.DAO.CoursDAO;
 import Be.Rochez.DAO.EleveDAO;
 import Be.Rochez.DAO.HoraireDAO;
 import Be.Rochez.DAO.MoniteurDAO;
+import Be.Rochez.DAO.PersonneDAO;
 import Be.Rochez.DAO.ReservationDAO;
 import Be.Rochez.DAO.SemaineDAO;
 import Be.Rochez.Singleton.ListeCours;
@@ -84,6 +85,8 @@ public class Reservation extends JFrame implements ActionListener{
 		contentPane.setBackground(Color.GRAY);
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
+		this.setLocationRelativeTo(null);
+		this.setResizable(false);
 		
 		JPanel panel = new JPanel();
 		panel.setBackground(Color.DARK_GRAY);
@@ -91,6 +94,7 @@ public class Reservation extends JFrame implements ActionListener{
 		JLabel lblRservation = new JLabel("R\u00E9servation");
 		lblRservation.setForeground(Color.WHITE);
 		lblRservation.setFont(new Font("Yu Gothic UI", Font.BOLD, 19));
+		
 		
 		btnRetour = new JButton("Retour");
 		btnRetour.addActionListener(this);
@@ -386,11 +390,9 @@ public class Reservation extends JFrame implements ActionListener{
 				comboBoxMoniteur.removeAllItems();
 				m = new MoniteurDAO(ConnexionDAO.getInstance());
 				ArrayList<Moniteur> monTableauDeMoniteur = m.MoniteurAccredite(comboBoxCours.getSelectedIndex());
-				
-				comboBoxMoniteur.addItem("");
 				if(monTableauDeMoniteur != null)
 				{
-					
+					comboBoxMoniteur.addItem("");
 					for(int i = 0; i < monTableauDeMoniteur.size(); i++)
 					{
 						comboBoxMoniteur.addItem(monTableauDeMoniteur.get(i).toString());
@@ -416,14 +418,17 @@ public class Reservation extends JFrame implements ActionListener{
 			//Coté Eleve
 			if(!txtNom.getText().equals("") && !txtPrenom.getText().equals("") && !txtDateNaissance.getText().equals(""))
 			{
+				//Verification que le nom ne comporte que des lettres
 				if(!Verification.IsString(txtNom.getText().trim()))
 				{
 					lblErreurEleve.setText("Erreur dans la saisie du nom !");
 				}
+				//Verification que le prenom ne comporte que des lettres
 				else if(!Verification.IsString(txtPrenom.getText().trim()))
 				{
 					lblErreurEleve.setText("Erreur dans la saisie du prénom !");
 				}
+				//Verification que la date de Naissance est correcte
 				else if(!Verification.IsDate(txtDateNaissance.getText().trim()))
 				{
 					lblErreurEleve.setText("Erreur dans la saisie de la date !");
@@ -435,11 +440,9 @@ public class Reservation extends JFrame implements ActionListener{
 					if(rbNon.isSelected())
 						rbSelect = 0;
 					monEleve = new Eleve(txtNom.getText().trim(), txtPrenom.getText().trim(), txtDateNaissance.getText().trim(), rbSelect);
-					System.out.println(monEleve.GetId() + " " + monEleve.GetNom() + " " + monEleve.GetPrenom() + " " + monEleve.GetDateNaissance() + " " + monEleve.GetAssurance());
 					// Création de mon objet Client grace à l'ID Courante 
 					ClientDAO clientDAO = new ClientDAO(ConnexionDAO.getInstance());
 					monClient = clientDAO.find(monIdClient);
-					System.out.println(monClient.GetId() + " " + monClient.GetNom() + " " + monClient.GetPrenom() + " " + monClient.GetDateNaissance() + " " + monClient.GetCompteBancaire());
 				}
 			}
 			else
@@ -455,32 +458,24 @@ public class Reservation extends JFrame implements ActionListener{
 				tab = tab[1].toString().split(" ");
 				String monTypeDeCoursSelection = tab[1].toString();
 				monCours = coursDAO.find(comboBoxCours.getSelectedIndex(), monTypeDeCoursSelection);
-				System.out.println(monCours.GetId() + " " + monCours.toString() + " " + monCours.GetTypeCours().GetDenomination());	
 				
 				//Récupération de l'objet Horaire
 				HoraireDAO horaireDAO = new HoraireDAO(ConnexionDAO.getInstance());
 				tab = (comboBoxHoraire.getSelectedItem().toString()).split(" ");
 				monHoraire = horaireDAO.find(tab[1].toString(), tab[3].toString());
-				System.out.println(monHoraire.GetId() + " " + monHoraire.toString());
 				
 				//Récupération de la semaine
 				SemaineDAO semaineDAO = new SemaineDAO(ConnexionDAO.getInstance());
 				maSemaine = semaineDAO.find(comboBoxSemaine.getSelectedIndex());
-				System.out.println(maSemaine.GetId() + " " + maSemaine.toString() + " " + maSemaine.GetCongeScolaire());
 				
 				//Récupération de mon Moniteur
 				MoniteurDAO moniteurDAO = new MoniteurDAO(ConnexionDAO.getInstance());
 				tab = (comboBoxMoniteur.getSelectedItem().toString()).split(" ");
 				monMoniteur = moniteurDAO.RechercheMoniteurSansDate(tab[0], tab[1]);
-				System.out.println(monMoniteur.GetId() + " " + monMoniteur.GetNom() + " " + monMoniteur.GetPrenom() + " " + monMoniteur.GetDateNaissance() + " " + monMoniteur.GetSalaire());
-				
-				//Debut de la réservation
-				ReservationC maReservation = new ReservationC(monClient, monEleve, monMoniteur, monHoraire, maSemaine, monCours);
-				ReservationDAO reservationDAO = new ReservationDAO(ConnexionDAO.getInstance());
-				EleveDAO eleveDAO = new EleveDAO(ConnexionDAO.getInstance());
 				
 				//Test si l'eleve existe déja ou si il faut entrer les info dans la db
 				//Cas ou il n'existe pas
+				EleveDAO eleveDAO = new EleveDAO(ConnexionDAO.getInstance());
 				int verifIdEleve = eleveDAO.RechercheEleveID(monEleve);
 				if(verifIdEleve == -1)
 				{
@@ -493,6 +488,21 @@ public class Reservation extends JFrame implements ActionListener{
 					monEleve.SetId(verifIdEleve);
 					eleveDAO.update(monEleve);
 				}
+				PersonneDAO personneDAO = new PersonneDAO(ConnexionDAO.getInstance());
+				personneDAO.MAJDateNaissance();
+				personneDAO.MAJCalculAge();
+				//Rechargement de l'eleve après avoir calculé l'age
+				monEleve = eleveDAO.find(monEleve.GetId());
+				
+				//Modification des condition du cours si c'est un cours particulier qui est sélectionné
+				if(monCours.GetTypeCours().GetDenomination().equals("Particulier"))
+				{
+					monCours.SetEleveMinimum(monHoraire.GetEleveMinParticulier());
+					monCours.SetEleveMaximum(monHoraire.GetEleveMaxParticulier());
+				} 
+				//Debut de la réservation
+				ReservationC maReservation = new ReservationC(monClient, monEleve, monMoniteur, monHoraire, maSemaine, monCours);
+				ReservationDAO reservationDAO = new ReservationDAO(ConnexionDAO.getInstance());
 				//Verification si la réservation Existe déja pour cette personne avec toutes les informations choisies
 				//Cas ou la réservation existe déja
 				int reservationTrouvee = reservationDAO.RechercheReservationExistante(maReservation);
@@ -506,37 +516,49 @@ public class Reservation extends JFrame implements ActionListener{
 					LocalDate dateDebutReservation;
 					Date dateDuJour = new Date();
 					LocalDate localDateDuJour = dateDuJour.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+					//Si ce n'est pas un congé scolaire
 					if(maSemaine.GetCongeScolaire() == 0)
+					{
 						dateDebutReservation = maSemaine.GetDateDebut().minusDays(15);
+					}
+					//Si c'est un congé scolaire
 					else
+					{
 						dateDebutReservation = maSemaine.GetDateDebut().minusMonths(1);
-					if(localDateDuJour.isBefore(dateDebutReservation))
-					{
-						//Modification des condition du cours si c'est un cours particulier qui est sélectionné
-						if(monCours.GetTypeCours().GetDenomination().equals("Particulier"))
-						{
-							monCours.SetEleveMinimum(monHoraire.GetEleveMinParticulier());
-							monCours.SetEleveMaximum(monHoraire.GetEleveMaxParticulier());
-						} 
-						//Test si il reste de la place dans le cours choisi
-						//Cas ou il y a encore de la place
-						if(reservationDAO.CountReservation(maReservation) < maReservation.GetCours().GetEleveMaximum())
-						{
-							reservationDAO.create(maReservation);
-							this.dispose();
-							Panier fen = new Panier(monIdClient);
-						}
-						//Cas ou il n'y a plus de place
-						else
-						{
-							lblErreurInformation.setText("<html>Il n'y a plus de place pour ce cours avec ce moniteur <br>pour cette période à cet horaire !</html>");
-						}
 					}
+					//Si la date du Jour + x est après la date de début de la semaine ou on veut réserver, erreur
+					if(localDateDuJour.isAfter(dateDebutReservation))
+					{
+						lblErreurInformation.setText("<html>Il fallait réserver 1 mois à l'avance en période scolaire <br>et 15 jours à l'avance en période non scolaire !</html>");	
+					}
+					//test sur l'age
+					else if(monEleve.GetAge() < monCours.GetAgeMinimum() || monEleve.GetAge() > monCours.GetAgeMaximum())
+					{
+						lblErreurInformation.setText("Veuillez choisir une catégorie adaptée à votre age !");
+					}
+					//Test si il reste de la place dans le cours choisi
+					//Cas ou il y a encore de la place
+					else if(reservationDAO.CountReservation(maReservation) >= maReservation.GetCours().GetEleveMaximum())
+					{
+						lblErreurInformation.setText("<html>Il n'y a plus de place pour ce cours avec ce moniteur <br>pour cette période à cet horaire !</html>");
+					}
+					//Test si l'élève a déja cours au moment choisi
+					else if(reservationDAO.DejaCours(maReservation))
+					{
+						lblErreurInformation.setText("Vous avez déja réservé un cours à cette période");
+					}
+					//test si le moniteur a déja un autre cours au moment choisi
+					else if(reservationDAO.MoniteurOccupe(maReservation))
+					{
+						lblErreurInformation.setText("<html>Ce moniteur est déja pris pour un autre cours <br>à cet heure la cette semaine la !</html>");
+					}
+					//cas ou l'on peut réserver
 					else
 					{
-						lblErreurInformation.setText("<html>Il fallait réserver 1 mois à l'avance en période scolaire <br>et 15 jours à l'avance en période non scolaire !</html>");
+						reservationDAO.create(maReservation);
+						this.dispose();
+						Panier fen = new Panier(monIdClient);
 					}
-					
 				}
 				//Erreur dans la db
 				else
@@ -547,8 +569,7 @@ public class Reservation extends JFrame implements ActionListener{
 			else
 			{
 				lblErreurInformation.setText("Il manque une ou plusieurs informations !");
-			}
-				
+			}	
 		}
 		if(arg0.getSource() == btnRetour)
 		{

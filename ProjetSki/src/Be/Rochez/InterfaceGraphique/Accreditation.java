@@ -59,6 +59,8 @@ public class Accreditation extends JFrame implements ActionListener{
 		contentPane.setBackground(Color.GRAY);
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
+		this.setLocationRelativeTo(null);
+		this.setResizable(false);
 		
 		JPanel panel_1 = new JPanel();
 		panel_1.setBackground(Color.DARK_GRAY);
@@ -154,9 +156,7 @@ public class Accreditation extends JFrame implements ActionListener{
 		//Remplissage de la liste
 		a = new AccreditationDAO(ConnexionDAO.getInstance());
 		ArrayList<Cours> maListeAccreditation = new ArrayList<Cours>();
-		System.out.println("avant Appel");
 		maListeAccreditation = a.AccreditationProf(monIdMoniteur);
-		System.out.println("Après Appel");
 		DefaultListModel dlm = new DefaultListModel();
 		for(int i = 0; i < maListeAccreditation.size(); i++)
 		{
@@ -173,9 +173,11 @@ public class Accreditation extends JFrame implements ActionListener{
 		
 		if(arg0.getSource() == btnValider)
 		{
+			//Si la selection du comboBox est vide
 			if(!comboBox.getSelectedItem().toString().equals(""))
 			{
 				a = new AccreditationDAO(ConnexionDAO.getInstance());
+				//Si l'accreditation n'existe pas
 				if(!a.AccreditationExistante(monIdMoniteur, comboBox.getSelectedIndex()))
 				{
 					AccreditationC monAccreditation = new AccreditationC(monIdMoniteur, comboBox.getSelectedIndex());
@@ -201,12 +203,13 @@ public class Accreditation extends JFrame implements ActionListener{
 		if(arg0.getSource() == btnSupprimer)
 		{
 			c = new CoursDAO(ConnexionDAO.getInstance());
-			
+			//Si quelque chose est selectionné dans la liste
 			if(list.getSelectedIndex() != -1)
 			{
 				String[] s = list.getSelectedValue().toString().split("/");
 				Cours monIntitulAccre = new Cours(s[0].trim(), s[1].trim(), s[2].trim());
 				int idCours = c.RechercheIDCours(monIntitulAccre);
+				//Si l'accréditation est retrouvée
 				if(idCours != -1)
 				{
 					AccreditationC accre = new AccreditationC(monIdMoniteur, idCours);

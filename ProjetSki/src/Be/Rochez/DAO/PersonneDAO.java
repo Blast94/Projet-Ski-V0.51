@@ -10,6 +10,7 @@ public class PersonneDAO extends DAO<Personne> {
 	public PersonneDAO(Connection conn) {
 	    super(conn);
 	  }
+	//Méthode permettant de créer une personne 
 	  public boolean create(Personne obj) {
 		try
 		{
@@ -33,6 +34,7 @@ public class PersonneDAO extends DAO<Personne> {
 	  {
 		  return null;
 	  }
+	  //Méthode mettant à jour le champs dateNaissanceFormatDate de la db
 	  public void MAJDateNaissance()
 	  {
 		  try
@@ -45,19 +47,18 @@ public class PersonneDAO extends DAO<Personne> {
 		  {
 			  
 		  }
-		  
 	  }
+	  //Méthode mettant à jour le champs age dans la db
 	  public void MAJCalculAge()
 	  {
 		  try
 		  {
-			  String query = "UPDATE Personne SET Personne.Age = Int((Now()-[Personne].[DateNaissanceFormatDate])/365.25)";
+			  String query = "UPDATE Personne SET Personne.Age = (Now()-[Personne].[DateNaissanceFormatDate])/365.25";
 			  PreparedStatement s = this.connect.prepareStatement(query);
 			  s.execute();
 		  }
 		  catch(SQLException e)
 		  {
-			  System.out.println("Erreur " + e.getMessage() );
 		  }
 	  }
 	 

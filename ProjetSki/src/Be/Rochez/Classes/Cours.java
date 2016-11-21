@@ -9,6 +9,7 @@ public class Cours {
 	private int eleveMinimum;
 	private int eleveMaximum;
 	private int ageMinimum;
+	private int ageMaximum;
 	private TypeCours typeCours;
 	public Cours()
 	{
@@ -27,7 +28,7 @@ public class Cours {
 		this.categorieAge = categorieAge;
 		this.niveau = niveau;
 	}
-	public Cours(int id, String sport, String categorieAge, String niveau, float prix, int eleveMinimum, int eleveMaximum, int ageMinimum)
+	public Cours(int id, String sport, String categorieAge, String niveau, float prix, int eleveMinimum, int eleveMaximum, int ageMinimum, int ageMaximum)
 	{
 		this.id = id;
 		this.sport = sport;
@@ -37,8 +38,9 @@ public class Cours {
 		this.eleveMinimum = eleveMinimum;
 		this.eleveMaximum = eleveMaximum;
 		this.ageMinimum = ageMinimum;
+		this.ageMaximum = ageMaximum;
 	}
-	public Cours(int id, String sport, String categorieAge, String niveau, float prix, int eleveMinimum, int eleveMaximum, int ageMinimum, TypeCours typeCours)
+	public Cours(int id, String sport, String categorieAge, String niveau, float prix, int eleveMinimum, int eleveMaximum, int ageMinimum, int ageMaximum, TypeCours typeCours)
 	{
 		this.id = id;
 		this.sport = sport;
@@ -48,6 +50,7 @@ public class Cours {
 		this.eleveMinimum = eleveMinimum;
 		this.eleveMaximum = eleveMaximum;
 		this.ageMinimum = ageMinimum;
+		this.ageMaximum = ageMaximum;
 		this.typeCours = typeCours;
 	}
 	
@@ -96,6 +99,14 @@ public class Cours {
 	}
 	public void SetAgeMinimum(int ageMinimum) {
 		this.ageMinimum = ageMinimum;
+	}
+	public int GetAgeMaximum()
+	{
+		return this.ageMaximum;
+	}
+	public void SetAgeMaximum(int ageMaximum)
+	{
+		this.ageMaximum = ageMaximum;
 	}
 	public TypeCours GetTypeCours()
 	{

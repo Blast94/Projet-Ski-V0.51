@@ -13,13 +13,13 @@ public class AccreditationDAO extends DAO<AccreditationC> {
 	public AccreditationDAO(Connection conn) {
 	    super(conn);
 	  }
+	//Méthode créant une nouvelle accreditation
 	  public boolean create(AccreditationC obj) {
 		  try
 		  {
 				String query = "INSERT INTO Accreditation (MoniteurID, CoursID) VALUES (" + obj.GetIdMoniteur() + "," + obj.GetIdCours() + ")";
 				PreparedStatement s2 = this.connect.prepareStatement(query);
 				s2.execute();
-				System.out.println("L'ajout s'est effectué correctement");
 				return true;
 		  }
 		  catch(SQLException e)
@@ -27,10 +27,12 @@ public class AccreditationDAO extends DAO<AccreditationC> {
 			  return false;
 		  }  
 	  }
+	  //Methode supprimant une accreditation
 	  public boolean delete(AccreditationC obj) {
 		  try
 		  {
-			 String query = "DELETE FROM Accreditation WHERE MoniteurID = " + obj.GetIdMoniteur() + " AND CoursID = " + obj.GetIdCours();
+			 String query = "DELETE FROM Accreditation WHERE MoniteurID = " + obj.GetIdMoniteur() 
+			 + " AND CoursID = " + obj.GetIdCours();
 			 PreparedStatement s = this.connect.prepareStatement(query);
 			 s.execute();
 			 return true;
@@ -47,9 +49,9 @@ public class AccreditationDAO extends DAO<AccreditationC> {
 		  
 		  return null;
 	  }
+	  //Méthode permettant de retourner un tableau d'accréditation pour un moniteur ayant pour but à charger la liste
 	  public ArrayList<Cours> AccreditationProf(int idMoniteur)
 	  {
-		  System.out.println("lancement du chargement de la liste");
 		  ArrayList<Cours> mesAccreditations = new ArrayList<Cours>();
 		  Cours monCours = new Cours();
 		  try {
@@ -77,6 +79,7 @@ public class AccreditationDAO extends DAO<AccreditationC> {
 			  return null;
 		  }
 	  }
+	  //Methode recherchant si une accréditation existe déja ou non
 	  public boolean AccreditationExistante(int idMoniteur, int idCours)
 	  {
 		  try

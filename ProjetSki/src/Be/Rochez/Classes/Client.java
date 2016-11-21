@@ -23,6 +23,14 @@ public class Client extends Personne{
 		this.password = password;
 		this.compteBancaire = compteBancaire;
 	}
+	public Client(int id, String nom, String prenom, String dateNaissance, int age, String login, String password, int compteBancaire)
+	{
+		super(nom, prenom, dateNaissance, age);
+		this.id = id;
+		this.login = login;
+		this.password = password;
+		this.compteBancaire = compteBancaire;
+	}
 	public int GetId()
 	{
 		return this.id;

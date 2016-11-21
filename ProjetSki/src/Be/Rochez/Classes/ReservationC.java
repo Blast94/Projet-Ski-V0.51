@@ -19,6 +19,13 @@ public class ReservationC {
 		this.semaine = semaine;
 		this.cours = cours;
 	}
+	public ReservationC(Eleve eleve, Horaire horaire, Semaine semaine, Cours cours)
+	{
+		this.eleve = eleve;
+		this.horaire = horaire;
+		this.semaine = semaine;
+		this.cours = cours;
+	}
 	public ReservationC(Client client, Eleve eleve, Moniteur moniteur, Horaire horaire, Semaine semaine, Cours cours)
 	{
 		this.client = client;

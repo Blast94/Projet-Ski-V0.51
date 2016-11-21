@@ -17,9 +17,11 @@ public class MoniteurDAO extends DAO<Moniteur>{
 	  public boolean create(Moniteur obj) {
 		try
 		{
+			//test si le moniteur existe déja
 			if(!RechercheMoniteur(obj))
 			{
 				int id = -1;
+				//test si la personne existe déja
 				if(!RecherchePersonne(obj))
 				{
 					//Ajout dans la table Personne
@@ -37,7 +39,6 @@ public class MoniteurDAO extends DAO<Moniteur>{
 				}
 				if(id == -1)
 				{
-					System.out.println("Erreur lors de l'ajout du moniteur");
 					return false;
 				}
 				else
@@ -46,25 +47,23 @@ public class MoniteurDAO extends DAO<Moniteur>{
 					String query2 = "INSERT INTO Moniteur (PersonneID, Login, Password, Salaire) VALUES (" + id + "," + obj.GetSalaire() + ")";
 					PreparedStatement s2 = this.connect.prepareStatement(query2);
 					s2.execute();
-					System.out.println("L'ajout s'est effectué correctement");
 					return true;
 				}	
 			}
 			else
 			{
-				System.out.println("Le moniteur que vous tentez d'ajouter existe déja");
 				return false;
 			}
 		}
 		catch(SQLException e)
 		{
-			System.out.println("Erreur d'ajout dans la base de données");
 			return false;
 		}  
 	  }
 	  public boolean delete(Moniteur obj) {
 	    return false;
 	  }
+	  //Méthode retournant un moniteur en fonction de son ID
 	  public Moniteur find(int id)
 	  {
 		  Moniteur monMoniteur = new Moniteur();      
@@ -86,7 +85,7 @@ public class MoniteurDAO extends DAO<Moniteur>{
 		  }
 		  return monMoniteur;
 	  }
-	  ////
+	  //Méthode métant à jour le profil du moniteur
 	  public boolean update(Moniteur obj) {
 		  try
 		  {
@@ -116,6 +115,7 @@ public class MoniteurDAO extends DAO<Moniteur>{
 		  }
 	    return false;
 	  }
+	  //Méthode permettant de savoir si un moniteur existe ou non
 	  public boolean RechercheMoniteur(Moniteur obj)
 	  {   
 		  try {
@@ -132,6 +132,7 @@ public class MoniteurDAO extends DAO<Moniteur>{
 			  return false;
 		  } 
 	  }
+	  //Recherche de moniteur particulière
 	  public Moniteur RechercheMoniteurSansDate(String nom, String prenom)
 	  {   
 		  Moniteur monMoniteur = new Moniteur();
@@ -154,6 +155,7 @@ public class MoniteurDAO extends DAO<Moniteur>{
 		  } 
 		  return monMoniteur;
 	  }
+	  //Méthode testant si une personne existe ou non
 	  public boolean RecherchePersonne(Moniteur obj)
 	  {
 		  try {
@@ -170,6 +172,7 @@ public class MoniteurDAO extends DAO<Moniteur>{
 			  return false;
 		  } 
 	  } 
+	  //Méthode permettant la connexion du moniteur
 	  public int ConnexionMoniteur(String login, String password)
 	  {
 		  int id;
@@ -199,6 +202,7 @@ public class MoniteurDAO extends DAO<Moniteur>{
 			  return -3;
 		  }
 	  }
+	  
 	  public Moniteur TrouverMoniteur(int id)
 	  {
 		  Moniteur monMoniteur = new Moniteur();
@@ -223,6 +227,7 @@ public class MoniteurDAO extends DAO<Moniteur>{
 		  }
 		  return monMoniteur;
 	  }
+	  //Méthode retournant une liste de moniteur en fonction du cours passé en paramètre
 	  public ArrayList<Moniteur> MoniteurAccredite(int idCours)
 	  {
 		  ArrayList<Moniteur> monTableauDeMoniteur = new ArrayList<Moniteur>();

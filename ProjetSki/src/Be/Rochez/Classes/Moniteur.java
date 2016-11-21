@@ -31,6 +31,13 @@ public class Moniteur extends Personne{
 		this.login = login;
 		this.password = password;
 	}
+	public Moniteur(int id, String nom, String prenom, String dateNaissance, int age, String login, String password)
+	{
+		super(nom, prenom, dateNaissance, age);
+		this.id = id;
+		this.login = login;
+		this.password = password;
+	}
 	public int GetId()
 	{
 		return this.id;
